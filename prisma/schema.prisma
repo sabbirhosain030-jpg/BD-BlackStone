@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id            String      @id @default(cuid())
+  name          String
+  description   String
+  price         Float
+  previousPrice Float?
+  images        String // JSON array of image URLs
+  sizes         String? // JSON array of sizes
+  colors        String? // JSON array of colors
+  stock         Int         @default(0)
+  isNew         Boolean     @default(false)
+  isFeatured    Boolean     @default(false)
+  categoryId    String
+  category      Category    @relation(fields: [categoryId], references: [id])
+  orderItems    OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  shippingAddress String
+  city            String
+  postalCode      String?
+  deliveryZone    String // "Inside Dhaka" or "Outside Dhaka"
+  deliveryCharge  Float
+  subtotal        Float
+  discount        Float       @default(0)
+  total           Float
+  status          String      @default("PENDING") // PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED
+  paymentMethod   String      @default("COD")
+  notes           String?
+  items           OrderItem[]
+  couponId        String?
+  coupon          Coupon?     @relation(fields: [couponId], references: [id])
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  size      String?
+  color     String?
+  price     Float
+}
+
+model Coupon {
+  id           String    @id @default(cuid())
+  code         String    @unique
+  discountType String    // "PERCENTAGE" or "FIXED"
+  amount       Float
+  isActive     Boolean   @default(true)
+  expiresAt    DateTime?
+  usageLimit   Int?
+  usedCount    Int       @default(0)
+  orders       Order[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+

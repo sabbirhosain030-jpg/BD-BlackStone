@@ -1,0 +1,320 @@
+.product-detail-page {
+    padding: 2rem 0 5rem;
+    min-height: 80vh;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+}
+
+.breadcrumb a {
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+}
+
+.breadcrumb a:hover {
+    color: var(--color-gold);
+}
+
+.breadcrumb span:last-child {
+    color: var(--color-text-primary);
+    font-weight: 500;
+}
+
+.product-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+}
+
+/* Images */
+.product-images {
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+}
+
+.main-image {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: var(--color-cream);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.main-image .image {
+    object-fit: cover;
+}
+
+.image-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+}
+
+.thumbnail {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all var(--transition-fast);
+}
+
+.thumbnail:hover,
+.thumbnail.active {
+    border-color: var(--color-gold);
+}
+
+.thumb-image {
+    object-fit: cover;
+}
+
+/* Product Info */
+.product-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.product-header {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1.5rem;
+}
+
+.product-category {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.product-title {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 0.5rem 0 1rem;
+    color: var(--color-charcoal);
+    line-height: 1.2;
+}
+
+.product-pricing {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.current-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-charcoal);
+}
+
+.previous-price {
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    text-decoration: line-through;
+}
+
+.discount-badge {
+    padding: 0.375rem 0.75rem;
+    background: var(--color-gold);
+    color: var(--color-white);
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+}
+
+.product-description {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+}
+
+.product-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.option-label {
+    font-size: 0.938rem;
+    font-weight: 600;
+    color: var(--color-charcoal);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.size-options {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.size-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.938rem;
+    font-weight: 600;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.size-btn:hover {
+    border-color: var(--color-gold);
+}
+
+.size-btn.selected {
+    border-color: var(--color-gold);
+    background: var(--color-gold);
+    color: var(--color-white);
+}
+
+.quantity-selector {
+    display: inline-flex;
+    align-items: center;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.quantity-selector button {
+    padding: 0.75rem 1.25rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    background: var(--color-white);
+    color: var(--color-charcoal);
+    border: none;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.quantity-selector button:hover {
+    background: var(--color-cream);
+}
+
+.quantity-selector span {
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.stock-info {
+    font-size: 0.875rem;
+    color: var(--color-success);
+    margin-left: 1rem;
+}
+
+.product-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.product-features {
+    padding: 1.5rem;
+    background: var(--color-cream);
+    border-radius: var(--radius-md);
+}
+
+.product-features h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-charcoal);
+}
+
+.product-features ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.product-features li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.938rem;
+}
+
+.product-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--color-gold);
+    font-weight: bold;
+}
+
+.delivery-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.938rem;
+    color: var(--color-text-secondary);
+}
+
+.info-item svg {
+    color: var(--color-gold);
+    flex-shrink: 0;
+}
+
+@media (max-width: 992px) {
+    .product-detail-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .product-images {
+        position: relative;
+        top: 0;
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .product-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-detail-page {
+        padding: 1rem 0 3rem;
+    }
+
+    .product-title {
+        font-size: 1.5rem;
+    }
+
+    .current-price {
+        font-size: 1.5rem;
+    }
+
+    .image-thumbnails {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+    }
+}

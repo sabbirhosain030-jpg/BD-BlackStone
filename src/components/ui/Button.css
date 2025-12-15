@@ -1,0 +1,103 @@
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-smooth);
+    cursor: pointer;
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Sizes */
+.btn-sm {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.813rem;
+}
+
+.btn-md {
+    padding: 0.75rem 2rem;
+    font-size: 0.875rem;
+}
+
+.btn-lg {
+    padding: 1rem 2.5rem;
+    font-size: 0.938rem;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+/* Primary Variant */
+.btn-primary {
+    background: var(--color-charcoal);
+    color: var(--color-white);
+    border-color: var(--color-charcoal);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--color-charcoal-light);
+    border-color: var(--color-charcoal-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+/* Secondary Variant */
+.btn-secondary {
+    background: var(--color-gold);
+    color: var(--color-white);
+    border-color: var(--color-gold);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--color-gold-dark);
+    border-color: var(--color-gold-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Outline Variant */
+.btn-outline {
+    background: transparent;
+    color: var(--color-charcoal);
+    border-color: var(--color-charcoal);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: var(--color-charcoal);
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+
+/* Ghost Variant */
+.btn-ghost {
+    background: transparent;
+    color: var(--color-charcoal);
+    border-color: transparent;
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background: var(--color-cream);
+}
+
+/* Loading State */
+.btn .spinner {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+}
