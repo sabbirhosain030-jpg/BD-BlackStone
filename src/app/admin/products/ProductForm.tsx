@@ -193,52 +193,6 @@ export default function ProductForm({ categories, initialData, action, submitTex
                     {submitText}
                 </button>
             </div>
-
-            <style jsx>{`
-                .form-group {
-                    margin-bottom: 1.5rem;
-                }
-                .form-label {
-                    display: block;
-                    color: var(--color-stone-text);
-                    margin-bottom: 0.5rem;
-                    font-size: 0.875rem;
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                }
-                .form-input {
-                    width: 100%;
-                    padding: 0.75rem;
-                    background-color: var(--color-stone-dark);
-                    border: 1px solid var(--color-stone-border);
-                    border-radius: var(--radius-md);
-                    color: var(--color-white);
-                    font-family: var(--font-body);
-                    outline: none;
-                }
-                .form-input:focus {
-                    border-color: var(--color-gold);
-                }
-                .form-grid {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 1.5rem;
-                }
-                .admin-btn-primary {
-                    background-color: var(--color-gold);
-                    color: var(--color-charcoal);
-                    padding: 1rem 2rem;
-                    border: none;
-                    border-radius: var(--radius-md);
-                    font-weight: 600;
-                    cursor: pointer;
-                    width: 100%;
-                    transition: background-color 0.2s;
-                }
-                .admin-btn-primary:hover {
-                    background-color: var(--color-gold-light);
-                }
-            `}</style>
         </form>
     );
 }
