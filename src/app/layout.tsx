@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 };
 
 import { CartProvider } from "@/context/CartContext";
-
 import SessionProvider from '@/components/providers/SessionProvider';
+import { Suspense } from 'react';
 
 export default function RootLayout({
   children,
@@ -27,9 +27,13 @@ export default function RootLayout({
           <CartProvider>
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
               <MarketingBanner />
-              <Header />
+              <Suspense fallback={<div style={{ height: '80px' }} />}>
+                <Header />
+              </Suspense>
               <MarketingModal />
-              <EmailPopup />
+              <Suspense fallback={null}>
+                <EmailPopup />
+              </Suspense>
               <main style={{ flex: 1 }}>
                 {children}
               </main>
