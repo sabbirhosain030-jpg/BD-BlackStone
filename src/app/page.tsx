@@ -4,8 +4,11 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { ProductCard } from '@/components/products/ProductCard';
 import './page.css';
-import { getFeaturedProducts, getNewArrivals, getCategories } from './actions';
+import { getFeaturedProducts, getCategories } from '@/app/actions';
+import { getMarketingBanners } from '@/app/admin/actions';
 import OfferPoster from "@/components/layout/OfferPoster";
+
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const featuredDbProducts = await getFeaturedProducts();
@@ -86,7 +89,7 @@ export default async function HomePage() {
               dbCategories.map((category) => (
                 <Link
                   key={category.slug}
-                  href={`/products?category=${category.slug}`}
+                  href={`/ products ? category = ${category.slug} `}
                   className="category-circle-item hover-lift"
                 >
                   <div className="category-circle-image-wrapper">

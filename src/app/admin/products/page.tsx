@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { getAdminProducts } from '../actions';
+import { getAdminProducts, deleteProduct } from '../actions';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';

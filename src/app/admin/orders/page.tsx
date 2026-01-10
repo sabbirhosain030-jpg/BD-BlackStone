@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
-import { getAdminOrders } from '../actions';
+import { getAdminOrders, updateOrderStatus } from '../actions';
 
 export const dynamic = 'force-dynamic';
 
-export default async function AdminOrdersPage() {
+export default async function OrdersPage() {
     const orders = await getAdminOrders();
 
     return (

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { createSubCategory, deleteSubCategory } from '../../actions';
+import { createSubCategory, deleteSubCategory } from '../actions';
 import { useRouter } from 'next/navigation';
 
 interface SubCategory {

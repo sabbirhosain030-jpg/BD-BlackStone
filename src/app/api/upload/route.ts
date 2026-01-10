@@ -17,28 +17,26 @@ export async function POST(request: Request) {
         const buffer = Buffer.from(arrayBuffer);
 
         // Upload to Cloudinary
-        return new Promise((resolve, reject) => {
-            cloudinary.uploader.upload_stream(
+        // Wrapping in a Promise to handle the stream upload which uses a callback
+        const result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
                 {
-                    folder: 'bd-blackstone-products', // Customize folder name
+                    folder: 'bd-blackstone-products',
                     resource_type: 'auto',
                 },
                 (error, result) => {
                     if (error) {
-                        console.error('Cloudinary upload error:', error);
-                        resolve(NextResponse.json(
-                            { error: 'Upload failed' },
-                            { status: 500 }
-                        ));
+                        reject(error);
                     } else {
-                        resolve(NextResponse.json({
-                            url: result?.secure_url,
-                            publicId: result?.public_id
-                        }));
+                        resolve(result);
                     }
                 }
-            ).end(buffer);
+            );
+            uploadStream.end(buffer);
         });
+
+        // @ts-ignore
+        return NextResponse.json({ url: result?.secure_url, publicId: result?.public_id });
 
     } catch (error) {
         console.error('Upload API error:', error);

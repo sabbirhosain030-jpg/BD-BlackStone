@@ -1,5 +1,7 @@
 import React from 'react';
-import { getAdminCategories, createProduct } from '../../actions';
+import { createProduct, getAdminCategories } from '../../actions';
+
+export const dynamic = 'force-dynamic';
 
 export default async function AddProductPage() {
     const categories = await getAdminCategories();

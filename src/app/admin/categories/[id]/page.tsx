@@ -1,7 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import CategoryDetailClient from './CategoryDetailClient';
+import CategoryDetailClient from '../CategoryDetailClient';
+
+export const dynamic = 'force-dynamic';
 
 interface Props {
     params: Promise<{ id: string }>;

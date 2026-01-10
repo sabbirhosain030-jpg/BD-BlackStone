@@ -2,6 +2,8 @@ import React from 'react';
 import { getMarketingBanners, createMarketingBanner, deleteMarketingBanner, toggleMarketingBanner } from '../actions';
 import Image from 'next/image';
 
+export const dynamic = 'force-dynamic';
+
 export default async function MarketingPage() {
     const banners = await getMarketingBanners();
 
@@ -12,7 +14,10 @@ export default async function MarketingPage() {
             {/* Create New Banner Section */}
             <div className="stone-card" style={{ marginBottom: '2rem' }}>
                 <h2 style={{ fontSize: '1.25rem', color: 'var(--color-white)', marginBottom: '1rem' }}>Create New Offer Poster</h2>
-                <form action={createMarketingBanner} style={{ display: 'grid', gap: '1rem', maxWidth: '600px' }}>
+                <form action={async (formData: FormData) => {
+                    'use server';
+                    await createMarketingBanner(formData);
+                }} style={{ display: 'grid', gap: '1rem', maxWidth: '600px' }}>
                     <input type="hidden" name="type" value="POSTER" />
 
                     <div>
