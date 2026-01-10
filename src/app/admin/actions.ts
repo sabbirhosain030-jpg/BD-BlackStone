@@ -6,54 +6,70 @@ import { redirect } from 'next/navigation';
 
 // --- Dashboard Stats ---
 export async function getDashboardStats() {
-    const totalOrders = await prisma.order.count();
-    const totalProducts = await prisma.product.count();
-    const totalRevenue = await prisma.order.aggregate({
-        _sum: {
-            total: true,
-        },
-        where: {
-            status: 'DELIVERED', // Only count delivered orders for revenue
-        },
-    });
-
-    // Basic active customers count (unique emails in orders)
-    const activeCustomers = await prisma.order.groupBy({
-        by: ['customerEmail'],
-    });
-
-    const lowStockCount = await prisma.product.count({
-        where: {
-            stock: {
-                lte: 5,
+    try {
+        const totalOrders = await prisma.order.count();
+        const totalProducts = await prisma.product.count();
+        const totalRevenueResult = await prisma.order.aggregate({
+            _sum: {
+                total: true,
             },
-        },
-    });
+            where: {
+                status: 'DELIVERED',
+            },
+        });
 
-    return {
-        totalOrders,
-        totalProducts,
-        totalRevenue: totalRevenue._sum.total || 0,
-        activeCustomers: activeCustomers.length,
-        lowStockCount,
-    };
+        const activeCustomers = await prisma.order.groupBy({
+            by: ['customerEmail'],
+        });
+
+        const lowStockCount = await prisma.product.count({
+            where: {
+                stock: {
+                    lte: 5,
+                },
+            },
+        });
+
+        return {
+            totalOrders,
+            totalProducts,
+            totalRevenue: totalRevenueResult._sum.total || 0,
+            activeCustomers: activeCustomers.length,
+            lowStockCount,
+        };
+    } catch (error) {
+        console.error("Failed to fetch dashboard stats:", error);
+        return {
+            totalOrders: 0,
+            totalProducts: 0,
+            totalRevenue: 0,
+            activeCustomers: 0,
+            lowStockCount: 0,
+        };
+    }
 }
 
 export async function getRecentOrders() {
-    return await prisma.order.findMany({
-        take: 5,
-        orderBy: {
-            createdAt: 'desc',
-        },
-        select: {
-            id: true,
-            orderNumber: true,
-            customerName: true,
-            createdAt: true,
-            status: true,
-            total: true,
-        },
-    });
+    try {
+        const orders = await prisma.order.findMany({
+            take: 5,
+            orderBy: {
+                createdAt: 'desc',
+            },
+            select: {
+                id: true,
+                orderNumber: true,
+                customerName: true,
+                createdAt: true,
+                status: true,
+                total: true,
+            },
+        });
+        return JSON.parse(JSON.stringify(orders)); // Serialize for safe transfer
+    } catch (error) {
+        console.error("Failed to fetch recent orders:", error);
+        return [];
+    }
 }
 
 // --- Product Management ---

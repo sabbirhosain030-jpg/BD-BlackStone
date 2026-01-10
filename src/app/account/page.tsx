@@ -93,13 +93,13 @@ export default function AccountPage() {
                                                 </span>
                                             </div>
                                             <div className="order-items-preview">
-                                                {order.items.slice(0, 2).map((item, idx) => (
+                                                {order.items?.slice(0, 2).map((item: any, idx: number) => (
                                                     <span key={idx}>
-                                                        {item.quantity}x {item.product.name}
-                                                        {idx < order.items.length - 1 ? ', ' : ''}
+                                                        {item.quantity}x {item.product?.name || 'Product'}
+                                                        {idx < (order.items?.length || 0) - 1 ? ', ' : ''}
                                                     </span>
                                                 ))}
-                                                {order.items.length > 2 && <span> + {order.items.length - 2} more</span>}
+                                                {order.items?.length > 2 && <span> + {order.items.length - 2} more</span>}
                                             </div>
                                             <div className="order-summary-row">
                                                 <span>Total Amount</span>

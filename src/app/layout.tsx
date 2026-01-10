@@ -30,7 +30,6 @@ export default function RootLayout({
               <Suspense fallback={<div style={{ height: '80px' }} />}>
                 <Header />
               </Suspense>
-              <MarketingModal />
               <Suspense fallback={null}>
                 <EmailPopup />
               </Suspense>
