@@ -164,6 +164,7 @@ export async function createCategory(formData: FormData) {
     redirect('/admin/categories');
 }
 
+// ... existing content ...
 export async function deleteCategory(categoryId: string) {
     try {
         await prisma.category.delete({
@@ -174,6 +175,48 @@ export async function deleteCategory(categoryId: string) {
     } catch (error) {
         console.error("Failed to delete category:", error);
         return { success: false, error: "Failed to delete category" };
+    }
+}
+
+export async function createSubCategory(categoryId: string, formData: FormData) {
+    const name = formData.get('name') as string;
+    let slug = formData.get('slug') as string;
+
+    if (!name) {
+        throw new Error('Name is required');
+    }
+
+    if (!slug) {
+        slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    }
+
+    try {
+        await prisma.subCategory.create({
+            data: {
+                name,
+                slug,
+                categoryId
+            }
+        });
+        revalidatePath(`/admin/categories/${categoryId}`); // If we make a detail page
+        revalidatePath('/admin/categories');
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to create subcategory:", error);
+        return { success: false, error: "Failed to create subcategory" };
+    }
+}
+
+export async function deleteSubCategory(subCategoryId: string) {
+    try {
+        await prisma.subCategory.delete({
+            where: { id: subCategoryId }
+        });
+        revalidatePath('/admin/categories');
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to delete subcategory:", error);
+        return { success: false, error: "Failed to delete subcategory" };
     }
 }
 

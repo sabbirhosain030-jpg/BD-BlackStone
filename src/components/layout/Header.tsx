@@ -65,7 +65,11 @@ export const Header: React.FC = () => {
 
                         {/* Logo */}
                         <Link href="/" className="logo">
-                            <span className="logo-text">BD BlackStone</span>
+                            <span className="logo-text" style={{
+                                fontWeight: '900',
+                                textShadow: '2px 2px 0px #d4af37, 4px 4px 0px rgba(0,0,0,0.1)',
+                                letterSpacing: '1px'
+                            }}>BLACK STONE</span>
                         </Link>
 
                         {/* Navigation */}
