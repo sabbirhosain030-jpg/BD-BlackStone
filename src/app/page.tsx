@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { ProductCard } from '@/components/products/ProductCard';
 import './page.css';
 import { getFeaturedProducts, getNewArrivals, getCategories } from './actions';
+import OfferPoster from "@/components/layout/OfferPoster";
 
 export default async function HomePage() {
   const featuredDbProducts = await getFeaturedProducts();
@@ -80,31 +81,27 @@ export default async function HomePage() {
               Curated collections for every professional wardrobe
             </p>
           </div>
-          <div className="categories-grid">
+          <div className="categories-grid categories-circular">
             {dbCategories.length > 0 ? (
               dbCategories.map((category) => (
                 <Link
                   key={category.slug}
                   href={`/products?category=${category.slug}`}
-                  className="category-card hover-lift"
+                  className="category-circle-item hover-lift"
                 >
-                  <div className="category-image-wrapper hover-zoom-img">
-                    {/* Use a placeholder or a mapped image if we added one to DB schema later. 
-                        For now, usage implies we might need a distinct image per category or use a generic one. 
-                        Let's use a conditional based on name for demo purposes or a generic one. */}
+                  <div className="category-circle-image-wrapper">
                     <Image
                       src={
-                        category.name.toLowerCase().includes('men') ? '/mens_suit_1_1765713791170.png' :
+                        category.name.toLowerCase().includes('men') && !category.name.toLowerCase().includes('wo') ? '/mens_suit_1_1765713791170.png' :
                           category.name.toLowerCase().includes('women') ? '/womens_blazer_1_1765713823996.png' :
                             '/hero_fashion_1765713862724.png'
                       }
                       alt={category.name}
                       fill
-                      className="category-image"
+                      className="category-circle-image"
                     />
-                    <div className="category-overlay"></div>
                   </div>
-                  <h3 className="category-name">{category.name}</h3>
+                  <h3 className="category-circle-name">{category.name}</h3>
                 </Link>
               ))
             ) : (

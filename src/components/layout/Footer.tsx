@@ -1,8 +1,10 @@
+```javascript
 import React from 'react';
 import Link from 'next/link';
+import { Newsletter } from './Newsletter';
 import './Footer.css';
 
-export const Footer: React.FC = () => {
+export const Footer = () => {
     return (
         <footer className="footer">
             <div className="footer-main">
@@ -30,62 +32,48 @@ export const Footer: React.FC = () => {
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                         <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
                                     </svg>
-                                </a>
+
+                                    {/* Customer Service */}
+                                    <div className="footer-col">
+                                        <h4 className="footer-heading">Customer Service</h4>
+                                        <ul className="footer-links">
+                                            <li><Link href="/shipping">Shipping Policy</Link></li>
+                                            <li><Link href="/returns">Returns & Exchange</Link></li>
+                                            <li><Link href="/privacy">Privacy Policy</Link></li>
+                                            <li><Link href="/terms">Terms of Service</Link></li>
+                                        </ul>
+                                    </div>
+
+                                    {/* Contact */}
+                                    <div className="footer-col">
+                                        <h4 className="footer-heading">Contact Us</h4>
+                                        <ul className="footer-contact">
+                                            <li>
+                                                <span>Address:</span>
+                                                <p>123 Fashion Street<br />Dhaka, Bangladesh</p>
+                                            </li>
+                                            <li>
+                                                <span>Email:</span>
+                                                <p>info@bdblackstone.com</p>
+                                            </li>
+                                            <li>
+                                                <span>Phone:</span>
+                                                <p>+880 1234-567890</p>
+                                            </li>
+                                        </ul>
+                                    </div>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Quick Links */}
-                        <div className="footer-col">
-                            <h4 className="footer-heading">Quick Links</h4>
-                            <ul className="footer-links">
-                                <li><Link href="/about">About Us</Link></li>
-                                <li><Link href="/contact">Contact</Link></li>
-                                <li><Link href="/products">Shop</Link></li>
-                                <li><Link href="/faq">FAQ</Link></li>
-                            </ul>
-                        </div>
-
-                        {/* Customer Service */}
-                        <div className="footer-col">
-                            <h4 className="footer-heading">Customer Service</h4>
-                            <ul className="footer-links">
-                                <li><Link href="/shipping">Shipping Policy</Link></li>
-                                <li><Link href="/returns">Returns & Exchange</Link></li>
-                                <li><Link href="/privacy">Privacy Policy</Link></li>
-                                <li><Link href="/terms">Terms of Service</Link></li>
-                            </ul>
-                        </div>
-
-                        {/* Contact */}
-                        <div className="footer-col">
-                            <h4 className="footer-heading">Contact Us</h4>
-                            <ul className="footer-contact">
-                                <li>
-                                    <span>Address:</span>
-                                    <p>123 Fashion Street<br />Dhaka, Bangladesh</p>
-                                </li>
-                                <li>
-                                    <span>Email:</span>
-                                    <p>info@bdblackstone.com</p>
-                                </li>
-                                <li>
-                                    <span>Phone:</span>
-                                    <p>+880 1234-567890</p>
-                                </li>
-                            </ul>
+                    {/* Bottom Bar */}
+                    <div className="footer-bottom">
+                        <div className="container">
+                            <p className="footer-copyright">
+                                © {new Date().getFullYear()} BD BlackStone. All rights reserved.
+                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            {/* Bottom Bar */}
-            <div className="footer-bottom">
-                <div className="container">
-                    <p className="footer-copyright">
-                        © {new Date().getFullYear()} BD BlackStone. All rights reserved.
-                    </p>
-                </div>
-            </div>
-        </footer>
-    );
+                </footer>
+                );
 };

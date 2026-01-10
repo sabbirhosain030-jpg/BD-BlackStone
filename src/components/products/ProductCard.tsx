@@ -25,26 +25,54 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     const discount = previousPrice ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
 
     return (
-        <Link href={`/products/${id}`} className="product-card hover-lift">
+        <div className="product-card">
             <div className="product-image-wrapper">
-                {isNew && <span className="product-badge badge-new">New</span>}
-                {discount > 0 && <span className="product-badge badge-sale">-{discount}%</span>}
-                <div className="product-image hover-zoom-img">
-                    <Image
-                        src={image}
-                        alt={name}
-                        fill
-                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                        className="image"
-                    />
+                <Link href={`/products/${id}`}>
+                    <div className="product-image">
+                        <Image
+                            src={image}
+                            alt={name}
+                            fill
+                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                            className="image"
+                        />
+                    </div>
+                </Link>
+
+                {/* Badges */}
+                <div className="product-badges">
+                    {isNew && <span className="product-badge badge-new">New</span>}
+                    {discount > 0 && <span className="product-badge badge-sale">-{discount}%</span>}
                 </div>
-                <div className="product-overlay">
-                    <button className="quick-view-btn">Quick View</button>
+
+                {/* Action Buttons Overlay */}
+                <div className="product-actions">
+                    <button className="action-btn" title="Add to Cart">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                    </button>
+                    <button className="action-btn" title="Add to Wishlist">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </button>
+                    <Link href={`/products/${id}`} className="action-btn" title="Quick View">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </Link>
                 </div>
             </div>
+
             <div className="product-info">
                 {category && <span className="product-category">{category}</span>}
-                <h3 className="product-name">{name}</h3>
+                <Link href={`/products/${id}`}>
+                    <h3 className="product-name">{name}</h3>
+                </Link>
                 <div className="product-price">
                     <span className="price-current">{price.toLocaleString()} BDT</span>
                     {previousPrice && (
@@ -52,6 +80,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     )}
                 </div>
             </div>
-        </Link>
+        </div>
     );
 };

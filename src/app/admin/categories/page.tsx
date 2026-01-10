@@ -45,7 +45,17 @@ export default async function AdminCategoriesPage() {
                                     <td>{category.description || '-'}</td>
                                     <td>
                                         <div style={{ display: 'flex', gap: '8px' }}>
-                                            <button style={{ color: 'var(--color-stone-text)', cursor: 'pointer' }}>Edit</button>
+                                            <Link href={`/admin/categories/${category.id}`}>
+                                                <button style={{
+                                                    background: 'transparent',
+                                                    border: '1px solid var(--color-gold)',
+                                                    color: 'var(--color-gold)',
+                                                    cursor: 'pointer',
+                                                    padding: '0.25rem 0.75rem',
+                                                    borderRadius: '4px'
+                                                }}>Manage</button>
+                                            </Link>
+                                            <button style={{ color: 'var(--color-stone-text)', cursor: 'pointer', background: 'none', border: 'none', padding: '0.25rem' }}>Edit</button>
                                             {/* We can implement client-side delete later or use a form for server action */}
                                             <button style={{ color: 'var(--color-error)', cursor: 'pointer' }}>Delete</button>
                                         </div>

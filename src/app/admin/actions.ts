@@ -220,6 +220,68 @@ export async function deleteSubCategory(subCategoryId: string) {
     }
 }
 
+// --- Marketing Management ---
+
+export async function getMarketingBanners() {
+    return await prisma.marketingBanner.findMany({
+        orderBy: {
+            createdAt: 'desc'
+        }
+    });
+}
+
+export async function createMarketingBanner(formData: FormData) {
+    const title = formData.get('title') as string;
+    const image = formData.get('image') as string; // URL from cloudinary
+    const type = formData.get('type') as string; // POSTER | MARQUEE
+    const text = formData.get('text') as string;
+    const isActive = formData.get('isActive') === 'on';
+
+    try {
+        await prisma.marketingBanner.create({
+            data: {
+                title,
+                image,
+                type,
+                text,
+                isActive
+            }
+        });
+        revalidatePath('/admin/marketing');
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to create banner:", error);
+        return { success: false, error: "Failed to create banner" };
+    }
+}
+
+export async function deleteMarketingBanner(id: string) {
+    try {
+        await prisma.marketingBanner.delete({
+            where: { id }
+        });
+        revalidatePath('/admin/marketing');
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to delete banner:", error);
+        return { success: false, error: "Failed to delete banner" };
+    }
+}
+
+export async function toggleMarketingBanner(id: string, isActive: boolean) {
+    try {
+        await prisma.marketingBanner.update({
+            where: { id },
+            data: { isActive }
+        });
+        revalidatePath('/admin/marketing');
+        return { success: true };
+    } catch (error) {
+        console.error("Failed to toggle banner:", error);
+        return { success: false, error: "Failed to toggle banner" };
+    }
+}
+
 // --- Order Management ---
 export async function getAdminOrders() {
     return await prisma.order.findMany({
