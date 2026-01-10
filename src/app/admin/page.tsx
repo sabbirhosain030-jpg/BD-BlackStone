@@ -62,7 +62,7 @@ export default async function AdminDashboard() {
                     </thead>
                     <tbody>
                         {recentOrders.length > 0 ? (
-                            recentOrders.map((order) => (
+                            recentOrders.map((order: any) => (
                                 <tr key={order.id}>
                                     <td style={{ fontFamily: 'monospace' }}>{order.orderNumber}</td>
                                     <td style={{ color: 'var(--color-white)' }}>{order.customerName}</td>
