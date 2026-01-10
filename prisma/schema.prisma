@@ -125,3 +125,23 @@ model MarketingBanner {
   updatedAt DateTime @updatedAt
 }
 
+model EmailSubscriber {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  couponCode   String?
+  isSubscribed Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model PopupSettings {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  isEnabled        Boolean  @default(true)
+  title            String   @default("GET 12% OFF YOUR FIRST ORDER")
+  subtitle         String   @default("And be the first to hear about our new product drops!")
+  discountPercent  Int      @default(12)
+  couponPrefix     String   @default("WELCOME")
+  buttonText       String   @default("GET 12% OFF")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

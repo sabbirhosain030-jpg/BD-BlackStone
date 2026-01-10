@@ -79,6 +79,9 @@ export const Footer = () => {
                     <p className="footer-copyright">
                         © {new Date().getFullYear()} BD BlackStone. All rights reserved.
                     </p>
+                    <p className="footer-developer">
+                        Developed by <strong>Sabbir Hosain</strong>
+                    </p>
                 </div>
             </div>
         </footer>

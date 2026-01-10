@@ -67,9 +67,13 @@ export default async function ProductsPage({
             <div className="container">
                 {/* Page Header */}
                 <div className="page-header">
-                    <h1 className="page-title">
+                    <h1 className="page-title collection-title">
                         {categoryFilter
-                            ? (categoryFilter.toLowerCase() === 'women' ? 'Gezzeel' : `${categories.find(c => c.slug === categoryFilter)?.name || categoryFilter} Collection`)
+                            ? categoryFilter.toLowerCase().includes('women')
+                                ? 'GEZZEEL'
+                                : categoryFilter.toLowerCase().includes('men') && !categoryFilter.toLowerCase().includes('women')
+                                    ? 'BLACK STONE'
+                                    : `${categories.find(c => c.slug === categoryFilter)?.name || categoryFilter} Collection`
                             : 'All Products'}
                     </h1>
                     <p className="page-description">

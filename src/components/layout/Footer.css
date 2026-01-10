@@ -128,6 +128,19 @@
     margin: 0;
 }
 
+.footer-developer {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-cream-dark);
+    margin: 0.5rem 0 0 0;
+}
+
+.footer-developer strong {
+    color: var(--color-gold);
+    font-weight: 600;
+}
+
+
 /* Responsive */
 @media (max-width: 992px) {
     .footer-grid {

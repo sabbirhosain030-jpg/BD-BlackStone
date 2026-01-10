@@ -3,7 +3,8 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MarketingModal } from "@/components/layout/MarketingModal";
-import { OfferMarquee } from "@/components/layout/OfferMarquee";
+import { MarketingBanner } from "@/components/layout/MarketingBanner";
+import { EmailPopup } from "@/components/layout/EmailPopup";
 
 export const metadata: Metadata = {
   title: "Black Stone - Premium Professional Clothing",
@@ -25,9 +26,10 @@ export default function RootLayout({
         <SessionProvider>
           <CartProvider>
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-              <OfferMarquee />
+              <MarketingBanner />
               <Header />
               <MarketingModal />
+              <EmailPopup />
               <main style={{ flex: 1 }}>
                 {children}
               </main>

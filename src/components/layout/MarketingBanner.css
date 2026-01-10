@@ -1,0 +1,55 @@
+.marketing-banner {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-bottom: 1px solid var(--color-gold);
+    overflow: hidden;
+    position: relative;
+    padding: 0.75rem 0;
+}
+
+.marketing-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    white-space: nowrap;
+    animation: scroll-banner 30s linear infinite;
+}
+
+.banner-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.banner-divider {
+    color: var(--color-gold);
+    font-size: 1.2rem;
+}
+
+@keyframes scroll-banner {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Pause animation on hover */
+.marketing-banner:hover .marketing-banner-content {
+    animation-play-state: paused;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .banner-text {
+        font-size: 0.75rem;
+    }
+
+    .marketing-banner-content {
+        gap: 1.5rem;
+        animation-duration: 20s;
+    }
+}

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import './Header.css';
 import { useCart } from '@/context/CartContext';
@@ -12,8 +12,12 @@ export const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
     const pathname = usePathname();
+    const searchParams = useSearchParams();
     const { cartCount } = useCart();
     const { data: session } = useSession();
+
+    const category = searchParams.get('category');
+    const tag = searchParams.get('tag');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -76,35 +80,35 @@ export const Header: React.FC = () => {
                         <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
                             <Link
                                 href="/"
-                                className={`nav-link ${isActive('/') ? 'nav-link-active' : ''}`}
+                                className={`nav-link ${pathname === '/' && !category && !tag ? 'nav-link-active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Home
                             </Link>
                             <Link
                                 href="/products"
-                                className={`nav-link ${isActive('/products') ? 'nav-link-active' : ''}`}
+                                className={`nav-link ${pathname === '/products' && !category && !tag ? 'nav-link-active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Shop
                             </Link>
                             <Link
-                                href="/products?category=men"
-                                className={`nav-link ${pathname?.includes('category=men') ? 'nav-link-active' : ''}`}
+                                href="/products?category=mens-fashion"
+                                className={`nav-link ${category === 'mens-fashion' || category === 'men' ? 'nav-link-active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Men
                             </Link>
                             <Link
-                                href="/products?category=women"
-                                className={`nav-link ${pathname?.includes('category=women') ? 'nav-link-active' : ''}`}
+                                href="/products?category=womens-fashion"
+                                className={`nav-link ${category === 'womens-fashion' || category === 'women' ? 'nav-link-active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Women
                             </Link>
                             <Link
                                 href="/products?tag=new"
-                                className={`nav-link ${pathname?.includes('tag=new') ? 'nav-link-active' : ''}`}
+                                className={`nav-link ${tag === 'new' ? 'nav-link-active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 New Arrivals

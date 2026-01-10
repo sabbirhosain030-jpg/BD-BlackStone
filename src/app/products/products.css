@@ -25,6 +25,44 @@
     margin: 0 auto;
 }
 
+/* Premium Collection Title Styling */
+.collection-title {
+    position: relative;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900 !important;
+    letter-spacing: 3px;
+    text-shadow: none;
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+.collection-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    border-radius: 2px;
+}
+
+@keyframes shimmer {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+
 .products-toolbar {
     display: flex;
     justify-content: space-between;
