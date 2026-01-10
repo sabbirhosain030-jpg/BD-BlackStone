@@ -55,9 +55,9 @@ model Product {
   isNew         Boolean      @default(false)
   isFeatured    Boolean      @default(false)
   categoryId    String       @db.ObjectId
-  category      Category     @relation(fields: [categoryId], references: [id])
+  category      Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   subCategoryId String?      @db.ObjectId
-  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
   orderItems    OrderItem[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
@@ -92,7 +92,7 @@ model OrderItem {
   orderId   String  @db.ObjectId
   order     Order   @relation(fields: [orderId], references: [id])
   productId String  @db.ObjectId
-  product   Product @relation(fields: [productId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   size      String?
   color     String?

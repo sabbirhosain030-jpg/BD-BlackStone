@@ -63,7 +63,18 @@ export async function getAdminProducts() {
             createdAt: 'desc',
         },
         include: {
-            category: true
+            category: true,
+            subCategory: true
+        }
+    });
+}
+
+export async function getProduct(id: string) {
+    return await prisma.product.findUnique({
+        where: { id },
+        include: {
+            category: true,
+            subCategory: true
         }
     });
 }
@@ -72,7 +83,17 @@ export async function getAdminCategories() {
     return await prisma.category.findMany({
         orderBy: {
             name: 'asc'
+        },
+        include: {
+            subCategories: true
         }
+    });
+}
+
+export async function getSubCategoriesForCategory(categoryId: string) {
+    return await prisma.subCategory.findMany({
+        where: { categoryId },
+        orderBy: { name: 'asc' }
     });
 }
 
@@ -83,13 +104,15 @@ export async function createProduct(formData: FormData) {
     const previousPrice = formData.get('previousPrice') ? parseFloat(formData.get('previousPrice') as string) : null;
     const stock = parseInt(formData.get('stock') as string);
     const categoryId = formData.get('categoryId') as string;
+    const subCategoryId = formData.get('subCategoryId') as string || null;
     const imageUrl = formData.get('imageUrl') as string;
     const isNew = formData.get('isNew') === 'on';
     const isFeatured = formData.get('isFeatured') === 'on';
+    const sizes = formData.get('sizes') as string || '["S", "M", "L", "XL"]';
+    const colors = formData.get('colors') as string || '["Black", "Navy", "Grey"]';
 
     // Basic validation
     if (!name || !description || isNaN(price) || isNaN(stock) || !categoryId) {
-        // Validation error, ideally we should return this state to the form
         throw new Error('Missing required fields');
     }
 
@@ -102,21 +125,68 @@ export async function createProduct(formData: FormData) {
                 previousPrice,
                 stock,
                 categoryId,
+                subCategoryId: subCategoryId === "" ? null : subCategoryId,
                 isNew,
                 isFeatured,
-                images: JSON.stringify([imageUrl]), // Storing as JSON array
-                // Default sizes/colors for now if not provided
-                sizes: JSON.stringify(['S', 'M', 'L', 'XL']),
-                colors: JSON.stringify(['Black', 'Navy', 'Grey']),
+                images: JSON.stringify([imageUrl]),
+                sizes: sizes,
+                colors: colors,
             }
         });
     } catch (error) {
         console.error("Failed to create product:", error);
-        // Check if called from form action
-        return;
+        throw error;
     }
 
     revalidatePath('/admin/products');
+    revalidatePath('/products');
+    redirect('/admin/products');
+}
+
+export async function updateProduct(productId: string, formData: FormData) {
+    const name = formData.get('name') as string;
+    const description = formData.get('description') as string;
+    const price = parseFloat(formData.get('price') as string);
+    const previousPrice = formData.get('previousPrice') ? parseFloat(formData.get('previousPrice') as string) : null;
+    const stock = parseInt(formData.get('stock') as string);
+    const categoryId = formData.get('categoryId') as string;
+    const subCategoryId = formData.get('subCategoryId') as string || null;
+    const imageUrl = formData.get('imageUrl') as string;
+    const isNew = formData.get('isNew') === 'on';
+    const isFeatured = formData.get('isFeatured') === 'on';
+    const sizes = formData.get('sizes') as string;
+    const colors = formData.get('colors') as string;
+
+    if (!name || !description || isNaN(price) || isNaN(stock) || !categoryId) {
+        throw new Error('Missing required fields');
+    }
+
+    try {
+        await prisma.product.update({
+            where: { id: productId },
+            data: {
+                name,
+                description,
+                price,
+                previousPrice,
+                stock,
+                categoryId,
+                subCategoryId: subCategoryId === "" ? null : subCategoryId,
+                isNew,
+                isFeatured,
+                images: imageUrl ? JSON.stringify([imageUrl]) : undefined,
+                sizes: sizes || undefined,
+                colors: colors || undefined,
+            }
+        });
+    } catch (error) {
+        console.error("Failed to update product:", error);
+        throw error;
+    }
+
+    revalidatePath('/admin/products');
+    revalidatePath(`/products/${productId}`);
+    revalidatePath('/products');
     redirect('/admin/products');
 }
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import { getAdminProducts, deleteProduct } from '../actions';
+import { getAdminProducts } from '../actions';
 import Link from 'next/link';
+import DeleteButton from './DeleteButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +13,6 @@ export default async function AdminProductsPage() {
         <div className="admin-products">
             <div className="admin-header">
                 <h1 className="admin-title">Products</h1>
-                {/* We'll implement the add page later, for now it's a link */}
                 <Link href="/admin/products/add">
                     <button style={{
                         backgroundColor: 'var(--color-gold)',
@@ -35,6 +35,7 @@ export default async function AdminProductsPage() {
                             <th style={{ width: '80px' }}>Image</th>
                             <th>Product Name</th>
                             <th>Category</th>
+                            <th>Subcategory</th>
                             <th>Price</th>
                             <th>Stock</th>
                             <th>Status</th>
@@ -44,15 +45,13 @@ export default async function AdminProductsPage() {
                     <tbody>
                         {products.length > 0 ? (
                             products.map((product) => {
-                                // Parse imagesJSON
-                                let imageUrl = '/placeholder.png'; // Default placeholder
+                                let imageUrl = '/placeholder.png';
                                 try {
                                     const images = JSON.parse(product.images);
                                     if (Array.isArray(images) && images.length > 0) {
                                         imageUrl = images[0];
                                     }
                                 } catch (e) {
-                                    // Fallback if parsing fails or not a valid JSON string
                                     console.error("Failed to parse product images", e);
                                 }
 
@@ -70,6 +69,7 @@ export default async function AdminProductsPage() {
                                         </td>
                                         <td style={{ color: 'var(--color-white)', fontWeight: 500 }}>{product.name}</td>
                                         <td>{product.category?.name || 'Uncategorized'}</td>
+                                        <td style={{ color: 'var(--color-stone-text)' }}>{product.subCategory?.name || '-'}</td>
                                         <td style={{ fontWeight: 600 }}>৳ {product.price.toLocaleString()}</td>
                                         <td>{product.stock}</td>
                                         <td>
@@ -80,9 +80,11 @@ export default async function AdminProductsPage() {
                                             )}
                                         </td>
                                         <td>
-                                            <div style={{ display: 'flex', gap: '8px' }}>
-                                                <button style={{ color: 'var(--color-stone-text)', cursor: 'pointer' }}>Edit</button>
-                                                <button style={{ color: 'var(--color-error)', cursor: 'pointer' }}>Delete</button>
+                                            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                                <Link href={`/admin/products/${product.id}`} style={{ color: 'var(--color-stone-text)', textDecoration: 'none' }}>
+                                                    Edit
+                                                </Link>
+                                                <DeleteButton productId={product.id} />
                                             </div>
                                         </td>
                                     </tr>
@@ -90,7 +92,7 @@ export default async function AdminProductsPage() {
                             })
                         ) : (
                             <tr>
-                                <td colSpan={7} style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-stone-text)' }}>
+                                <td colSpan={8} style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-stone-text)' }}>
                                     No products found in database.
                                 </td>
                             </tr>
