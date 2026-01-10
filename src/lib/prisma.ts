@@ -2,17 +2,23 @@ import { PrismaClient } from '@prisma/client';
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
+// Validate DATABASE_URL is present
+if (!process.env.DATABASE_URL) {
+    console.error('❌ DATABASE_URL environment variable is not set!');
+    console.error('Please add DATABASE_URL to your .env file or Vercel environment variables.');
+    throw new Error('DATABASE_URL is required but not found in environment variables');
+}
+
 export const prisma =
     globalForPrisma.prisma ||
     new PrismaClient({
-        log: ['query', 'error', 'warn'],
+        log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
     });
 
-if (process.env.DATABASE_URL) {
-    console.log('DEBUG: DATABASE_URL loaded:', process.env.DATABASE_URL.substring(0, 15) + '...');
-    console.log('DEBUG: DATABASE_URL length:', process.env.DATABASE_URL.length);
-} else {
-    console.log('DEBUG: DATABASE_URL is undefined');
+// Log database connection info (only in development or first connection)
+if (process.env.NODE_ENV === 'development') {
+    console.log('✅ Database connection configured');
+    console.log('   URL:', process.env.DATABASE_URL.substring(0, 20) + '...');
 }
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;

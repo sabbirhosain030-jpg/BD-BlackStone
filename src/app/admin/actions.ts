@@ -74,43 +74,63 @@ export async function getRecentOrders() {
 
 // --- Product Management ---
 export async function getAdminProducts() {
-    return await prisma.product.findMany({
-        orderBy: {
-            createdAt: 'desc',
-        },
-        include: {
-            category: true,
-            subCategory: true
-        }
-    });
+    try {
+        return await prisma.product.findMany({
+            orderBy: {
+                createdAt: 'desc',
+            },
+            include: {
+                category: true,
+                subCategory: true
+            }
+        });
+    } catch (error) {
+        console.error('Failed to fetch admin products:', error);
+        return [];
+    }
 }
 
 export async function getProduct(id: string) {
-    return await prisma.product.findUnique({
-        where: { id },
-        include: {
-            category: true,
-            subCategory: true
-        }
-    });
+    try {
+        return await prisma.product.findUnique({
+            where: { id },
+            include: {
+                category: true,
+                subCategory: true
+            }
+        });
+    } catch (error) {
+        console.error('Failed to fetch product:', error);
+        return null;
+    }
 }
 
 export async function getAdminCategories() {
-    return await prisma.category.findMany({
-        orderBy: {
-            name: 'asc'
-        },
-        include: {
-            subCategories: true
-        }
-    });
+    try {
+        return await prisma.category.findMany({
+            orderBy: {
+                name: 'asc'
+            },
+            include: {
+                subCategories: true
+            }
+        });
+    } catch (error) {
+        console.error('Failed to fetch admin categories:', error);
+        return [];
+    }
 }
 
 export async function getSubCategoriesForCategory(categoryId: string) {
-    return await prisma.subCategory.findMany({
-        where: { categoryId },
-        orderBy: { name: 'asc' }
-    });
+    try {
+        return await prisma.subCategory.findMany({
+            where: { categoryId },
+            orderBy: { name: 'asc' }
+        });
+    } catch (error) {
+        console.error('Failed to fetch subcategories:', error);
+        return [];
+    }
 }
 
 export async function createProduct(formData: FormData) {
@@ -309,11 +329,16 @@ export async function deleteSubCategory(subCategoryId: string) {
 // --- Marketing Management ---
 
 export async function getMarketingBanners() {
-    return await prisma.marketingBanner.findMany({
-        orderBy: {
-            createdAt: 'desc'
-        }
-    });
+    try {
+        return await prisma.marketingBanner.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+    } catch (error) {
+        console.error('Failed to fetch marketing banners:', error);
+        return [];
+    }
 }
 
 export async function createMarketingBanner(formData: FormData) {
@@ -370,27 +395,37 @@ export async function toggleMarketingBanner(id: string, isActive: boolean) {
 
 // --- Order Management ---
 export async function getAdminOrders() {
-    return await prisma.order.findMany({
-        orderBy: {
-            createdAt: 'desc',
-        },
-        include: {
-            items: true
-        }
-    });
+    try {
+        return await prisma.order.findMany({
+            orderBy: {
+                createdAt: 'desc',
+            },
+            include: {
+                items: true
+            }
+        });
+    } catch (error) {
+        console.error('Failed to fetch admin orders:', error);
+        return [];
+    }
 }
 
 export async function getOrderDetails(orderId: string) {
-    return await prisma.order.findUnique({
-        where: { id: orderId },
-        include: {
-            items: {
-                include: {
-                    product: true
+    try {
+        return await prisma.order.findUnique({
+            where: { id: orderId },
+            include: {
+                items: {
+                    include: {
+                        product: true
+                    }
                 }
             }
-        }
-    });
+        });
+    } catch (error) {
+        console.error('Failed to fetch order details:', error);
+        return null;
+    }
 }
 
 export async function updateOrderStatus(orderId: string, status: string) {
