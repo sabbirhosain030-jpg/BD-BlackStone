@@ -1,11 +1,11 @@
 # Deployment Guide for BD BlackStone
 
-Your application is built with Next.js, Prisma (MongoDB), and NextAuth. The recommended deployment platform is **Vercel**.
+Your application is built with Next.js, Prisma (PostgreSQL), and NextAuth. The recommended deployment platform is **Vercel**.
 
 ## 1. Prerequisites
 - A GitHub repository with your latest code
 - A Vercel account (free tier works)
-- A MongoDB Atlas cluster (free tier available)
+- A Supabase project (for PostgreSQL database)
 - Cloudinary account for image uploads
 
 ## 2. Environment Variables
@@ -13,27 +13,36 @@ Your application is built with Next.js, Prisma (MongoDB), and NextAuth. The reco
 You must set these in your Vercel Project Settings > Environment Variables:
 
 | Variable | Description | Example | Required |
-|----------|-------------|---------|----------|
-| `DATABASE_URL` | MongoDB Atlas connection string | `mongodb+srv://user:pass@cluster.mongodb.net/dbname` | ✅ Yes |
+|----------|----------------------|----------|
+| `DATABASE_URL` | Supabase Connection String (Transaction Pooler) | `postgresql://postgres.[ref]:[pass]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true` | ✅ Yes |
 | `NEXTAUTH_URL` | The URL of your deployed site | `https://your-project.vercel.app` | ✅ Yes |
 | `NEXTAUTH_SECRET` | Secret for encryption | Generate: `openssl rand -base64 32` | ✅ Yes |
 | `CLOUDINARY_CLOUD_NAME` | Your Cloudinary cloud name | `your-cloud-name` | ✅ Yes |
 | `CLOUDINARY_API_KEY` | Cloudinary API key | `123456789012345` | ✅ Yes |
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret | `your-api-secret` | ✅ Yes |
 
-### MongoDB Atlas Setup
+## 3. Database Setup (Supabase PostgreSQL)
 
-1. Go to [MongoDB Atlas](https://cloud.mongodb.com/)
-2. Create a free cluster (if you haven't already)
-3. Go to **Database Access** > Add a database user with read/write permissions
-4. Go to **Network Access** > Add IP Address:
-   - **Important:** Add `0.0.0.0/0` to allow Vercel's dynamic IPs
-   - Or click "Allow Access from Anywhere"
-5. Go to **Database** > **Connect** > **Connect your application**
-6. Copy the connection string and replace `<password>` with your actual password
-7. Add the connection string as `DATABASE_URL` in Vercel
+1.  **Create a Supabase Project**:
+    *   Go to [Supabase](https://supabase.com/) and create a new project.
+    *   Save your **Database Password**.
 
-## 3. Deploying to Vercel
+2.  **Get Connection Strings**:
+    *   Go to **Project Settings** -> **Database**.
+    *   Find **Connection String** -> **URI**.
+    *   **For Migrations (Local/CI)**: Use the Session Pooler or Direct connection (Port 5432).
+        *   Format: `postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres?pgbouncer=true`
+    *   **For Application (Production)**: Use the Transaction Pooler (Port 6543).
+        *   Format: `postgresql://postgres.[ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true`
+
+3.  **Configure Environment Variables**:
+    *   Update `DATABASE_URL` in your `.env` file and Vercel Project Settings.
+
+4.  **Database Migration & Seeding**:
+    *   Run `npx prisma db push` to create the schema.
+    *   Run `npx tsx scripts/seed.ts` to populate initial data.
+
+## 4. Deploying to Vercel
 
 1. **Push** your code to GitHub
 2. Go to **Vercel Dashboard** > **Add New...** > **Project**
@@ -46,7 +55,7 @@ You must set these in your Vercel Project Settings > Environment Variables:
 5. **Environment Variables:** Add ALL the variables listed above
 6. Click **Deploy**
 
-## 4. Post-Deployment
+## 5. Post-Deployment
 
 After successful deployment:
 
@@ -56,20 +65,14 @@ After successful deployment:
    
 2. **Verify Environment Variables:**
    - Go to Settings > Environment Variables
-   - Ensure all 6 required variables are set
+   - Ensure all required variables are set
    
 3. **Test Your Site:**
    - Visit your deployed URL
-   - The homepage should load (even without data)
+   - The homepage should load
    - Try accessing `/admin/login`
 
-4. **Seed Database (Optional):**
-   ```bash
-   # Run locally pointing to production DB
-   npm run seed
-   ```
-
-## 5. Troubleshooting
+## 6. Troubleshooting
 
 ### Error: "We apologize for the inconvenience"
 
@@ -80,23 +83,22 @@ After successful deployment:
 
 **Common Causes:**
 - ❌ Missing `DATABASE_URL` environment variable
-- ❌ MongoDB Atlas not allowing Vercel IPs (`0.0.0.0/0`)
-- ❌ Incorrect MongoDB connection string format
+- ❌ Using Direct connection (port 5432) in serverless environment instead of Pooler (port 6543)
 - ❌ Missing `NEXTAUTH_SECRET` or `NEXTAUTH_URL`
 
 **Solutions:**
 1. **Verify all environment variables are set** in Vercel Settings
-2. **Check MongoDB Atlas Network Access** allows `0.0.0.0/0`
-3. **Redeploy** after adding/fixing environment variables:
-   - Vercel > Deployments > Three dots menu > Redeploy
+2. **Use Transaction Pooler** port 6543 for `DATABASE_URL`
+3. **Redeploy** after adding/fixing environment variables
 
 ### Database Connection Issues
 
 If you see database errors in logs:
 1. Test connection string locally in `.env`
-2. Ensure password doesn't have special characters (or URL encode them)
-3. Verify database name is included in connection string
-4. Check MongoDB Atlas cluster is running (not paused)
+2. Ensure `pgbouncer=true` is appended to the connection string
+3. Ensure password doesn't have special characters unescaped (or URL encode them)
+4. Verify database name is included in connection string
+5. Check Supabase project is running (not paused)
 
 ### Images Not Loading
 
@@ -105,11 +107,11 @@ If you see database errors in logs:
 
 ### 504 Gateway Timeout
 
-- MongoDB Atlas might be in a different region (causing slow connections)
-- Consider upgrading MongoDB Atlas to a paid tier for better performance
+- Supabase project might be in a different region (causing slow connections)
+- Consider upgrading Supabase plan for better performance
 - Check if database queries are optimized
 
-## 6. Continuous Deployment
+## 7. Continuous Deployment
 
 Once set up, Vercel will automatically:
 - Deploy every push to `main` branch

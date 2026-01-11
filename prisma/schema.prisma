@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   email     String   @unique
   password  String
   name      String
@@ -21,7 +21,7 @@ model User {
 }
 
 model Category {
-  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  id            String        @id @default(uuid())
   name          String        @unique
   slug          String        @unique
   description   String?
@@ -32,10 +32,10 @@ model Category {
 }
 
 model SubCategory {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(uuid())
   name       String
   slug       String   @unique
-  categoryId String   @db.ObjectId
+  categoryId String
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   products   Product[]
   createdAt  DateTime @default(now())
@@ -43,7 +43,7 @@ model SubCategory {
 }
 
 model Product {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(uuid())
   name          String
   description   String
   price         Float
@@ -54,9 +54,9 @@ model Product {
   stock         Int          @default(0)
   isNew         Boolean      @default(false)
   isFeatured    Boolean      @default(false)
-  categoryId    String       @db.ObjectId
+  categoryId    String
   category      Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  subCategoryId String?      @db.ObjectId
+  subCategoryId String?
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
   orderItems    OrderItem[]
   createdAt     DateTime     @default(now())
@@ -64,7 +64,7 @@ model Product {
 }
 
 model Order {
-  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  id              String      @id @default(uuid())
   orderNumber     String      @unique
   customerName    String
   customerEmail   String
@@ -81,17 +81,17 @@ model Order {
   paymentMethod   String      @default("COD")
   notes           String?
   items           OrderItem[]
-  couponId        String?     @db.ObjectId
+  couponId        String?
   coupon          Coupon?     @relation(fields: [couponId], references: [id])
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 }
 
 model OrderItem {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  orderId   String  @db.ObjectId
+  id        String  @id @default(uuid())
+  orderId   String
   order     Order   @relation(fields: [orderId], references: [id])
-  productId String  @db.ObjectId
+  productId String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   quantity  Int
   size      String?
@@ -100,7 +100,7 @@ model OrderItem {
 }
 
 model Coupon {
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  id           String    @id @default(uuid())
   code         String    @unique
   discountType String
   amount       Float
@@ -114,7 +114,7 @@ model Coupon {
 }
 
 model MarketingBanner {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(uuid())
   title     String?
   image     String?
   text      String?
@@ -126,7 +126,7 @@ model MarketingBanner {
 }
 
 model EmailSubscriber {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(uuid())
   email        String   @unique
   couponCode   String?
   isSubscribed Boolean  @default(true)
@@ -135,7 +135,7 @@ model EmailSubscriber {
 }
 
 model PopupSettings {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  id               String   @id @default(uuid())
   isEnabled        Boolean  @default(true)
   title            String   @default("GET 12% OFF YOUR FIRST ORDER")
   subtitle         String   @default("And be the first to hear about our new product drops!")
