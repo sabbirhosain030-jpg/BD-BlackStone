@@ -134,6 +134,16 @@
     transform: scale(1.1);
 }
 
+.action-btn.btn-success {
+    background-color: #28a745;
+    color: white;
+    transform: scale(1.1);
+}
+
+.action-btn.btn-success:hover {
+    background-color: #218838;
+}
+
 .product-info {
     padding: 1rem;
     text-align: center;
@@ -211,5 +221,24 @@
     .product-card-list .product-info {
         text-align: center;
         align-items: center;
+    }
+
+    /* Mobile: Make actions always visible or easier to access */
+    .product-actions {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, -20%) scale(0.9);
+        top: auto;
+        bottom: 10px;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 5px;
+        border-radius: 25px;
+        backdrop-filter: blur(4px);
+    }
+
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 }

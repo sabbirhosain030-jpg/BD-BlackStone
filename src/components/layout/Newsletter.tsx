@@ -38,7 +38,7 @@ export const Newsletter = () => {
                     Thank you for subscribing!
                 </div>
             ) : (
-                <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.5rem' }}>
+                <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <input
                         type="email"
                         placeholder="Your email address"

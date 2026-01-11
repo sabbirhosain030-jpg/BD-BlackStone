@@ -14,6 +14,20 @@ interface ProductCardProps {
     variant?: 'grid' | 'list';
 }
 
+import { useCart } from '@/context/CartContext';
+import { useState } from 'react';
+
+interface ProductCardProps {
+    id: string;
+    name: string;
+    price: number;
+    previousPrice?: number;
+    image: string;
+    category?: string;
+    isNew?: boolean;
+    variant?: 'grid' | 'list';
+}
+
 export const ProductCard: React.FC<ProductCardProps> = ({
     id,
     name,
@@ -24,7 +38,26 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     isNew,
     variant = 'grid'
 }) => {
+    const { addToCart } = useCart();
+    const [isAdded, setIsAdded] = useState(false);
     const discount = previousPrice ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
+
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.preventDefault(); // Prevent navigation to product page
+        e.stopPropagation();
+
+        addToCart({
+            id,
+            name,
+            price,
+            image,
+            size: 'Standard', // Default size for quick add
+            quantity: 1
+        });
+
+        setIsAdded(true);
+        setTimeout(() => setIsAdded(false), 2000);
+    };
 
     return (
         <div className={`product-card ${variant === 'list' ? 'product-card-list' : ''}`}>
@@ -49,12 +82,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
                 {/* Action Buttons Overlay */}
                 <div className="product-actions">
-                    <button className="action-btn" title="Add to Cart">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <path d="M16 10a4 4 0 0 1-8 0"></path>
-                        </svg>
+                    <button
+                        className={`action-btn ${isAdded ? 'btn-success' : ''}`}
+                        title="Add to Cart"
+                        onClick={handleAddToCart}
+                    >
+                        {isAdded ? (
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        ) : (
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
+                            </svg>
+                        )}
                     </button>
                     <button className="action-btn" title="Add to Wishlist">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
