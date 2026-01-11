@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 import { CartProvider } from "@/context/CartContext";
 import SessionProvider from '@/components/providers/SessionProvider';
 import { Suspense } from 'react';
+import { ConditionalWrapper } from "@/components/layout/ConditionalWrapper";
 
 export default function RootLayout({
   children,
@@ -26,17 +27,23 @@ export default function RootLayout({
         <SessionProvider>
           <CartProvider>
             <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-              <MarketingBanner />
-              <Suspense fallback={<div style={{ height: '80px' }} />}>
-                <Header />
-              </Suspense>
-              <Suspense fallback={null}>
-                <EmailPopup />
-              </Suspense>
+              <ConditionalWrapper>
+                <MarketingBanner />
+                <Suspense fallback={<div style={{ height: '80px' }} />}>
+                  <Header />
+                </Suspense>
+                <Suspense fallback={null}>
+                  <EmailPopup />
+                </Suspense>
+              </ConditionalWrapper>
+
               <main style={{ flex: 1 }}>
                 {children}
               </main>
-              <Footer />
+
+              <ConditionalWrapper>
+                <Footer />
+              </ConditionalWrapper>
             </div>
           </CartProvider>
         </SessionProvider>
