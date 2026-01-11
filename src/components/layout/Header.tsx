@@ -72,7 +72,7 @@ export const Header: React.FC = () => {
                         <Link href="/" className="logo">
                             <img
                                 src="/images/logo.png"
-                                alt="Black Stone"
+                                alt="BD BlackStone Logo"
                                 style={{
                                     height: '50px',
                                     width: 'auto',

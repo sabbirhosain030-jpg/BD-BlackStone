@@ -89,7 +89,7 @@ export default async function HomePage() {
               dbCategories.map((category) => (
                 <Link
                   key={category.slug}
-                  href={`/ products ? category = ${category.slug} `}
+                  href={`/products?category=${category.slug}`}
                   className="category-circle-item hover-lift"
                 >
                   <div className="category-circle-image-wrapper">

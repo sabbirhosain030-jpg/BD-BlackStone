@@ -217,11 +217,29 @@
     margin-left: 1rem;
 }
 
+.product-header {
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1.5rem;
+}
+
 .product-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin: 1rem 0;
+}
+
+.product-actions a {
+    width: 100%;
+}
+
+.product-actions .btn {
+    height: 56px;
+    font-size: 1rem;
+    letter-spacing: 1px;
 }
 
 .product-features {
@@ -311,6 +329,11 @@
 
     .current-price {
         font-size: 1.5rem;
+    }
+
+    .product-actions {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .image-thumbnails {
