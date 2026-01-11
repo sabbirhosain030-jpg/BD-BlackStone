@@ -67,6 +67,13 @@ export default function AdminLayout({
                         Popup Settings
                     </Link>
 
+                    <Link href="/admin/footer-links" className="admin-nav-item">
+                        <svg className="admin-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Footer Links
+                    </Link>
+
                     <div style={{ flex: 1 }}></div>
 
                     <Link href="/" className="admin-nav-item">

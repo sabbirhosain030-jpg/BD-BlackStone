@@ -2,8 +2,25 @@ import React from 'react';
 import Link from 'next/link';
 import { Newsletter } from './Newsletter';
 import './Footer.css';
+import { getFooterLinks } from '@/app/admin/footer-links/actions';
 
-export const Footer = () => {
+export const Footer = async () => {
+    let footerLinks: any[] = [];
+    try {
+        const res = await getFooterLinks();
+        if (res.success && res.links) {
+            footerLinks = res.links;
+        }
+    } catch (e) {
+        console.error("Failed to load footer links", e);
+    }
+
+    const quickLinks = footerLinks.filter(l => l.section === 'Quick Links' && l.isActive);
+    const customerServiceLinks = footerLinks.filter(l => l.section === 'Customer Service' && l.isActive);
+    const companyLinks = footerLinks.filter(l => l.section === 'Company' && l.isActive);
+    // Combine custom CS links with static ones if needed, or replace them entirely. 
+    // For now, let's append dynamic generic links to their sections.
+
     return (
         <footer className="footer">
             <div className="footer-main">
@@ -11,7 +28,18 @@ export const Footer = () => {
                     <div className="footer-grid">
                         {/* About */}
                         <div className="footer-col">
-                            <h3 className="footer-title">BD BlackStone</h3>
+                            <Link href="/">
+                                <img
+                                    src="/images/logo.png"
+                                    alt="Black Stone"
+                                    style={{
+                                        height: '40px',
+                                        width: 'auto',
+                                        objectFit: 'contain',
+                                        marginBottom: '1rem'
+                                    }}
+                                />
+                            </Link>
                             <p className="footer-description">
                                 Your destination for premium, professional clothing.
                                 Timeless elegance meets modern sophistication.
@@ -40,6 +68,23 @@ export const Footer = () => {
                             <Newsletter />
                         </div>
 
+                        {/* Quick Links */}
+                        <div className="footer-col">
+                            <h4 className="footer-heading">Quick Links</h4>
+                            <ul className="footer-links">
+                                {quickLinks.map(link => (
+                                    <li key={link.id}><Link href={link.url}>{link.label}</Link></li>
+                                ))}
+                                {quickLinks.length === 0 && (
+                                    <>
+                                        <li><Link href="/products">All Products</Link></li>
+                                        <li><Link href="/products?category=men">Men</Link></li>
+                                        <li><Link href="/products?category=women">Women</Link></li>
+                                    </>
+                                )}
+                            </ul>
+                        </div>
+
                         {/* Customer Service */}
                         <div className="footer-col">
                             <h4 className="footer-heading">Customer Service</h4>
@@ -48,25 +93,9 @@ export const Footer = () => {
                                 <li><Link href="/returns">Returns & Exchange</Link></li>
                                 <li><Link href="/privacy">Privacy Policy</Link></li>
                                 <li><Link href="/terms">Terms of Service</Link></li>
-                            </ul>
-                        </div>
-
-                        {/* Contact */}
-                        <div className="footer-col">
-                            <h4 className="footer-heading">Contact Us</h4>
-                            <ul className="footer-contact">
-                                <li>
-                                    <span>Address:</span>
-                                    <p>123 Fashion Street<br />Dhaka, Bangladesh</p>
-                                </li>
-                                <li>
-                                    <span>Email:</span>
-                                    <p>info@bdblackstone.com</p>
-                                </li>
-                                <li>
-                                    <span>Phone:</span>
-                                    <p>+880 1234-567890</p>
-                                </li>
+                                {customerServiceLinks.map(link => (
+                                    <li key={link.id}><Link href={link.url}>{link.label}</Link></li>
+                                ))}
                             </ul>
                         </div>
                     </div>

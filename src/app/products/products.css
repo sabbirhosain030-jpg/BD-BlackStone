@@ -105,6 +105,16 @@
     margin-bottom: 3rem;
 }
 
+.products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .load-more {
     text-align: center;
     padding-top: 2rem;

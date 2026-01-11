@@ -68,12 +68,17 @@ export const Header: React.FC = () => {
                         </button>
 
                         {/* Logo */}
+                        {/* Logo */}
                         <Link href="/" className="logo">
-                            <span className="logo-text" style={{
-                                fontWeight: '900',
-                                textShadow: '2px 2px 0px #d4af37, 4px 4px 0px rgba(0,0,0,0.1)',
-                                letterSpacing: '1px'
-                            }}>BLACK STONE</span>
+                            <img
+                                src="/images/logo.png"
+                                alt="Black Stone"
+                                style={{
+                                    height: '50px',
+                                    width: 'auto',
+                                    objectFit: 'contain'
+                                }}
+                            />
                         </Link>
 
                         {/* Navigation */}

@@ -62,7 +62,39 @@ export default function FilterControls({
                 </select>
             </div>
 
-            <div className="sort">
+            <div className="sort" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                {/* View Toggles */}
+                <div className="view-toggles" style={{ display: 'flex', gap: '0.5rem', borderRight: '1px solid #eee', paddingRight: '1rem' }}>
+                    <button
+                        className={`view-btn ${(!searchParams.get('view') || searchParams.get('view') === 'grid') ? 'active' : ''}`}
+                        onClick={() => handleFilterChange('view', 'grid')}
+                        title="Grid View"
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: (!searchParams.get('view') || searchParams.get('view') === 'grid') ? '#d4af37' : '#999' }}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                    </button>
+                    <button
+                        className={`view-btn ${searchParams.get('view') === 'list' ? 'active' : ''}`}
+                        onClick={() => handleFilterChange('view', 'list')}
+                        title="List View"
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: searchParams.get('view') === 'list' ? '#d4af37' : '#999' }}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
                 {/* Sort Filter */}
                 <select
                     className="filter-select"

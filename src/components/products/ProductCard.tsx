@@ -11,6 +11,7 @@ interface ProductCardProps {
     image: string;
     category?: string;
     isNew?: boolean;
+    variant?: 'grid' | 'list';
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -20,12 +21,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     previousPrice,
     image,
     category,
-    isNew
+    isNew,
+    variant = 'grid'
 }) => {
     const discount = previousPrice ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
 
     return (
-        <div className="product-card">
+        <div className={`product-card ${variant === 'list' ? 'product-card-list' : ''}`}>
             <div className="product-image-wrapper">
                 <Link href={`/products/${id}`}>
                     <div className="product-image">

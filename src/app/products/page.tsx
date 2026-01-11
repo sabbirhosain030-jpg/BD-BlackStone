@@ -8,12 +8,13 @@ import FilterControls from './filter-controls';
 export default async function ProductsPage({
     searchParams,
 }: {
-    searchParams: Promise<{ category?: string; sort?: string; price?: string; tag?: string }>;
+    searchParams: Promise<{ category?: string; sort?: string; price?: string; tag?: string; view?: 'grid' | 'list' }>;
 }) {
     const resolvedParams = await searchParams; // Await the promise
     const categoryFilter = resolvedParams.category;
     const sortFilter = resolvedParams.sort || 'newest';
     const tagFilter = resolvedParams.tag; // 'new'
+    const viewMode = resolvedParams.view || 'grid';
 
     // Parse price range from string "0-5000"
     let minPrice: number | undefined;
@@ -90,10 +91,10 @@ export default async function ProductsPage({
                 />
 
                 {/* Products Grid */}
-                <div className="products-grid">
+                <div className={viewMode === 'list' ? "products-list" : "products-grid"}>
                     {displayedProducts.length > 0 ? (
                         displayedProducts.map((product) => (
-                            <ProductCard key={product.id} {...product} />
+                            <ProductCard key={product.id} {...product} variant={viewMode} />
                         ))
                     ) : (
                         <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '4rem' }}>
