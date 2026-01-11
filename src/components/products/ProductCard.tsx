@@ -1,21 +1,10 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import './ProductCard.css';
-
-interface ProductCardProps {
-    id: string;
-    name: string;
-    price: number;
-    previousPrice?: number;
-    image: string;
-    category?: string;
-    isNew?: boolean;
-    variant?: 'grid' | 'list';
-}
-
 import { useCart } from '@/context/CartContext';
-import { useState } from 'react';
 
 interface ProductCardProps {
     id: string;
