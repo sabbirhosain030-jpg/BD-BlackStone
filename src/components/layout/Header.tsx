@@ -68,15 +68,15 @@ export const Header: React.FC = () => {
                         </button>
 
                         {/* Logo */}
-                        {/* Logo */}
                         <Link href="/" className="logo">
                             <img
-                                src="/images/logo.png"
-                                alt="BD BlackStone Logo"
+                                src="/logo.jpg"
+                                alt="BLACK STONE - Premium Professional Clothing"
                                 style={{
-                                    height: '50px',
+                                    height: '60px',
                                     width: 'auto',
-                                    objectFit: 'contain'
+                                    objectFit: 'contain',
+                                    maxWidth: '250px'
                                 }}
                             />
                         </Link>

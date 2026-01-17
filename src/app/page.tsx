@@ -8,7 +8,8 @@ import { getFeaturedProducts, getCategories } from '@/app/actions';
 import { getMarketingBanners } from '@/app/admin/actions';
 import OfferPoster from "@/components/layout/OfferPoster";
 
-export const dynamic = 'force-dynamic';
+// ISR: Regenerate page every 60 seconds for maximum speed
+export const revalidate = 60;
 
 export default async function HomePage() {
   const featuredDbProducts = await getFeaturedProducts();

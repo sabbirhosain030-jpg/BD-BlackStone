@@ -4,6 +4,10 @@ import './products.css';
 import { getAllProducts, getCategories } from '../actions';
 import FilterControls from './filter-controls';
 
+// ISR: Regenerate every 60 seconds, allow dynamic filter params
+export const revalidate = 60;
+export const dynamicParams = true;
+
 // This is a Server Component that receives searchParams
 export default async function ProductsPage({
     searchParams,

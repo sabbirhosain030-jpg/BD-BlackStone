@@ -1,5 +1,6 @@
 import React from 'react';
 import { getOrderDetails, updateOrderStatus } from '../../actions';
+import { DownloadReceiptButton } from './DownloadButton';
 
 export default async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -19,9 +20,12 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                     <div className={`status-badge status-${order.status.toLowerCase()}`} style={{ fontSize: '1rem', padding: '0.5rem 1rem' }}>
                         {order.status}
+                    </div>
+                    <div style={{ minWidth: '200px' }}>
+                        <DownloadReceiptButton order={order} />
                     </div>
                 </div>
             </div>

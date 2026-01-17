@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import './ProductCard.css';
 import { useCart } from '@/context/CartContext';
 
@@ -15,6 +16,7 @@ interface ProductCardProps {
     category?: string;
     isNew?: boolean;
     variant?: 'grid' | 'list';
+    index?: number; // For stagger animation
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -25,7 +27,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     image,
     category,
     isNew,
-    variant = 'grid'
+    variant = 'grid',
+    index = 0
 }) => {
     const { addToCart } = useCart();
     const [isAdded, setIsAdded] = useState(false);
@@ -49,7 +52,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     };
 
     return (
-        <div className={`product-card ${variant === 'list' ? 'product-card-list' : ''}`}>
+        <motion.div
+            className={`product-card ${variant === 'list' ? 'product-card-list' : ''}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+                duration: 0.3,
+                delay: index * 0.05, // Stagger effect
+                ease: [0.4, 0, 0.2, 1] // Custom easing
+            }}
+            whileHover={{
+                y: -8,
+                transition: { duration: 0.2 }
+            }}
+            whileTap={{ scale: 0.98 }} // Touch feedback on mobile
+        >
             <div className="product-image-wrapper">
                 <Link href={`/products/${id}`}>
                     <div className="product-image">
@@ -114,6 +131,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     )}
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };

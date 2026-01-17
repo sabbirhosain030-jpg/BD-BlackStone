@@ -87,7 +87,7 @@ export async function createOrder(data: CreateOrderInput) {
     const orderNumber = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
     try {
-        let orderId = '';
+        let createdOrder: any = null;
 
         await prisma.$transaction(async (tx) => {
             const order = await tx.order.create({
@@ -117,10 +117,17 @@ export async function createOrder(data: CreateOrderInput) {
                             color: item.color
                         }))
                     }
+                },
+                include: {
+                    items: {
+                        include: {
+                            product: true
+                        }
+                    }
                 }
             });
 
-            orderId = order.id;
+            createdOrder = order;
 
             if (data.couponId) {
                 await tx.coupon.update({
@@ -131,7 +138,13 @@ export async function createOrder(data: CreateOrderInput) {
         });
 
         revalidatePath('/admin/orders');
-        return { success: true, orderId };
+
+        // Return order data for WhatsApp link generation (done on client side)
+        return {
+            success: true,
+            orderId: createdOrder.id,
+            orderNumber: createdOrder.orderNumber
+        };
 
     } catch (error) {
         console.error('Failed to create order:', error);

@@ -142,6 +142,7 @@ export async function createProduct(formData: FormData) {
     const categoryId = formData.get('categoryId') as string;
     const subCategoryId = formData.get('subCategoryId') as string || null;
     const imageUrl = formData.get('imageUrl') as string;
+    const imagePublicId = formData.get('imagePublicId') as string || null;
     const isNew = formData.get('isNew') === 'on';
     const isFeatured = formData.get('isFeatured') === 'on';
     const sizes = formData.get('sizes') as string || '["S", "M", "L", "XL"]';
@@ -165,6 +166,7 @@ export async function createProduct(formData: FormData) {
                 isNew,
                 isFeatured,
                 images: JSON.stringify([imageUrl]),
+                imagePublicId,
                 sizes: sizes,
                 colors: colors,
             }
@@ -176,6 +178,7 @@ export async function createProduct(formData: FormData) {
 
     revalidatePath('/admin/products');
     revalidatePath('/products');
+    revalidatePath('/');
     redirect('/admin/products');
 }
 
@@ -188,6 +191,7 @@ export async function updateProduct(productId: string, formData: FormData) {
     const categoryId = formData.get('categoryId') as string;
     const subCategoryId = formData.get('subCategoryId') as string || null;
     const imageUrl = formData.get('imageUrl') as string;
+    const imagePublicId = formData.get('imagePublicId') as string || null;
     const isNew = formData.get('isNew') === 'on';
     const isFeatured = formData.get('isFeatured') === 'on';
     const sizes = formData.get('sizes') as string;
@@ -211,6 +215,7 @@ export async function updateProduct(productId: string, formData: FormData) {
                 isNew,
                 isFeatured,
                 images: imageUrl ? JSON.stringify([imageUrl]) : undefined,
+                imagePublicId: imagePublicId || undefined,
                 sizes: sizes || undefined,
                 colors: colors || undefined,
             }
@@ -223,15 +228,38 @@ export async function updateProduct(productId: string, formData: FormData) {
     revalidatePath('/admin/products');
     revalidatePath(`/products/${productId}`);
     revalidatePath('/products');
+    revalidatePath('/');
     redirect('/admin/products');
 }
 
 export async function deleteProduct(productId: string) {
     try {
+        // First, get the product to find imagePublicId
+        const product = await prisma.product.findUnique({
+            where: { id: productId },
+            select: { imagePublicId: true }
+        });
+
+        // Delete from Cloudinary if imagePublicId exists
+        if (product?.imagePublicId) {
+            const cloudinary = require('@/lib/cloudinary').default;
+            try {
+                await cloudinary.uploader.destroy(product.imagePublicId);
+                console.log(`Deleted image from Cloudinary: ${product.imagePublicId}`);
+            } catch (cloudinaryError) {
+                console.error('Failed to delete image from Cloudinary:', cloudinaryError);
+                // Continue with product deletion even if Cloudinary delete fails
+            }
+        }
+
+        // Delete product from database
         await prisma.product.delete({
             where: { id: productId }
         });
+
         revalidatePath('/admin/products');
+        revalidatePath('/products');
+        revalidatePath('/');
         return { success: true };
     } catch (error) {
         console.error("Failed to delete product:", error);

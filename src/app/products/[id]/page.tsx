@@ -3,6 +3,29 @@ import Link from 'next/link';
 import './product-detail.css';
 import { getProductById } from '../../actions';
 import ProductView from '@/components/products/ProductView';
+import { prisma } from '@/lib/prisma';
+
+// ISR: Regenerate every 60 seconds, allow new products not in generateStaticParams
+export const revalidate = 60;
+export const dynamicParams = true;
+
+// Pre-render top products at build time for maximum speed
+export async function generateStaticParams() {
+    try {
+        const products = await prisma.product.findMany({
+            select: { id: true },
+            take: 100, // Pre-render top 100 products
+            orderBy: { createdAt: 'desc' }
+        });
+
+        return products.map((product) => ({
+            id: product.id,
+        }));
+    } catch (error) {
+        console.error('Failed to generate static params:', error);
+        return [];
+    }
+}
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;

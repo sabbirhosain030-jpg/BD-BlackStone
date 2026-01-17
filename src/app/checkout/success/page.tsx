@@ -1,18 +1,40 @@
 'use client';
 
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
+import { getOrderWithWhatsAppLink } from './actions';
 
 // A separate fallback component for Suspense
 function SuccessFallback() {
-    return <div>Loading order details...</div>;
+    return (
+        <div className="container" style={{ padding: '6rem 2rem', textAlign: 'center' }}>
+            <div>Loading order details...</div>
+        </div>
+    );
 }
 
 function SuccessContent() {
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderId');
+    const [whatsappLink, setWhatsappLink] = useState<string | null>(null);
+    const [orderData, setOrderData] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (orderId) {
+            getOrderWithWhatsAppLink(orderId).then(result => {
+                if (result.success) {
+                    setWhatsappLink(result.whatsappLink || null);
+                    setOrderData(result.order);
+                }
+                setLoading(false);
+            });
+        } else {
+            setLoading(false);
+        }
+    }, [orderId]);
 
     return (
         <div className="container" style={{ padding: '6rem 2rem', textAlign: 'center', maxWidth: '600px' }}>
@@ -43,20 +65,58 @@ function SuccessContent() {
                 We will contact you shortly to confirm the delivery details.
             </p>
 
-            {orderId && (
+            {orderData && (
                 <div style={{
                     background: '#1a1a1a',
-                    padding: '1rem',
-                    borderRadius: '8px',
+                    padding: '1.5rem',
+                    borderRadius: '12px',
                     marginBottom: '2rem',
                     border: '1px solid #333'
                 }}>
-                    <span style={{ color: '#888', display: 'block', fontSize: '0.9rem' }}>Order Reference ID</span>
-                    <span style={{ color: 'white', fontSize: '1.2rem', fontFamily: 'monospace' }}>{orderId}</span>
+                    <div style={{ marginBottom: '0.5rem' }}>
+                        <span style={{ color: '#888', display: 'block', fontSize: '0.9rem' }}>Order Number</span>
+                        <span style={{ color: 'white', fontSize: '1.4rem', fontFamily: 'monospace', fontWeight: 'bold' }}>
+                            {orderData.orderNumber}
+                        </span>
+                    </div>
+                    <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #333' }}>
+                        <span style={{ color: '#888', display: 'block', fontSize: '0.9rem' }}>Total Amount</span>
+                        <span style={{ color: 'var(--color-gold)', fontSize: '1.6rem', fontWeight: 'bold' }}>
+                            ৳{orderData.total.toLocaleString()}
+                        </span>
+                    </div>
                 </div>
             )}
 
-            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+            {whatsappLink && (
+                <div style={{ marginBottom: '2rem' }}>
+                    <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                            display: 'inline-block',
+                            background: '#25D366',
+                            color: 'white',
+                            padding: '1rem 2rem',
+                            borderRadius: '8px',
+                            textDecoration: 'none',
+                            fontWeight: '600',
+                            fontSize: '1.1rem',
+                            transition: 'transform 0.2s'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                    >
+                        📱 Send Order to WhatsApp
+                    </a>
+                    <p style={{ color: '#888', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                        Get instant confirmation on WhatsApp
+                    </p>
+                </div>
+            )}
+
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <Link href="/products">
                     <Button variant="primary">Continue Shopping</Button>
                 </Link>
