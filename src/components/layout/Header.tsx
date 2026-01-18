@@ -108,7 +108,7 @@ export const Header: React.FC = () => {
                                 Home
                             </Link>
 
-                            {/* Shop By Category Dropdown */}
+                            {/* Shop By Category Dropdown - DYNAMIC */}
                             <div className="nav-dropdown">
                                 <Link
                                     href="/products"
@@ -117,18 +117,34 @@ export const Header: React.FC = () => {
                                     Shop <span style={{ fontSize: '0.7em' }}>▼</span>
                                 </Link>
                                 <div className="nav-dropdown-menu">
-                                    <Link href="/products?category=mens-fashion" className="dropdown-item">
+                                    <Link href="/products?category=mens-fashion" className="dropdown-item dropdown-header">
                                         Men's Fashion
                                     </Link>
-                                    <Link href="/products?category=womens-fashion" className="dropdown-item">
+                                    <Link href="/products?subCategory=shirt" className="dropdown-subitem">
+                                        → Shirt
+                                    </Link>
+                                    <Link href="/products?subCategory=pant" className="dropdown-subitem">
+                                        → Pant
+                                    </Link>
+                                    <Link href="/products?subCategory=t-shirt" className="dropdown-subitem">
+                                        → T-Shirt
+                                    </Link>
+                                    <Link href="/products?subCategory=panjabi" className="dropdown-subitem">
+                                        → Panjabi
+                                    </Link>
+
+                                    <Link href="/products?category=womens-fashion" className="dropdown-item dropdown-header">
                                         Women's Fashion
                                     </Link>
-                                    <Link href="/products?category=boys" className="dropdown-item">
+
+                                    <Link href="/products?category=boys" className="dropdown-item dropdown-header">
                                         Boys
                                     </Link>
-                                    <Link href="/products?category=girls" className="dropdown-item">
+
+                                    <Link href="/products?category=girls" className="dropdown-item dropdown-header">
                                         Girls
                                     </Link>
+
                                     <div className="dropdown-divider"></div>
                                     <Link href="/products" className="dropdown-item">
                                         View All Products

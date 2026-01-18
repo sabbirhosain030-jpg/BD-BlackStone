@@ -157,13 +157,35 @@
     padding: 0.75rem 1.25rem;
     color: var(--color-charcoal);
     text-decoration: none;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     font-size: 0.938rem;
 }
 
 .dropdown-item:hover {
-    background-color: var(--color-cream);
+    background: var(--color-cream);
     color: var(--color-gold);
+    padding-left: 1.5rem;
+}
+
+.dropdown-header {
+    font-weight: 600;
+    color: var(--color-charcoal);
+    margin-top: 0.5rem;
+}
+
+.dropdown-subitem {
+    display: block;
+    padding: 0.5rem 1.25rem 0.5rem 2rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+}
+
+.dropdown-subitem:hover {
+    background: var(--color-cream);
+    color: var(--color-gold);
+    padding-left: 2.25rem;
 }
 
 .dropdown-divider {
