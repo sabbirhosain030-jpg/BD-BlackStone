@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import './ProductCard.css';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext'; // Restored
 
 interface ProductCardProps {
     id: string;
@@ -31,8 +32,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     index = 0
 }) => {
     const { addToCart } = useCart();
+    const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist(); // Restored
     const [isAdded, setIsAdded] = useState(false);
     const discount = previousPrice ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
+
+    const inWishlist = isInWishlist(id);
+
+    const handleWishlistToggle = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (inWishlist) {
+            await removeFromWishlist(id);
+        } else {
+            await addToWishlist(id);
+        }
+    };
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
