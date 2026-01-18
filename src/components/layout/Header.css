@@ -29,6 +29,18 @@
     letter-spacing: 0.03em;
 }
 
+.header-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+    padding: 0.5rem 0;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+}
+
 .header-links {
     display: flex;
     gap: 1.5rem;
