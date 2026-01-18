@@ -9,13 +9,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String     @id @default(uuid())
+  email     String     @unique
   password  String
   name      String
-  role      String   @default("ADMIN")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      String     @default("ADMIN")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  orders    Order[]
+  wishlists Wishlist[] // Restored wishlist relation
 }
 
 model Category {
@@ -60,7 +62,7 @@ model Product {
   orderItems    OrderItem[]
   category      Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
-  wishlists     Wishlist[]   // Restored wishlist relation
+  wishlists     Wishlist[] // Restored wishlist relation
 }
 
 model Order {
@@ -85,6 +87,8 @@ model Order {
   updatedAt       DateTime    @updatedAt
   coupon          Coupon?     @relation(fields: [couponId], references: [id])
   items           OrderItem[]
+  User            User?       @relation(fields: [userId], references: [id])
+  userId          String?
 }
 
 model OrderItem {
@@ -232,9 +236,8 @@ model Wishlist {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-  
+
   @@unique([userId, productId])
   @@index([userId])
   @@index([productId])
 }
-
