@@ -132,3 +132,60 @@
 .btn-pulse:hover {
     animation: pulse-gold 1.5s infinite;
 }
+
+/* ====================================
+   MOBILE TOUCH OPTIMIZATIONS
+   ==================================== */
+
+/* Disable hover animations on touch devices */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Remove all transform-based hover effects */
+    .product-card:hover,
+    .btn:hover,
+    .cta-button:hover,
+    .category-card:hover,
+    .nav-link:hover,
+    .hover-lift:hover {
+        transform: none !important;
+    }
+
+    /* Disable image zoom on touch */
+    .hover-zoom-img:hover img {
+        transform: none !important;
+    }
+
+    /* Use tap states instead */
+    .product-card:active {
+        opacity: 0.9;
+        transition: opacity 0.1s ease;
+    }
+
+    .btn:active,
+    .cta-button:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+
+    /* Better tap highlighting */
+    * {
+        -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+        tap-highlight-color: rgba(212, 175, 55, 0.2);
+    }
+}
+
+/* Prevent animation distortion on mobile */
+@media (max-width: 768px) {
+
+    /* Simplify animations */
+    .animate-fade-in,
+    .animate-slide-up,
+    .animate-scale-in {
+        animation-duration: 0.3s !important;
+    }
+
+    /* Remove complex hover effects */
+    .hover-lift:hover {
+        transform: none;
+    }
+}
