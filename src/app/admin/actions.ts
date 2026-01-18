@@ -462,11 +462,147 @@ export async function updateOrderStatus(orderId: string, status: string) {
             where: { id: orderId },
             data: { status }
         });
-        revalidatePath(`/admin/orders/${orderId}`);
         revalidatePath('/admin/orders');
         return { success: true };
     } catch (error) {
-        console.error("Failed to update status:", error);
-        return { success: false, error: "Failed to update status" };
+        console.error('Error updating order status:', error);
+        return { success: false, error: 'Failed to update order status' };
+    }
+}
+
+// --- Wishlist Management ---
+
+export async function getWishlistStats() {
+    try {
+        const totalWishlists = await prisma.wishlist.count();
+
+        const mostWishlisted = await prisma.wishlist.groupBy({
+            by: ['productId'],
+            _count: { productId: true },
+            orderBy: { _count: { productId: 'desc' } },
+            take: 1
+        });
+
+        let topProduct = null;
+        if (mostWishlisted.length > 0) {
+            topProduct = await prisma.product.findUnique({
+                where: { id: mostWishlisted[0].productId },
+                select: { name: true }
+            });
+        }
+
+        return {
+            totalWishlists,
+            topProduct: topProduct?.name || 'N/A',
+            topProductCount: mostWishlisted[0]?._count.productId || 0
+        };
+    } catch (error) {
+        console.error('Error getting wishlist stats:', error);
+        return { totalWishlists: 0, topProduct: 'Error', topProductCount: 0 };
+    }
+}
+
+export async function getAllWishlists() {
+    try {
+        const wishlists = await prisma.wishlist.findMany({
+            include: {
+                product: {
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        images: true
+                    }
+                }
+            },
+            orderBy: { createdAt: 'desc' }
+        });
+
+        return wishlists;
+    } catch (error) {
+        console.error('Error fetching wishlists:', error);
+        return [];
+    }
+}
+
+export async function getMostWishlisted(limit: number = 10) {
+    try {
+        const wishlistCounts = await prisma.wishlist.groupBy({
+            by: ['productId'],
+            _count: { productId: true },
+            orderBy: { _count: { productId: 'desc' } },
+            take: limit
+        });
+
+        const productsWithCounts = await Promise.all(
+            wishlistCounts.map(async (item) => {
+                const product = await prisma.product.findUnique({
+                    where: { id: item.productId },
+                    select: {
+                        id: true,
+                        name: true,
+                        price: true,
+                        images: true,
+                        stock: true
+                    }
+                });
+                return {
+                    product,
+                    wishlistCount: item._count.productId
+                };
+            })
+        );
+
+        return productsWithCounts.filter(item => item.product !== null);
+    } catch (error) {
+        console.error('Error fetching most wishlisted:', error);
+        return [];
+    }
+}
+
+export async function deleteWishlistEntry(wishlistId: string) {
+    try {
+        await prisma.wishlist.delete({
+            where: { id: wishlistId }
+        });
+        revalidatePath('/admin/wishlists');
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting wishlist entry:', error);
+        return { success: false, error: 'Failed to delete wishlist entry' };
+    }
+}
+
+export async function trackWishlist(productId: string, sessionId?: string, userEmail?: string) {
+    try {
+        await prisma.wishlist.create({
+            data: {
+                productId,
+                sessionId,
+                userEmail
+            }
+        });
+        return { success: true };
+    } catch (error) {
+        console.error('Error tracking wishlist:', error);
+        return { success: false };
+    }
+}
+
+export async function untrackWishlist(productId: string, sessionId?: string, userEmail?: string) {
+    try {
+        await prisma.wishlist.deleteMany({
+            where: {
+                productId,
+                OR: [
+                    { sessionId },
+                    { userEmail }
+                ]
+            }
+        });
+        return { success: true };
+    } catch (error) {
+        console.error('Error untracking wishlist:', error);
+        return { success: false };
     }
 }

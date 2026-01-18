@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./animations.css";
+import "./3d-effects.css";
 import "./mobile-optimizations.css"; // Mobile-first touch optimizations
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";

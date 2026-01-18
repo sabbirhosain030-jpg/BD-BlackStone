@@ -32,14 +32,36 @@ html {
         /* Prevents iOS zoom */
     }
 
-    /* Better mobile grid */
+    /* Better mobile grid - 2 columns with consistent spacing */
     .products-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 0.75rem;
+        padding: 0 0.5rem;
     }
 
     .admin-grid-layout {
         grid-template-columns: 1fr !important;
+    }
+
+    /* Prevent horizontal overflow */
+    body {
+        overflow-x: hidden;
+        width: 100vw;
+    }
+
+    .container {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Optimize product cards for mobile */
+    .product-card {
+        border-radius: 6px;
+    }
+
+    /* Better image rendering on mobile */
+    img {
+        image-rendering: -webkit-optimize-contrast;
     }
 }
 
