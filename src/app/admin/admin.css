@@ -101,8 +101,10 @@
 
 .admin-main {
     flex: 1;
-    padding: var(--spacing-lg);
+    padding: var(--spacing-xl);
     overflow-y: auto;
+    background: linear-gradient(135deg, #1a1a1c 0%, #242426 100%);
+    min-height: 100vh;
     position: relative;
 }
 
@@ -130,12 +132,24 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: var(--spacing-xl);
-}
-
-.admin-title {
-    font-family: var(--font-heading);
+    padding: var(--spacing-md) 0;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    background: rgba(28, 28, 30, 0.6);
+    border-radius: 12px;
+    padding: 1.5rem;
     font-size: 2rem;
     color: var(--color-white);
+}
+
+.admin-header h1 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: #ffffff;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 .stone-card {
@@ -167,9 +181,9 @@
 .stone-card:hover {
     transform: translateY(-2px);
     box-shadow:
-        0 4px 8px rgba(0, 0, 0, 0.12),
-        0 8px 24px rgba(0, 0, 0, 0.1),
-        0 12px 32px rgba(212, 175, 55, 0.1);
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 0 0 2px rgba(212, 175, 55, 0.3);
+    border-color: rgba(212, 175, 55, 0.4);
 }
 
 .stone-card:hover::before {
@@ -292,11 +306,12 @@
 
 .form-label {
     display: block;
-    color: var(--color-stone-text);
     margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #ffffff;
     font-size: 0.875rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.025em;
 }
 
 .form-input {
@@ -464,7 +479,7 @@
 
 .admin-loader::before,
 .admin-loader::after {
-    content: \"\";
+    content: "";
     grid-area: 1/1;
     border-radius: 50%;
     background: inherit;
@@ -668,4 +683,326 @@
     box-shadow:
         0 6px 16px rgba(212, 175, 55, 0.5),
         0 12px 32px rgba(212, 175, 55, 0.4);
+}
+
+/* ============================================
+   MOBILE RESPONSIVE OPTIMIZATIONS
+   ============================================ */
+
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 1024px) {
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--color-stone-border);
+    }
+
+    .admin-sidebar-header {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .admin-nav {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .admin-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .admin-nav-item {
+        flex-shrink: 0;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .admin-nav-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .admin-main {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    /* Table responsiveness */
+    .admin-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-table {
+        min-width: 600px;
+    }
+
+    /* Form grid to single column */
+    .form-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Stat cards row scroll */
+    .stat-cards {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 1rem;
+    }
+
+    .stone-card {
+        min-width: 250px;
+    }
+}
+
+/* Mobile Specific (< 768px) */
+@media (max-width: 768px) {
+
+    /* Hide sidebar navigation text on very small screens */
+    .admin-sidebar {
+        padding: 0.75rem;
+    }
+
+    .admin-brand {
+        font-size: 1.25rem;
+    }
+
+    .admin-nav-item span {
+        display: none;
+    }
+
+    .admin-nav-item {
+        width: auto;
+        padding: 0.75rem;
+        justify-content: center;
+    }
+
+    /* Touch-friendly buttons */
+    .admin-btn-primary,
+    .admin-btn-secondary,
+    .btn-delete,
+    .btn-edit {
+        min-height: 44px;
+        padding: 0.75rem 1.25rem;
+        font-size: 1rem;
+    }
+
+    .admin-icon-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.75rem;
+    }
+
+    /* Responsive header */
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .admin-header>* {
+        width: 100%;
+    }
+
+    /* Table cards on mobile */
+    .admin-table {
+        display: block;
+    }
+
+    .admin-table thead {
+        display: none;
+    }
+
+    .admin-table tbody {
+        display: block;
+    }
+
+    .admin-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: var(--color-stone-surface);
+        border-radius: 12px;
+        border: 1px solid var(--color-stone-border);
+    }
+
+    .admin-table td {
+        display: block;
+        text-align: right;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--color-stone-border);
+    }
+
+    .admin-table td:last-child {
+        border-bottom: none;
+    }
+
+    .admin-table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: var(--color-gold);
+    }
+
+    /* Stat cards stack */
+    .stat-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stone-card {
+        min-width: auto;
+    }
+
+    /* Form inputs larger on touch */
+    .form-input,
+    .form-textarea,
+    .form-select {
+        font-size: 16px;
+        /* Prevents zoom on iOS */
+        min-height: 44px;
+    }
+}
+
+/* Small Mobile (< 480px) */
+@media (max-width: 480px) {
+    .admin-main {
+        padding: 0.75rem;
+    }
+
+    .admin-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .stone-card {
+        padding: 1rem;
+    }
+
+    /* Reduce spacing */
+    .admin-content {
+        gap: 1rem;
+    }
+
+    /* Single column for everything */
+    .form-grid,
+    .stat-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Desktop Optimization (> 1440px) */
+@media (min-width: 1440px) {
+    .admin-sidebar {
+        width: 280px;
+    }
+
+    .admin-main {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .admin-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .admin-content {
+        padding: 2rem;
+    }
+}
+
+/* High DPI Screens */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+    .admin-brand,
+    .admin-nav-item {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Larger touch targets */
+    .admin-nav-item,
+    .admin-btn-primary,
+    .admin-icon-btn,
+    button,
+    a {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Remove hover effects on touch */
+    .admin-nav-item:hover,
+    .stone-card:hover {
+        transform: none;
+    }
+
+    /* Tap highlight */
+    * {
+        -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+    }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .admin-container {
+        animation: none;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-stone-text: #e5e7eb;
+    }
+}
+
+/* Print Styles */
+@media print {
+
+    .admin-sidebar,
+    .admin-header button,
+    .btn-delete,
+    .btn-edit {
+        display: none !important;
+    }
+
+    .admin-main {
+        width: 100%;
+        padding: 0;
+    }
+
+    .stone-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+    }
 }
