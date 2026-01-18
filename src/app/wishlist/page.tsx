@@ -41,7 +41,15 @@ export default async function WishlistPage() {
         }
     });
 
-    const wishlistProducts = user?.wishlists.map(w => {
+    const wishlistProducts: Array<{
+        id: string;
+        name: string;
+        price: number;
+        previousPrice?: number;
+        image: string;
+        category: string;
+        isNew: boolean;
+    }> = user?.wishlists.map((w: any) => {
         const p = w.product;
         let imageUrl = '/placeholder.png';
         try {
