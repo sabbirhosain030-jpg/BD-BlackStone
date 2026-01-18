@@ -1,9 +1,24 @@
 .admin-container {
     display: flex;
     min-height: 100vh;
-    background-color: var(--color-stone-dark);
+    background: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 50%, #1c1c1e 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     color: var(--color-stone-text);
     font-family: var(--font-body);
+    position: relative;
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .admin-sidebar {
@@ -88,13 +103,26 @@
     flex: 1;
     padding: var(--spacing-lg);
     overflow-y: auto;
+    position: relative;
+}
+
+.admin-main::before {
+    content: '';
+    position: fixed;
+    inset: 0;
     background-image:
-        linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
-        linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
-        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%);
-    background-size: 20px 20px;
-    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 50%),
+        linear-gradient(45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%);
+    background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.admin-main>* {
+    position: relative;
+    z-index: 1;
 }
 
 .admin-header {
@@ -168,6 +196,44 @@
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: var(--spacing-md);
     margin-bottom: var(--spacing-xl);
+    perspective: 1000px;
+}
+
+.dashboard-grid .stone-card {
+    animation: floatIn 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.dashboard-grid .stone-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.dashboard-grid .stone-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.dashboard-grid .stone-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.dashboard-grid .stone-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.dashboard-grid .stone-card:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+@keyframes floatIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) rotateX(10deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
 }
 
 .recent-orders-table {
@@ -304,4 +370,302 @@
 .admin-btn-primary:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+/* Advanced 3D Table Styling */
+.admin-table-container {
+    background: rgba(44, 44, 46, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    overflow: hidden;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.admin-table thead tr {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+}
+
+.admin-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--color-gold-light);
+    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    position: sticky;
+    top: 0;
+    background: rgba(28, 28, 30, 0.95);
+    backdrop-filter: blur(10px);
+}
+
+.admin-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.admin-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.03) 100%);
+    transform: translateX(4px);
+    box-shadow: -3px 0 0 0 var(--color-gold);
+}
+
+.admin-table td {
+    padding: 1rem;
+    color: var(--color-stone-light);
+}
+
+/* Advanced Card Hover Effect (Parallax) */
+.stone-card {
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stone-card:hover {
+    transform: translateY(-4px) rotateX(2deg);
+}
+
+.stone-card-value {
+    transition: all 0.3s ease;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.stone-card:hover .stone-card-value {
+    transform: translateZ(10px);
+    text-shadow:
+        0 4px 8px rgba(212, 175, 55, 0.4),
+        0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+/* Premium Loading Spinner */
+.admin-loader {
+    width: 50px;
+    aspect-ratio: 1;
+    display: grid;
+    border-radius: 50%;
+    background:
+        linear-gradient(0deg, rgb(212 175 55/50%) 30%, transparent 30% 70%, rgb(212 175 55/100%) 70%) 50%/8% 100%,
+        linear-gradient(90deg, rgb(212 175 55/25%) 30%, transparent 30% 70%, rgb(212 175 55/75%) 70%) 50%/100% 8%;
+    background-repeat: no-repeat;
+    animation: adminLoader 1s infinite steps(12);
+}
+
+.admin-loader::before,
+.admin-loader::after {
+    content: \"\";
+    grid-area: 1/1;
+    border-radius: 50%;
+    background: inherit;
+    opacity: 0.915;
+    transform: rotate(30deg);
+}
+
+.admin-loader::after {
+    opacity: 0.83;
+    transform: rotate(60deg);
+}
+
+@keyframes adminLoader {
+    100% {
+        transform: rotate(1turn);
+    }
+}
+
+/* Glassmorphism Modal */
+.admin-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.admin-modal {
+    background: linear-gradient(135deg, rgba(44, 44, 46, 0.95) 0%, rgba(28, 28, 30, 0.95) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 16px 64px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Animated Gradient Border */
+.admin-card-premium {
+    position: relative;
+    background: var(--color-stone-surface);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.admin-card-premium::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg,
+            var(--color-gold),
+            var(--color-gold-light),
+            var(--color-gold),
+            var(--color-gold-light));
+    background-size: 300% 300%;
+    border-radius: 12px;
+    z-index: -1;
+    animation: gradientRotate 4s ease infinite;
+    opacity: 0.7;
+}
+
+@keyframes gradientRotate {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Interactive Icon Hover */
+.admin-icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    color: var(--color-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-icon-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
+    transform: scale(0);
+    transition: transform 0.3s ease;
+}
+
+.admin-icon-btn:hover::before {
+    transform: scale(1);
+}
+
+.admin-icon-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--color-gold);
+    transform: translateY(-2px) rotate(5deg);
+    box-shadow:
+        0 4px 12px rgba(212, 175, 55, 0.3),
+        0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+/* Stat Card Animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.95;
+        transform: scale(1.02);
+    }
+}
+
+.stone-card-value.animated {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Success/Error States */
+.admin-success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.05) 100%);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.admin-error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.05) 100%);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Floating Action Button */
+.admin-fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+    box-shadow:
+        0 4px 12px rgba(212, 175, 55, 0.4),
+        0 8px 24px rgba(212, 175, 55, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: float 3s ease-in-out infinite;
+    z-index: 100;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.admin-fab:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow:
+        0 6px 16px rgba(212, 175, 55, 0.5),
+        0 12px 32px rgba(212, 175, 55, 0.4);
 }
