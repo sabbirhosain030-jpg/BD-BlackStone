@@ -108,6 +108,47 @@
     background-color: #d42c2c;
 }
 
+/* Wishlist Button (Restored) */
+.wishlist-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    cursor: pointer;
+    z-index: 3;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.wishlist-btn:hover {
+    background: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.wishlist-btn.active {
+    color: #e74c3c;
+    background: white;
+}
+
+.wishlist-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.wishlist-btn:active svg {
+    transform: scale(0.9);
+}
+
+
 .product-actions {
     position: absolute;
     top: 50%;
