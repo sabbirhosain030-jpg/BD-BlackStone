@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 };
 
 import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WishlistContext"; // Restored
 import SessionProvider from '@/components/providers/SessionProvider';
 import { Suspense } from 'react';
 import { ConditionalWrapper } from "@/components/layout/ConditionalWrapper";

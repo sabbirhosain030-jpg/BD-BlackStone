@@ -6,6 +6,16 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import './Header.css';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext'; // Restored
+
+// Client-side wishlist badge component
+function WishlistBadge() {
+    const { wishlistCount } = useWishlist();
+    if (wishlistCount === 0) return null;
+    return (
+        <span className="icon-badge">{wishlistCount}</span>
+    );
+}
 
 export const Header: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
