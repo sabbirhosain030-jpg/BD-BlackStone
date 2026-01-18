@@ -48,6 +48,10 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
             return;
         }
 
+        // Optimistic update: Update UI immediately
+        const prevItems = [...wishlistItems];
+        setWishlistItems(prev => [...prev, productId]);
+
         try {
             const res = await fetch('/api/wishlist', {
                 method: 'POST',
@@ -55,24 +59,36 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
                 body: JSON.stringify({ productId })
             });
 
-            if (res.ok) {
-                setWishlistItems(prev => [...prev, productId]);
+            if (!res.ok) {
+                // Revert on failure
+                setWishlistItems(prevItems);
+                console.error('Failed to add to wishlist');
             }
         } catch (error) {
+            // Revert on error
+            setWishlistItems(prevItems);
             console.error('Failed to add to wishlist:', error);
         }
     };
 
     const removeFromWishlist = async (productId: string) => {
+        // Optimistic update: Update UI immediately
+        const prevItems = [...wishlistItems];
+        setWishlistItems(prev => prev.filter(id => id !== productId));
+
         try {
             const res = await fetch(`/api/wishlist?productId=${productId}`, {
                 method: 'DELETE'
             });
 
-            if (res.ok) {
-                setWishlistItems(prev => prev.filter(id => id !== productId));
+            if (!res.ok) {
+                // Revert on failure
+                setWishlistItems(prevItems);
+                console.error('Failed to remove from wishlist');
             }
         } catch (error) {
+            // Revert on error
+            setWishlistItems(prevItems);
             console.error('Failed to remove from wishlist:', error);
         }
     };
