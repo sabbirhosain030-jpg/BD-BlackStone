@@ -1,12 +1,11 @@
 import React from 'react';
-import { getDashboardStats, getRecentOrders, getWishlistStats } from './actions';
+import { getDashboardStats, getRecentOrders } from './actions';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
     const stats = await getDashboardStats();
     const recentOrders = await getRecentOrders();
-    const wishlistStats = await getWishlistStats();
 
     return (
         <div className="dashboard">
@@ -43,14 +42,6 @@ export default async function AdminDashboard() {
                 <div className="stone-card">
                     <div className="stone-card-title">Active Customers</div>
                     <div className="stone-card-value">{stats.activeCustomers}</div>
-                </div>
-
-                <div className="stone-card">
-                    <div className="stone-card-title">Total Wishlists</div>
-                    <div className="stone-card-value">{wishlistStats.totalWishlists}</div>
-                    <div style={{ color: 'var(--color-stone-text)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
-                        Top: {wishlistStats.topProduct}
-                    </div>
                 </div>
             </div>
 

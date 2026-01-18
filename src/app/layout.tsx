@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 };
 
 import { CartProvider } from "@/context/CartContext";
-import { WishlistProvider } from "@/context/WishlistContext";
 import SessionProvider from '@/components/providers/SessionProvider';
 import { Suspense } from 'react';
 import { ConditionalWrapper } from "@/components/layout/ConditionalWrapper";
@@ -30,27 +29,25 @@ export default function RootLayout({
       <body>
         <SessionProvider>
           <CartProvider>
-            <WishlistProvider>
-              <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-                <ConditionalWrapper>
-                  <MarketingBanner />
-                  <Suspense fallback={<div style={{ height: '80px' }} />}>
-                    <Header />
-                  </Suspense>
-                  <Suspense fallback={null}>
-                    <EmailPopup />
-                  </Suspense>
-                </ConditionalWrapper>
+            <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+              <ConditionalWrapper>
+                <MarketingBanner />
+                <Suspense fallback={<div style={{ height: '80px' }} />}>
+                  <Header />
+                </Suspense>
+                <Suspense fallback={null}>
+                  <EmailPopup />
+                </Suspense>
+              </ConditionalWrapper>
 
-                <main style={{ flex: 1 }}>
-                  {children}
-                </main>
+              <main style={{ flex: 1 }}>
+                {children}
+              </main>
 
-                <ConditionalWrapper>
-                  <Footer />
-                </ConditionalWrapper>
-              </div>
-            </WishlistProvider>
+              <ConditionalWrapper>
+                <Footer />
+              </ConditionalWrapper>
+            </div>
           </CartProvider>
         </SessionProvider>
       </body>

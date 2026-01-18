@@ -61,7 +61,6 @@ model Product {
   subCategoryId String?
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: SetNull)
   orderItems    OrderItem[]
-  wishlists     Wishlist[]
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
 }
@@ -167,16 +166,4 @@ model WhatsAppSettings {
   welcomeMessage  String   @default("Hello! Thank you for shopping with BD BlackStone.")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-}
-
-model Wishlist {
-  id         String   @id @default(uuid())
-  productId  String
-  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  sessionId  String?  // For tracking guest users
-  userEmail  String?  // For registered users
-  createdAt  DateTime @default(now())
-  
-  @@index([productId])
-  @@index([sessionId])
 }
