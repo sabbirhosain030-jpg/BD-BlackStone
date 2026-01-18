@@ -6,20 +6,20 @@ import '../admin.css';
 
 interface SiteSettings {
     id?: string;
-    siteName: string;
-    siteTagline: string;
-    contactEmail: string;
-    contactPhone: string;
-    alternatePhones: string[];
-    address: string;
-    googleMapsUrl: string;
-    googleMapsEmbed: string;
-    facebookUrl: string;
-    instagramUrl: string;
-    twitterUrl: string;
-    linkedinUrl: string;
-    whatsappNumber: string;
-    businessHours: string;
+    siteName?: string;
+    siteTagline?: string | null;
+    contactEmail?: string;
+    contactPhone?: string;
+    alternatePhones?: string[];
+    address?: string;
+    googleMapsUrl?: string | null;
+    googleMapsEmbed?: string | null;
+    facebookUrl?: string | null;
+    instagramUrl?: string | null;
+    twitterUrl?: string | null;
+    linkedinUrl?: string | null;
+    whatsappNumber?: string | null;
+    businessHours?: string | null;
 }
 
 export default function SiteSettingsForm({ settings }: { settings: SiteSettings | null }) {
@@ -65,10 +65,10 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
     };
 
     const addPhone = () => {
-        if (newPhone && !formData.alternatePhones.includes(newPhone)) {
+        if (newPhone && !(formData.alternatePhones || []).includes(newPhone)) {
             setFormData({
                 ...formData,
-                alternatePhones: [...formData.alternatePhones, newPhone]
+                alternatePhones: [...(formData.alternatePhones || []), newPhone]
             });
             setNewPhone('');
         }
@@ -77,7 +77,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
     const removePhone = (phone: string) => {
         setFormData({
             ...formData,
-            alternatePhones: formData.alternatePhones.filter(p => p !== phone)
+            alternatePhones: (formData.alternatePhones || []).filter(p => p !== phone)
         });
     };
 
@@ -129,7 +129,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                             <input
                                 type="text"
                                 className="form-input"
-                                value={formData.siteTagline}
+                                value={formData.siteTagline || ''}
                                 onChange={(e) => setFormData({ ...formData, siteTagline: e.target.value })}
                             />
                         </div>
@@ -140,7 +140,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                         <input
                             type="text"
                             className="form-input"
-                            value={formData.businessHours}
+                            value={formData.businessHours || ''}
                             onChange={(e) => setFormData({ ...formData, businessHours: e.target.value })}
                             placeholder="Mon-Sat: 9AM-9PM"
                         />
@@ -203,7 +203,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                             </button>
                         </div>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                            {formData.alternatePhones.map((phone) => (
+                            {(formData.alternatePhones || []).map((phone) => (
                                 <span
                                     key={phone}
                                     style={{
@@ -241,7 +241,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                         <input
                             type="tel"
                             className="form-input"
-                            value={formData.whatsappNumber}
+                            value={formData.whatsappNumber || ''}
                             onChange={(e) => setFormData({ ...formData, whatsappNumber: e.target.value })}
                             placeholder="+880 XXX XXXX"
                         />
@@ -270,7 +270,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                         <input
                             type="url"
                             className="form-input"
-                            value={formData.googleMapsUrl}
+                            value={formData.googleMapsUrl || ''}
                             onChange={(e) => setFormData({ ...formData, googleMapsUrl: e.target.value })}
                             placeholder="https://maps.google.com/..."
                         />
@@ -280,7 +280,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                         <label className="form-label">Google Maps Embed Code</label>
                         <textarea
                             className="form-input"
-                            value={formData.googleMapsEmbed}
+                            value={formData.googleMapsEmbed || ''}
                             onChange={(e) => setFormData({ ...formData, googleMapsEmbed: e.target.value })}
                             rows={4}
                             placeholder='<iframe src="https://www.google.com/maps/embed?..." ...></iframe>'
@@ -300,7 +300,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                             <input
                                 type="url"
                                 className="form-input"
-                                value={formData.facebookUrl}
+                                value={formData.facebookUrl || ''}
                                 onChange={(e) => setFormData({ ...formData, facebookUrl: e.target.value })}
                                 placeholder="https://facebook.com/..."
                             />
@@ -311,7 +311,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                             <input
                                 type="url"
                                 className="form-input"
-                                value={formData.instagramUrl}
+                                value={formData.instagramUrl || ''}
                                 onChange={(e) => setFormData({ ...formData, instagramUrl: e.target.value })}
                                 placeholder="https://instagram.com/..."
                             />
@@ -322,7 +322,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                             <input
                                 type="url"
                                 className="form-input"
-                                value={formData.twitterUrl}
+                                value={formData.twitterUrl || ''}
                                 onChange={(e) => setFormData({ ...formData, twitterUrl: e.target.value })}
                                 placeholder="https://twitter.com/..."
                             />
@@ -333,7 +333,7 @@ export default function SiteSettingsForm({ settings }: { settings: SiteSettings 
                             <input
                                 type="url"
                                 className="form-input"
-                                value={formData.linkedinUrl}
+                                value={formData.linkedinUrl || ''}
                                 onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
                                 placeholder="https://linkedin.com/..."
                             />

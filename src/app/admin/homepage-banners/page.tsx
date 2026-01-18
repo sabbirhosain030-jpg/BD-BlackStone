@@ -61,7 +61,7 @@ export default async function HomepageBannersPage() {
                                 </div>
 
                                 {/* Banner Details */}
-                                <div style{{ flex: 1, minWidth: '250px' }}>
+                                <div style={{ flex: 1, minWidth: '250px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
                                         <h3 style={{ fontSize: '1.125rem', color: 'var(--color-white)', margin: 0 }}>
                                             {banner.title}
