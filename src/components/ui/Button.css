@@ -7,11 +7,21 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border-radius: var(--radius-sm);
-    transition: all var(--transition-smooth);
+    transition: transform 0.05s linear, background-color 0.1s ease, box-shadow 0.1s ease;
+    /* Ultra fast */
     cursor: pointer;
     border: 1px solid transparent;
     position: relative;
     overflow: hidden;
+    user-select: none;
+    /* Prevent text selection on rapid clicks */
+    -webkit-tap-highlight-color: transparent;
+    /* Remove mobile tap highlight box */
+}
+
+.btn:active {
+    transform: scale(0.96) !important;
+    /* Force instant scale down */
 }
 
 .btn:disabled {
