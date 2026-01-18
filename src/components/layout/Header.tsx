@@ -11,7 +11,14 @@ import { useWishlist } from '@/context/WishlistContext'; // Restored
 // Client-side wishlist badge component
 function WishlistBadge() {
     const { wishlistCount } = useWishlist();
-    if (wishlistCount === 0) return null;
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted || wishlistCount === 0) return null;
+
     return (
         <span className="icon-badge">{wishlistCount}</span>
     );
