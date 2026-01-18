@@ -30,25 +30,27 @@ export default function RootLayout({
       <body>
         <SessionProvider>
           <CartProvider>
-            <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-              <ConditionalWrapper>
-                <MarketingBanner />
-                <Suspense fallback={<div style={{ height: '80px' }} />}>
-                  <Header />
-                </Suspense>
-                <Suspense fallback={null}>
-                  <EmailPopup />
-                </Suspense>
-              </ConditionalWrapper>
+            <WishlistProvider>
+              <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+                <ConditionalWrapper>
+                  <MarketingBanner />
+                  <Suspense fallback={<div style={{ height: '80px' }} />}>
+                    <Header />
+                  </Suspense>
+                  <Suspense fallback={null}>
+                    <EmailPopup />
+                  </Suspense>
+                </ConditionalWrapper>
 
-              <main style={{ flex: 1 }}>
-                {children}
-              </main>
+                <main style={{ flex: 1 }}>
+                  {children}
+                </main>
 
-              <ConditionalWrapper>
-                <Footer />
-              </ConditionalWrapper>
-            </div>
+                <ConditionalWrapper>
+                  <Footer />
+                </ConditionalWrapper>
+              </div>
+            </WishlistProvider>
           </CartProvider>
         </SessionProvider>
       </body>

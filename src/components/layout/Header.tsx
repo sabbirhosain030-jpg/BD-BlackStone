@@ -202,15 +202,6 @@ export const Header: React.FC = () => {
                                 Women
                             </Link>
 
-                            {/* WISHLIST LINK */}
-                            <Link
-                                href="/wishlist"
-                                className={`nav-link ${pathname === '/wishlist' ? 'nav-link-active' : ''}`}
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Wishlist
-                            </Link>
-
                             <Link
                                 href="/products?tag=new"
                                 className={`nav-link ${tag === 'new' ? 'nav-link-active' : ''}`}
