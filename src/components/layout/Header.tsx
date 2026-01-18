@@ -186,6 +186,22 @@ export const Header: React.FC = () => {
                                 </div>
                             </div>
 
+                            {/* Direct Category Links - RESTORED */}
+                            <Link
+                                href="/products?category=mens-fashion"
+                                className={`nav-link ${category === 'mens-fashion' || category === 'men' ? 'nav-link-active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Men
+                            </Link>
+                            <Link
+                                href="/products?category=womens-fashion"
+                                className={`nav-link ${category === 'womens-fashion' || category === 'women' ? 'nav-link-active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Women
+                            </Link>
+
                             {/* WISHLIST LINK */}
                             <Link
                                 href="/wishlist"
