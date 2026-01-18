@@ -100,13 +100,35 @@ export const Header: React.FC = () => {
                             >
                                 Home
                             </Link>
-                            <Link
-                                href="/products"
-                                className={`nav-link ${pathname === '/products' && !category && !tag ? 'nav-link-active' : ''}`}
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Shop
-                            </Link>
+
+                            {/* Shop By Category Dropdown */}
+                            <div className="nav-dropdown">
+                                <Link
+                                    href="/products"
+                                    className={`nav-link ${pathname === '/products' && !category && !tag ? 'nav-link-active' : ''}`}
+                                >
+                                    Shop <span style={{ fontSize: '0.7em' }}>▼</span>
+                                </Link>
+                                <div className="nav-dropdown-menu">
+                                    <Link href="/products?category=mens-fashion" className="dropdown-item">
+                                        Men's Fashion
+                                    </Link>
+                                    <Link href="/products?category=womens-fashion" className="dropdown-item">
+                                        Women's Fashion
+                                    </Link>
+                                    <Link href="/products?category=boys" className="dropdown-item">
+                                        Boys
+                                    </Link>
+                                    <Link href="/products?category=girls" className="dropdown-item">
+                                        Girls
+                                    </Link>
+                                    <div className="dropdown-divider"></div>
+                                    <Link href="/products" className="dropdown-item">
+                                        View All Products
+                                    </Link>
+                                </div>
+                            </div>
+
                             <Link
                                 href="/products?category=mens-fashion"
                                 className={`nav-link ${category === 'mens-fashion' || category === 'men' ? 'nav-link-active' : ''}`}
