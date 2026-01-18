@@ -469,3 +469,262 @@ export async function updateOrderStatus(orderId: string, status: string) {
         return { success: false, error: 'Failed to update order status' };
     }
 }
+
+// --- Subscriber Management ---
+
+export async function getAllSubscribers() {
+    try {
+        const subscribers = await prisma.emailSubscriber.findMany({
+            orderBy: { createdAt: 'desc' }
+        });
+        return subscribers;
+    } catch (error) {
+        console.error('Error fetching subscribers:', error);
+        return [];
+    }
+}
+
+export async function deleteSubscriber(id: string) {
+    try {
+        await prisma.emailSubscriber.delete({
+            where: { id }
+        });
+        revalidatePath('/admin/subscribers');
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting subscriber:', error);
+        return { success: false };
+    }
+}
+
+// --- CMS: Site Settings ---
+
+export async function getSiteSettings() {
+    try {
+        let settings = await prisma.siteSettings.findFirst();
+
+        // Create default settings if none exist
+        if (!settings) {
+            settings = await prisma.siteSettings.create({
+                data: {
+                    siteName: 'Black Stone',
+                    siteTagline: 'Premium Professional Clothing',
+                    contactEmail: 'contact@bdblackstone.com',
+                    contactPhone: '+880 XXX XXXX',
+                    alternatePhones: [],
+                    address: 'Dhaka, Bangladesh'
+                }
+            });
+        }
+
+        return settings;
+    } catch (error) {
+        console.error('Error fetching site settings:', error);
+        return null;
+    }
+}
+
+export async function updateSiteSettings(data: any) {
+    try {
+        const existing = await prisma.siteSettings.findFirst();
+
+        if (existing) {
+            await prisma.siteSettings.update({
+                where: { id: existing.id },
+                data
+            });
+        } else {
+            await prisma.siteSettings.create({ data });
+        }
+
+        revalidatePath('/');
+        revalidatePath('/contact');
+        revalidatePath('/admin/site-settings');
+        return { success: true };
+    } catch (error) {
+        console.error('Error updating site settings:', error);
+        return { success: false };
+    }
+}
+
+// --- CMS: Homepage Banners ---
+
+export async function getAllHomepageBanners() {
+    try {
+        const banners = await prisma.homepageBanner.findMany({
+            orderBy: [
+                { priority: 'desc' },
+                { createdAt: 'desc' }
+            ]
+        });
+        return banners;
+    } catch (error) {
+        console.error('Error fetching banners:', error);
+        return [];
+    }
+}
+
+export async function getActiveBanner() {
+    try {
+        const now = new Date();
+        const banner = await prisma.homepageBanner.findFirst({
+            where: {
+                isActive: true,
+                OR: [
+                    { startDate: null, endDate: null },
+                    { startDate: { lte: now }, endDate: null },
+                    { startDate: null, endDate: { gte: now } },
+                    { startDate: { lte: now }, endDate: { gte: now } }
+                ]
+            },
+            orderBy: { priority: 'desc' }
+        });
+        return banner;
+    } catch (error) {
+        console.error('Error fetching active banner:', error);
+        return null;
+    }
+}
+
+export async function createHomepageBanner(data: any) {
+    try {
+        await prisma.homepageBanner.create({ data });
+        revalidatePath('/');
+        revalidatePath('/admin/homepage-banners');
+        return { success: true };
+    } catch (error) {
+        console.error('Error creating banner:', error);
+        return { success: false };
+    }
+}
+
+export async function updateHomepageBanner(id: string, data: any) {
+    try {
+        await prisma.homepageBanner.update({
+            where: { id },
+            data
+        });
+        revalidatePath('/');
+        revalidatePath('/admin/homepage-banners');
+        return { success: true };
+    } catch (error) {
+        console.error('Error updating banner:', error);
+        return { success: false };
+    }
+}
+
+export async function deleteHomepageBanner(id: string) {
+    try {
+        await prisma.homepageBanner.delete({
+            where: { id }
+        });
+        revalidatePath('/');
+        revalidatePath('/admin/homepage-banners');
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting banner:', error);
+        return { success: false };
+    }
+}
+
+// --- CMS: Promotion Banners ---
+
+export async function getAllPromotions() {
+    try {
+        const promotions = await prisma.promotionBanner.findMany({
+            orderBy: { createdAt: 'desc' }
+        });
+        return promotions;
+    } catch (error) {
+        console.error('Error fetching promotions:', error);
+        return [];
+    }
+}
+
+export async function getActivePromotions(position?: string) {
+    try {
+        const now = new Date();
+        const where: any = {
+            isActive: true,
+            OR: [
+                { startDate: null, endDate: null },
+                { startDate: { lte: now }, endDate: null },
+                { startDate: null, endDate: { gte: now } },
+                { startDate: { lte: now }, endDate: { gte: now } }
+            ]
+        };
+
+        if (position) {
+            where.position = position;
+        }
+
+        const promotions = await prisma.promotionBanner.findMany({ where });
+        return promotions;
+    } catch (error) {
+        console.error('Error fetching active promotions:', error);
+        return [];
+    }
+}
+
+export async function createPromotion(data: any) {
+    try {
+        await prisma.promotionBanner.create({ data });
+        revalidatePath('/');
+        revalidatePath('/admin/promotions');
+        return { success: true };
+    } catch (error) {
+        console.error('Error creating promotion:', error);
+        return { success: false };
+    }
+}
+
+export async function updatePromotion(id: string, data: any) {
+    try {
+        await prisma.promotionBanner.update({
+            where: { id },
+            data
+        });
+        revalidatePath('/');
+        revalidatePath('/admin/promotions');
+        return { success: true };
+    } catch (error) {
+        console.error('Error updating promotion:', error);
+        return { success: false };
+    }
+}
+
+export async function deletePromotion(id: string) {
+    try {
+        await prisma.promotionBanner.delete({
+            where: { id }
+        });
+        revalidatePath('/');
+        revalidatePath('/admin/promotions');
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting promotion:', error);
+        return { success: false };
+    }
+}
+
+export async function incrementPromotionView(id: string) {
+    try {
+        await prisma.promotionBanner.update({
+            where: { id },
+            data: { viewCount: { increment: 1 } }
+        });
+    } catch (error) {
+        console.error('Error incrementing view:', error);
+    }
+}
+
+export async function incrementPromotionClick(id: string) {
+    try {
+        await prisma.promotionBanner.update({
+            where: { id },
+            data: { clickCount: { increment: 1 } }
+        });
+    } catch (error) {
+        console.error('Error incrementing click:', error);
+    }
+}

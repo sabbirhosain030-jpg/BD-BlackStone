@@ -167,3 +167,64 @@ model WhatsAppSettings {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+// --- CMS: Site Settings ---
+model SiteSettings {
+  id              String   @id @default(uuid())
+  siteName        String   @default("Black Stone")
+  siteTagline     String?
+  contactEmail    String
+  contactPhone    String
+  alternatePhones String[] // Multiple phone numbers
+  address         String
+  googleMapsUrl   String?
+  googleMapsEmbed String?  @db.Text // Embed code can be long
+  facebookUrl     String?
+  instagramUrl    String?
+  twitterUrl      String?
+  linkedinUrl     String?
+  whatsappNumber  String?
+  businessHours   String?
+  logoUrl         String?
+  faviconUrl      String?
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+// --- CMS: Homepage Banners ---
+model HomepageBanner {
+  id           String    @id @default(uuid())
+  title        String
+  imageUrl     String
+  overlayText  String?   @db.Text
+  overlayColor String?   // rgba or hex color
+  buttonText   String?
+  buttonLink   String?
+  isActive     Boolean   @default(true)
+  startDate    DateTime?
+  endDate      DateTime?
+  priority     Int       @default(0) // Higher priority shows first
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  
+  @@index([isActive, priority])
+}
+
+// --- CMS: Promotion Banners ---
+model PromotionBanner {
+  id          String    @id @default(uuid())
+  title       String
+  description String?   @db.Text
+  imageUrl    String
+  targetUrl   String?
+  isActive    Boolean   @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  position    String    @default("top") // top, popup, sidebar
+  clickCount  Int       @default(0)     // Basic analytics
+  viewCount   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@index([isActive, position])
+}
