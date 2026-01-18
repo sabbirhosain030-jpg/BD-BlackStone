@@ -42,6 +42,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         e.preventDefault();
         e.stopPropagation();
 
+        // Haptic feedback
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+
         if (inWishlist) {
             await removeFromWishlist(id);
         } else {
@@ -52,6 +57,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+
+        // Haptic feedback
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            navigator.vibrate(50);
+        }
 
         addToCart({
             id,
