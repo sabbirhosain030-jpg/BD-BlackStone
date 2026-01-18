@@ -108,7 +108,7 @@ export const Header: React.FC = () => {
                                 Home
                             </Link>
 
-                            {/* Shop By Category Dropdown - DYNAMIC */}
+                            {/* Shop By Category Dropdown - ALL CATEGORIES WITH SUBCATEGORIES */}
                             <div className="nav-dropdown">
                                 <Link
                                     href="/products"
@@ -117,6 +117,7 @@ export const Header: React.FC = () => {
                                     Shop <span style={{ fontSize: '0.7em' }}>▼</span>
                                 </Link>
                                 <div className="nav-dropdown-menu">
+                                    {/* MEN'S FASHION */}
                                     <Link href="/products?category=mens-fashion" className="dropdown-item dropdown-header">
                                         Men's Fashion
                                     </Link>
@@ -133,16 +134,49 @@ export const Header: React.FC = () => {
                                         → Panjabi
                                     </Link>
 
+                                    {/* WOMEN'S FASHION */}
                                     <Link href="/products?category=womens-fashion" className="dropdown-item dropdown-header">
                                         Women's Fashion
                                     </Link>
+                                    <Link href="/products?subCategory=dress" className="dropdown-subitem">
+                                        → Dress
+                                    </Link>
+                                    <Link href="/products?subCategory=salwar" className="dropdown-subitem">
+                                        → Salwar Kameez
+                                    </Link>
+                                    <Link href="/products?subCategory=saree" className="dropdown-subitem">
+                                        → Saree
+                                    </Link>
+                                    <Link href="/products?subCategory=tops" className="dropdown-subitem">
+                                        → Tops
+                                    </Link>
 
+                                    {/* BOYS */}
                                     <Link href="/products?category=boys" className="dropdown-item dropdown-header">
                                         Boys
                                     </Link>
+                                    <Link href="/products?subCategory=boys-shirt" className="dropdown-subitem">
+                                        → Shirts
+                                    </Link>
+                                    <Link href="/products?subCategory=boys-pant" className="dropdown-subitem">
+                                        → Pants
+                                    </Link>
+                                    <Link href="/products?subCategory=boys-tshirt" className="dropdown-subitem">
+                                        → T-Shirts
+                                    </Link>
 
+                                    {/* GIRLS */}
                                     <Link href="/products?category=girls" className="dropdown-item dropdown-header">
                                         Girls
+                                    </Link>
+                                    <Link href="/products?subCategory=girls-dress" className="dropdown-subitem">
+                                        → Dresses
+                                    </Link>
+                                    <Link href="/products?subCategory=girls-tops" className="dropdown-subitem">
+                                        → Tops
+                                    </Link>
+                                    <Link href="/products?subCategory=girls-skirts" className="dropdown-subitem">
+                                        → Skirts
                                     </Link>
 
                                     <div className="dropdown-divider"></div>
@@ -152,20 +186,15 @@ export const Header: React.FC = () => {
                                 </div>
                             </div>
 
+                            {/* WISHLIST LINK */}
                             <Link
-                                href="/products?category=mens-fashion"
-                                className={`nav-link ${category === 'mens-fashion' || category === 'men' ? 'nav-link-active' : ''}`}
+                                href="/wishlist"
+                                className={`nav-link ${pathname === '/wishlist' ? 'nav-link-active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
-                                Men
+                                Wishlist
                             </Link>
-                            <Link
-                                href="/products?category=womens-fashion"
-                                className={`nav-link ${category === 'womens-fashion' || category === 'women' ? 'nav-link-active' : ''}`}
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Women
-                            </Link>
+
                             <Link
                                 href="/products?tag=new"
                                 className={`nav-link ${tag === 'new' ? 'nav-link-active' : ''}`}
