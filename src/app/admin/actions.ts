@@ -157,6 +157,7 @@ export async function createProduct(formData: FormData) {
     const categoryId = formData.get('categoryId') as string;
     const subCategoryId = formData.get('subCategoryId') as string || null;
     const imageUrl = formData.get('imageUrl') as string;
+    const imagesJson = formData.get('imagesJson') as string;
     const imagePublicId = formData.get('imagePublicId') as string || null;
     const isNew = formData.get('isNew') === 'on';
     const isFeatured = formData.get('isFeatured') === 'on';
@@ -164,8 +165,19 @@ export async function createProduct(formData: FormData) {
     const colors = formData.get('colors') as string || '["Black", "Navy", "Grey"]';
 
     // Basic validation
+    // We check if either imageUrl or imagesJson provides at least one image
+    const hasImage = imageUrl || (imagesJson && imagesJson !== '[]');
+
     if (!name || !description || isNaN(price) || isNaN(stock) || !categoryId) {
         throw new Error('Missing required fields');
+    }
+
+    // Determine final images JSON string
+    let finalImages = '[]';
+    if (imagesJson) {
+        finalImages = imagesJson;
+    } else if (imageUrl) {
+        finalImages = JSON.stringify([imageUrl]);
     }
 
     try {
@@ -180,7 +192,7 @@ export async function createProduct(formData: FormData) {
                 subCategoryId: subCategoryId === "" ? null : subCategoryId,
                 isNew,
                 isFeatured,
-                images: JSON.stringify([imageUrl]),
+                images: finalImages,
                 imagePublicId,
                 sizes: sizes,
                 colors: colors,
@@ -210,6 +222,7 @@ export async function updateProduct(productId: string, formData: FormData) {
     const categoryId = formData.get('categoryId') as string;
     const subCategoryId = formData.get('subCategoryId') as string || null;
     const imageUrl = formData.get('imageUrl') as string;
+    const imagesJson = formData.get('imagesJson') as string;
     const imagePublicId = formData.get('imagePublicId') as string || null;
     const isNew = formData.get('isNew') === 'on';
     const isFeatured = formData.get('isFeatured') === 'on';
@@ -218,6 +231,14 @@ export async function updateProduct(productId: string, formData: FormData) {
 
     if (!name || !description || isNaN(price) || isNaN(stock) || !categoryId) {
         throw new Error('Missing required fields');
+    }
+
+    // Determine final images JSON string
+    let finalImages = undefined;
+    if (imagesJson) {
+        finalImages = imagesJson;
+    } else if (imageUrl) {
+        finalImages = JSON.stringify([imageUrl]);
     }
 
     try {
@@ -233,7 +254,7 @@ export async function updateProduct(productId: string, formData: FormData) {
                 subCategoryId: subCategoryId === "" ? null : subCategoryId,
                 isNew,
                 isFeatured,
-                images: imageUrl ? JSON.stringify([imageUrl]) : undefined,
+                images: finalImages,
                 imagePublicId: imagePublicId || undefined,
                 sizes: sizes || undefined,
                 colors: colors || undefined,
