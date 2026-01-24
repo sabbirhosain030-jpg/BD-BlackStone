@@ -44,6 +44,18 @@ export default function ProductForm({ categories, initialData, action, submitTex
 
     // Error handling wrapper
     async function handleAction(formData: FormData) {
+        // Client-side validation
+        const name = formData.get('name');
+        const price = formData.get('price');
+        const categoryId = formData.get('categoryId');
+        const description = formData.get('description');
+
+        if (!name) return alert('Please enter a product name.');
+        if (!price) return alert('Please enter a price.');
+        if (!categoryId) return alert('Please select a category.');
+        if (!description) return alert('Please enter a description.');
+        if (images.length === 0) return alert('Please upload at least one product image.');
+
         try {
             await action(formData);
         } catch (error: any) {
