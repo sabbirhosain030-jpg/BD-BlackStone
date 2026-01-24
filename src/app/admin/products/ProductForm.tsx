@@ -66,7 +66,97 @@ export default function ProductForm({ categories, initialData, action, submitTex
             <input type="hidden" name="imageUrl" value={imageUrl} />
             <input type="hidden" name="imagesJson" value={JSON.stringify(images)} />
 
-            {/* ... other fields ... */}
+            <div className="form-group">
+                <label className="form-label">Product Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    className="form-input"
+                    required
+                    defaultValue={initialData?.name}
+                    placeholder="e.g. Classic Charcoal Suit"
+                />
+            </div>
+
+            <div className="form-grid">
+                <div className="form-group">
+                    <label className="form-label">Price (৳)</label>
+                    <input
+                        type="number"
+                        name="price"
+                        className="form-input"
+                        required
+                        defaultValue={initialData?.price}
+                        placeholder="12500"
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Previous Price (Optional)</label>
+                    <input
+                        type="number"
+                        name="previousPrice"
+                        className="form-input"
+                        defaultValue={initialData?.previousPrice}
+                        placeholder="15000"
+                    />
+                </div>
+            </div>
+
+            <div className="form-grid">
+                <div className="form-group">
+                    <label className="form-label">Category</label>
+                    <select
+                        name="categoryId"
+                        className="form-input"
+                        required
+                        value={selectedCategoryId}
+                        onChange={(e) => setSelectedCategoryId(e.target.value)}
+                    >
+                        <option value="">Select Category</option>
+                        {categories.map(cat => (
+                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Subcategory (Optional)</label>
+                    <select
+                        name="subCategoryId"
+                        className="form-input"
+                        value={selectedSubCategoryId}
+                        onChange={(e) => setSelectedSubCategoryId(e.target.value)}
+                    >
+                        <option value="">No Subcategory</option>
+                        {subCategories.map(sub => (
+                            <option key={sub.id} value={sub.id}>{sub.name}</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            <div className="form-group">
+                <label className="form-label">Stock Quantity</label>
+                <input
+                    type="number"
+                    name="stock"
+                    className="form-input"
+                    required
+                    defaultValue={initialData?.stock || 0}
+                    placeholder="10"
+                />
+            </div>
+
+            <div className="form-group">
+                <label className="form-label">Description</label>
+                <textarea
+                    name="description"
+                    className="form-input"
+                    rows={4}
+                    required
+                    defaultValue={initialData?.description}
+                    placeholder="Product description..."
+                ></textarea>
+            </div>
 
             <div className="form-group">
                 <MultiImageUpload
