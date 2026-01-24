@@ -32,36 +32,51 @@ export default function MultiImageUpload({
         const errors: string[] = [];
 
         // Upload each file
+        // Upload each file
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
 
-            // Basic client-side validation for roughly 5MB
-            if (file.size > 5 * 1024 * 1024) {
-                errors.push(`${file.name} (Too large, max 5MB)`);
-                continue;
-            }
-
             try {
+                // 1. Get Signature from our API
+                const signResponse = await fetch('/api/sign-cloudinary', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        paramsToSign: {
+                            folder: 'bd-blackstone-products',
+                            timestamp: Math.round((new Date).getTime() / 1000),
+                        }
+                    })
+                });
+
+                if (!signResponse.ok) throw new Error('Failed to get upload signature');
+                const { signature } = await signResponse.json();
+
+                // 2. Direct Upload to Cloudinary
                 const formData = new FormData();
                 formData.append('file', file);
+                formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '463378964356476');
+                formData.append('timestamp', String(Math.round((new Date).getTime() / 1000)));
+                formData.append('signature', signature);
+                formData.append('folder', 'bd-blackstone-products');
 
-                const res = await fetch('/api/upload', {
+                const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dgd6cj2il';
+                const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
                     method: 'POST',
                     body: formData,
                 });
 
-                if (!res.ok) {
-                    const errorData = await res.json().catch(() => ({}));
-                    throw new Error(errorData.error || `Upload failed for ${file.name}`);
+                if (!uploadRes.ok) {
+                    const errData = await uploadRes.json().catch(() => ({}));
+                    throw new Error(errData.error?.message || `Upload failed for ${file.name}`);
                 }
 
-                const data = await res.json();
-                if (data.url) {
-                    newUrls.push(data.url);
+                const data = await uploadRes.json();
+                if (data.secure_url) {
+                    newUrls.push(data.secure_url);
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error(err);
-                errors.push(`${file.name} (Upload failed)`);
+                errors.push(`${file.name} (${err.message})`);
             }
         }
 
