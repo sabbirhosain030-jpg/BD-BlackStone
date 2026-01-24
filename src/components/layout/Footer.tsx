@@ -2,18 +2,17 @@ import React from 'react';
 import Link from 'next/link';
 import { Newsletter } from './Newsletter';
 import './Footer.css';
-import { getFooterLinks } from '@/app/admin/footer-links/actions';
+
 
 export const Footer = async () => {
-    let footerLinks: any[] = [];
+    const footerLinks: any[] = [];
+    /* 
     try {
-        const res = await getFooterLinks();
-        if (res.success && res.links) {
-            footerLinks = res.links;
-        }
+        // Footer links management moved/removed
     } catch (e) {
         console.error("Failed to load footer links", e);
-    }
+    } 
+    */
 
     const quickLinks = footerLinks.filter(l => l.section === 'Quick Links' && l.isActive);
     const customerServiceLinks = footerLinks.filter(l => l.section === 'Customer Service' && l.isActive);

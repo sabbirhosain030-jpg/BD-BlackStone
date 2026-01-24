@@ -32,9 +32,9 @@
 }
 
 .chatbot-window {
-    position: absolute;
-    bottom: 90px;
-    right: 0;
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
     width: 380px;
     height: 600px;
     background: white;

@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 
+import ImageUpload from '@/components/ui/ImageUpload';
+
 interface Category {
     id: string;
     name: string;
@@ -134,14 +136,16 @@ export default function ProductForm({ categories, initialData, action, submitTex
             </div>
 
             <div className="form-group">
-                <label className="form-label">Image URL</label>
-                <input
-                    type="url"
-                    name="imageUrl"
-                    className="form-input"
+                <ImageUpload
+                    label="Product Image"
+                    initialUrl={initialData?.images ? JSON.parse(initialData.images)[0] : ''}
+                    onUpload={(url: string) => {
+                        // The hidden input will be updated automatically because it uses defaultValue/state logic if needed
+                        // But here we're using controlled/uncontrolled mix. 
+                        // The ImageUpload component updates its own hidden input if present, or we can use another hidden input here.
+                        // Let's rely on ImageUpload's internal hidden input or set one here.
+                    }}
                     required
-                    defaultValue={initialData?.images ? JSON.parse(initialData.images)[0] : ''}
-                    placeholder="https://..."
                 />
             </div>
 
