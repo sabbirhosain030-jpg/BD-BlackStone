@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProductCard } from '@/components/products/ProductCard';
+import { CategoryPills } from '@/components/products/CategoryPills';
 import './products.css';
 import { getAllProducts, getCategories } from '../actions';
 import FilterControls from './filter-controls';
@@ -16,6 +17,7 @@ export default async function ProductsPage({
 }) {
     const resolvedParams = await searchParams; // Await the promise
     const categoryFilter = resolvedParams.category;
+    const subCategoryFilter = resolvedParams.subCategory;
     const sortFilter = resolvedParams.sort || 'newest';
     const tagFilter = resolvedParams.tag; // 'new'
     const viewMode = resolvedParams.view || 'grid';
@@ -36,7 +38,7 @@ export default async function ProductsPage({
     }
 
     // Fetch data
-    const products = await getAllProducts(categoryFilter, sortFilter, minPrice, maxPrice);
+    const products = await getAllProducts(categoryFilter, sortFilter, minPrice, maxPrice, subCategoryFilter);
     const categories = await getCategories();
 
     // Map DB products to ProductCard props
@@ -92,6 +94,12 @@ export default async function ProductsPage({
                     currentCategory={categoryFilter}
                     currentSort={sortFilter}
                     currentPrice={resolvedParams.price}
+                />
+
+                {/* Sub-Category Pills */}
+                <CategoryPills
+                    categories={categories}
+                    currentCategory={categoryFilter}
                 />
 
                 {/* Products Grid */}

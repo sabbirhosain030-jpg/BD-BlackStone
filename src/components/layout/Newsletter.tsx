@@ -12,7 +12,7 @@ export const Newsletter = () => {
 
         // Simulate API call
         setTimeout(() => {
-            console.log("Subscribed:", email);
+
             setStatus('success');
             setEmail('');
         }, 1500);

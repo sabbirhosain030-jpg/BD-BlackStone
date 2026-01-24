@@ -15,8 +15,8 @@ export type CartItem = {
 interface CartContextType {
     items: CartItem[];
     addToCart: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
-    removeFromCart: (id: string, size: string) => void;
-    updateQuantity: (id: string, size: string, quantity: number) => void;
+    removeFromCart: (id: string, size: string, color?: string) => void;
+    updateQuantity: (id: string, size: string, color: string | undefined, quantity: number) => void;
     clearCart: () => void;
     cartCount: number;
     cartTotal: number;
@@ -51,7 +51,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const addToCart = (newItem: Omit<CartItem, 'quantity'> & { quantity?: number }) => {
         setItems(prev => {
             const existingItemIndex = prev.findIndex(
-                item => item.id === newItem.id && item.size === newItem.size
+                item => item.id === newItem.id && item.size === newItem.size && item.color === newItem.color
             );
 
             const quantityToAdd = newItem.quantity || 1;
@@ -68,15 +68,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         });
     };
 
-    const removeFromCart = (id: string, size: string) => {
-        setItems(prev => prev.filter(item => !(item.id === id && item.size === size)));
+    const removeFromCart = (id: string, size: string, color?: string) => {
+        setItems(prev => prev.filter(item => !(item.id === id && item.size === size && item.color === color)));
     };
 
-    const updateQuantity = (id: string, size: string, quantity: number) => {
+    const updateQuantity = (id: string, size: string, color: string | undefined, quantity: number) => {
         if (quantity < 1) return;
         setItems(prev =>
             prev.map(item =>
-                (item.id === id && item.size === size)
+                (item.id === id && item.size === size && item.color === color)
                     ? { ...item, quantity }
                     : item
             )

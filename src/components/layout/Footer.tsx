@@ -6,13 +6,6 @@ import './Footer.css';
 
 export const Footer = async () => {
     const footerLinks: any[] = [];
-    /* 
-    try {
-        // Footer links management moved/removed
-    } catch (e) {
-        console.error("Failed to load footer links", e);
-    } 
-    */
 
     const quickLinks = footerLinks.filter(l => l.section === 'Quick Links' && l.isActive);
     const customerServiceLinks = footerLinks.filter(l => l.section === 'Customer Service' && l.isActive);

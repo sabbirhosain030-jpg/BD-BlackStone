@@ -32,35 +32,46 @@ export default function CartPage() {
                         {/* Cart Items */}
                         <div className="cart-items">
                             {cartItems.map((item) => (
-                                <div key={`${item.id}-${item.size}`} className="cart-item">
-                                    <div className="item-image">
-                                        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                                            <Image src={item.image} alt={item.name} fill className="image" style={{ objectFit: 'cover' }} />
-                                        </div>
-                                    </div>
-                                    <div className="item-details">
-                                        <h3 className="item-name">{item.name}</h3>
-                                        <p className="item-size">Size: {item.size}</p>
-                                        <p className="item-price">৳ {item.price.toLocaleString()}</p>
-                                    </div>
-                                    <div className="item-quantity">
-                                        <button
-                                            className="qty-btn"
-                                            onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)}
-                                        >-</button>
-                                        <span>{item.quantity}</span>
-                                        <button
-                                            className="qty-btn"
-                                            onClick={() => updateQuantity(item.id, item.size, item.quantity + 1)}
-                                        >+</button>
-                                    </div>
-                                    <div className="item-total">
-                                        ৳ {(item.price * item.quantity).toLocaleString()}
-                                    </div>
+                                <div key={`${item.id}-${item.size}-${item.color}`} className="cart-item">
                                     <button
                                         className="item-remove"
-                                        onClick={() => removeFromCart(item.id, item.size)}
+                                        onClick={() => removeFromCart(item.id, item.size, item.color)}
+                                        title="Remove item"
                                     >×</button>
+
+                                    <div className="item-image">
+                                        <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                            <Image src={item.image} alt={item.name} fill className="image" />
+                                        </div>
+                                    </div>
+
+                                    <div className="item-details">
+                                        <h3 className="item-name">{item.name}</h3>
+
+                                        <div className="item-meta">
+                                            {item.size && <span className="meta-badge">Size: {item.size}</span>}
+                                            {item.color && <span className="meta-badge">Color: {item.color}</span>}
+                                        </div>
+
+                                        <p className="item-price">৳ {item.price.toLocaleString()}</p>
+                                    </div>
+
+                                    <div className="item-actions">
+                                        <div className="item-quantity">
+                                            <button
+                                                className="qty-btn"
+                                                onClick={() => updateQuantity(item.id, item.size, item.color, item.quantity - 1)}
+                                            >-</button>
+                                            <span>{item.quantity}</span>
+                                            <button
+                                                className="qty-btn"
+                                                onClick={() => updateQuantity(item.id, item.size, item.color, item.quantity + 1)}
+                                            >+</button>
+                                        </div>
+                                        <div className="item-total">
+                                            ৳ {(item.price * item.quantity).toLocaleString()}
+                                        </div>
+                                    </div>
                                 </div>
                             ))}
                         </div>

@@ -27,6 +27,20 @@ export default function ProductForm({ categories, initialData, action, submitTex
     const [selectedCategoryId, setSelectedCategoryId] = useState(initialData?.categoryId || '');
     const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(initialData?.subCategoryId || '');
+    const [imageUrl, setImageUrl] = useState('');
+
+    useEffect(() => {
+        if (initialData?.images) {
+            try {
+                const parsed = JSON.parse(initialData.images);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setImageUrl(parsed[0]);
+                }
+            } catch (e) {
+                // ignore
+            }
+        }
+    }, [initialData]);
 
     useEffect(() => {
         if (selectedCategoryId) {
@@ -136,15 +150,11 @@ export default function ProductForm({ categories, initialData, action, submitTex
             </div>
 
             <div className="form-group">
+                <input type="hidden" name="imageUrl" value={imageUrl} />
                 <ImageUpload
                     label="Product Image"
-                    initialUrl={initialData?.images ? JSON.parse(initialData.images)[0] : ''}
-                    onUpload={(url: string) => {
-                        // The hidden input will be updated automatically because it uses defaultValue/state logic if needed
-                        // But here we're using controlled/uncontrolled mix. 
-                        // The ImageUpload component updates its own hidden input if present, or we can use another hidden input here.
-                        // Let's rely on ImageUpload's internal hidden input or set one here.
-                    }}
+                    initialUrl={imageUrl}
+                    onUpload={(url) => setImageUrl(url)}
                     required
                 />
             </div>

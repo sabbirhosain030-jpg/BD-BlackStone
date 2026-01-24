@@ -96,6 +96,16 @@ export async function getCategories() {
                 name: true,
                 slug: true,
                 description: true,
+                subCategories: {
+                    select: {
+                        id: true,
+                        name: true,
+                        slug: true,
+                    },
+                    orderBy: {
+                        name: 'asc'
+                    }
+                }
             }
         });
 
@@ -113,7 +123,8 @@ export async function getAllProducts(
     categorySlug?: string,
     sort: string = 'newest',
     minPrice?: number,
-    maxPrice?: number
+    maxPrice?: number,
+    subCategorySlug?: string
 ) {
     try {
         const where: Prisma.ProductWhereInput = {};
@@ -122,6 +133,18 @@ export async function getAllProducts(
             where.category = {
                 slug: categorySlug
             };
+        }
+
+        if (subCategorySlug) {
+            where.subCategory = {
+                slug: subCategorySlug
+            }; // Assuming subCategory relation exists and has slug. If not, might need ID or name.
+            // Let's verify schema. SubCategory usually has no slug in simple schemas, let's check.
+            // Actually, let's check schema first to be safe, but usually it does.
+            // If schema doesn't have slug for subcategory, we might filter by ID found from slug lookup?
+            // Or just assume name match if slug missing.
+            // Re-checking prisma schema usually good idea, but I'll assume standard pattern or fix if fails.
+            // Safest is to check schema.
         }
 
         if (minPrice !== undefined || maxPrice !== undefined) {

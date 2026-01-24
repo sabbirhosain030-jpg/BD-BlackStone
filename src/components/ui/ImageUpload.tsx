@@ -128,7 +128,7 @@ export default function ImageUpload({ initialUrl, onUpload, label = "Product Ima
 
                 {/* Hidden input to store the URL so it gets submitted with the form if needed, 
                     though ProductForm handles state via onUpload callback usually or hidden input */}
-                <input type="hidden" name="imageUrl" value={preview?.startsWith('blob:') ? '' : preview || ''} />
+
             </div>
         </div>
     );

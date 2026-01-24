@@ -268,7 +268,7 @@ export async function deleteProduct(productId: string) {
             const cloudinary = require('@/lib/cloudinary').default;
             try {
                 await cloudinary.uploader.destroy(product.imagePublicId);
-                console.log(`Deleted image from Cloudinary: ${product.imagePublicId}`);
+
             } catch (cloudinaryError) {
                 console.error('Failed to delete image from Cloudinary:', cloudinaryError);
                 // Continue with product deletion even if Cloudinary delete fails

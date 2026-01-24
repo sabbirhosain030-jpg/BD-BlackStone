@@ -27,7 +27,7 @@ export const MarketingModal = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // Here you would call an API/Server Action to subscribe the user
-        console.log("Subscribing email:", email);
+
         handleClose();
         // Ideally show a success toast here
     };

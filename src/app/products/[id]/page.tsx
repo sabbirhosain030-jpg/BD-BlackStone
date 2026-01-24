@@ -58,6 +58,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         if (Array.isArray(parsed)) sizes = parsed;
     } catch (e) { }
 
+    let colors: string[] = [];
+    try {
+        const parsed = JSON.parse(dbProduct.colors || '[]');
+        if (Array.isArray(parsed)) colors = parsed;
+    } catch (e) { }
+
     const product = {
         id: dbProduct.id,
         name: dbProduct.name,
@@ -66,6 +72,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
         description: dbProduct.description,
         images: images.length > 0 ? images : ['/placeholder.png'],
         sizes: sizes.length > 0 ? sizes : ['S', 'M', 'L', 'XL'], // Default if missing
+        colors: colors.length > 0 ? colors : [], // Default empty if missing
         category: dbProduct.category?.name || 'Collection',
         stock: dbProduct.stock
     };

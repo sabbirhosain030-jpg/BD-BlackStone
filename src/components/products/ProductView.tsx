@@ -25,6 +25,7 @@ interface ProductViewProps {
 export default function ProductView({ product }: ProductViewProps) {
     const [selectedImage, setSelectedImage] = useState(0);
     const [selectedSize, setSelectedSize] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
 
@@ -44,6 +45,10 @@ export default function ProductView({ product }: ProductViewProps) {
             alert('Please select a size');
             return;
         }
+        if (!selectedColor && product.colors && product.colors.length > 0) {
+            alert('Please select a color');
+            return;
+        }
 
         addToCart({
             id: product.id,
@@ -51,6 +56,7 @@ export default function ProductView({ product }: ProductViewProps) {
             price: product.price,
             image: product.images[0] || '/placeholder.png',
             size: selectedSize,
+            color: selectedColor, // Add color to cart item
             quantity: quantity
         });
 
@@ -122,6 +128,34 @@ export default function ProductView({ product }: ProductViewProps) {
                                 </button>
                             ))}
                         </div>
+                    </div>
+                )}
+
+                {/* Color Selection */}
+                {product.colors && product.colors.length > 0 && (
+                    <div className="product-options">
+                        <label className="option-label">Select Color</label>
+                        <div className="color-options" style={{ display: 'flex', gap: '10px' }}>
+                            {product.colors.map((color) => (
+                                <button
+                                    key={color}
+                                    className={`color-btn ${selectedColor === color ? 'selected' : ''}`}
+                                    onClick={() => setSelectedColor(color)}
+                                    title={color}
+                                    style={{
+                                        width: '32px',
+                                        height: '32px',
+                                        borderRadius: '50%',
+                                        backgroundColor: color.toLowerCase(),
+                                        border: selectedColor === color ? '2px solid var(--color-gold)' : '1px solid #ddd',
+                                        boxShadow: selectedColor === color ? '0 0 0 2px white, 0 0 0 4px var(--color-gold)' : 'none',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s'
+                                    }}
+                                />
+                            ))}
+                        </div>
+                        {selectedColor && <span style={{ fontSize: '0.9rem', color: '#666', marginTop: '5px', display: 'block' }}>Color: <b>{selectedColor}</b></span>}
                     </div>
                 )}
 
