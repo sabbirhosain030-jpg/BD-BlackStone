@@ -18,6 +18,7 @@ export default function MultiImageUpload({
     const [images, setImages] = useState<string[]>(initialUrls);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState('');
+    const inputId = React.useId(); // Unique ID for label-input pairing
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -33,6 +34,12 @@ export default function MultiImageUpload({
         // Upload each file
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
+
+            // Basic client-side validation for roughly 5MB
+            if (file.size > 5 * 1024 * 1024) {
+                errors.push(`${file.name} (Too large, max 5MB)`);
+                continue;
+            }
 
             try {
                 const formData = new FormData();
@@ -51,14 +58,14 @@ export default function MultiImageUpload({
                 }
             } catch (err) {
                 console.error(err);
-                errors.push(file.name);
+                errors.push(`${file.name} (Upload failed)`);
             }
         }
 
         setUploading(false);
 
         if (errors.length > 0) {
-            setError(`Failed to upload: ${errors.join(', ')}`);
+            setError(`Error: ${errors.join(', ')}`);
         }
 
         if (newUrls.length > 0) {
@@ -66,6 +73,9 @@ export default function MultiImageUpload({
             setImages(updatedImages);
             onUpload(updatedImages);
         }
+
+        // Reset input so same files can be selected again if needed
+        e.target.value = '';
     };
 
     const removeImage = (indexToRemove: number) => {
@@ -76,18 +86,29 @@ export default function MultiImageUpload({
 
     return (
         <div className="form-group">
-            <label className="form-label">
-                {label} {required && images.length === 0 && <span style={{ color: 'red' }}>*</span>}
+            <label className="form-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>
+                    {label} {required && images.length === 0 && <span style={{ color: 'red' }}>*</span>}
+                </span>
+                <span style={{ fontSize: '0.75rem', color: '#888', fontWeight: 'normal' }}>
+                    Recommended: 1:1 Aspect Ratio (Square) • Max 5MB
+                </span>
             </label>
 
             <div className="multi-image-grid" style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))',
                 gap: '1rem',
                 marginBottom: '1rem'
             }}>
                 {images.map((url, index) => (
-                    <div key={index} style={{ position: 'relative', aspectRatio: '1/1' }}>
+                    <div key={index} style={{
+                        position: 'relative',
+                        aspectRatio: '1/1',
+                        border: '1px solid #444',
+                        borderRadius: '8px',
+                        overflow: 'hidden'
+                    }}>
                         <img
                             src={url}
                             alt={`Product ${index + 1}`}
@@ -95,8 +116,6 @@ export default function MultiImageUpload({
                                 width: '100%',
                                 height: '100%',
                                 objectFit: 'cover',
-                                borderRadius: '8px',
-                                border: '1px solid #333'
                             }}
                         />
                         <button
@@ -104,9 +123,9 @@ export default function MultiImageUpload({
                             onClick={() => removeImage(index)}
                             style={{
                                 position: 'absolute',
-                                top: '-8px',
-                                right: '-8px',
-                                background: '#ef4444',
+                                top: '4px',
+                                right: '4px',
+                                background: 'rgba(239, 68, 68, 0.9)',
                                 color: 'white',
                                 border: 'none',
                                 borderRadius: '50%',
@@ -116,8 +135,10 @@ export default function MultiImageUpload({
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                fontSize: '14px'
+                                fontSize: '14px',
+                                zIndex: 10
                             }}
+                            title="Remove image"
                         >
                             ×
                         </button>
@@ -125,44 +146,53 @@ export default function MultiImageUpload({
                 ))}
 
                 {/* Upload Button Block */}
-                <div style={{
-                    position: 'relative',
-                    border: '2px dashed #444',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    aspectRatio: '1/1',
-                    cursor: uploading ? 'not-allowed' : 'pointer',
-                    backgroundColor: '#1a1a1a',
-                    transition: 'all 0.2s ease'
-                }}>
-                    {uploading ? (
-                        <span style={{ fontSize: '0.8rem', color: '#888' }}>Uploading...</span>
-                    ) : (
-                        <>
-                            <span style={{ fontSize: '2rem', color: '#666', marginBottom: '0.5rem' }}>+</span>
-                            <span style={{ fontSize: '0.8rem', color: '#888' }}>Add Image</span>
-                        </>
-                    )}
-
+                <div>
+                    <label
+                        htmlFor={inputId}
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            aspectRatio: '1/1',
+                            border: '2px dashed #444',
+                            borderRadius: '8px',
+                            cursor: uploading ? 'not-allowed' : 'pointer',
+                            backgroundColor: '#1a1a1a',
+                            transition: 'all 0.2s ease',
+                            width: '100%',
+                            height: '100%'
+                        }}
+                        onMouseEnter={(e) => {
+                            if (!uploading) {
+                                e.currentTarget.style.borderColor = 'var(--color-gold)';
+                                e.currentTarget.style.backgroundColor = '#222';
+                            }
+                        }}
+                        onMouseLeave={(e) => {
+                            if (!uploading) {
+                                e.currentTarget.style.borderColor = '#444';
+                                e.currentTarget.style.backgroundColor = '#1a1a1a';
+                            }
+                        }}
+                    >
+                        {uploading ? (
+                            <span style={{ fontSize: '0.8rem', color: '#888' }}>Uploading...</span>
+                        ) : (
+                            <>
+                                <span style={{ fontSize: '2rem', color: '#666', marginBottom: '0.25rem' }}>+</span>
+                                <span style={{ fontSize: '0.8rem', color: '#888' }}>Add</span>
+                            </>
+                        )}
+                    </label>
                     <input
+                        id={inputId}
                         type="file"
                         accept="image/*"
                         multiple
                         onChange={handleFileChange}
                         disabled={uploading}
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            opacity: 0,
-                            zIndex: 50,
-                            cursor: uploading ? 'not-allowed' : 'pointer'
-                        }}
+                        style={{ display: 'none' }}
                     />
                 </div>
             </div>
