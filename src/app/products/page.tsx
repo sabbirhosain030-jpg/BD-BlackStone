@@ -13,7 +13,7 @@ export const dynamicParams = true;
 export default async function ProductsPage({
     searchParams,
 }: {
-    searchParams: Promise<{ category?: string; sort?: string; price?: string; tag?: string; view?: 'grid' | 'list' }>;
+    searchParams: Promise<{ category?: string; subCategory?: string; sort?: string; price?: string; tag?: string; view?: 'grid' | 'list' }>;
 }) {
     const resolvedParams = await searchParams; // Await the promise
     const categoryFilter = resolvedParams.category;
