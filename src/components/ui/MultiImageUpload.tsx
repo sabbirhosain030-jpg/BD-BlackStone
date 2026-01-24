@@ -37,13 +37,15 @@ export default function MultiImageUpload({
             const file = files[i];
 
             try {
+                const timestamp = Math.round((new Date).getTime() / 1000);
+
                 // 1. Get Signature from our API
                 const signResponse = await fetch('/api/sign-cloudinary', {
                     method: 'POST',
                     body: JSON.stringify({
                         paramsToSign: {
                             folder: 'bd-blackstone-products',
-                            timestamp: Math.round((new Date).getTime() / 1000),
+                            timestamp: timestamp,
                         }
                     })
                 });
@@ -55,7 +57,7 @@ export default function MultiImageUpload({
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('api_key', apiKey);
-                formData.append('timestamp', String(Math.round((new Date).getTime() / 1000)));
+                formData.append('timestamp', String(timestamp));
                 formData.append('signature', signature);
                 formData.append('folder', 'bd-blackstone-products');
 
