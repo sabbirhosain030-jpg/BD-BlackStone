@@ -11,10 +11,12 @@ export async function POST(request: Request) {
             process.env.CLOUDINARY_API_SECRET as string
         );
 
+        const config = cloudinary.config();
+
         return NextResponse.json({
             signature,
-            apiKey: process.env.CLOUDINARY_API_KEY,
-            cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME
+            apiKey: config.api_key,
+            cloudName: config.cloud_name
         });
     } catch (error) {
         console.error('Request signing failed:', error);
