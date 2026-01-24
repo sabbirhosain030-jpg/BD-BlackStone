@@ -180,6 +180,12 @@
     border-color: var(--color-gold);
     background: var(--color-gold);
     color: var(--color-white);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.size-btn:active {
+    transform: scale(0.96);
 }
 
 .quantity-selector {
@@ -203,6 +209,12 @@
 
 .quantity-selector button:hover {
     background: var(--color-cream);
+    color: var(--color-gold-dark);
+}
+
+.quantity-selector button:active {
+    background: var(--color-border);
+    transform: scale(0.9);
 }
 
 .quantity-selector span {

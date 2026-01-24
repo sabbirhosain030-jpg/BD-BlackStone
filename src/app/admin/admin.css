@@ -378,8 +378,13 @@
     background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
     transform: translateY(-2px);
     box-shadow:
-        0 4px 8px rgba(212, 175, 55, 0.25),
-        0 8px 20px rgba(212, 175, 55, 0.2);
+        0 4px 12px rgba(212, 175, 55, 0.3),
+        0 8px 24px rgba(212, 175, 55, 0.2);
+}
+
+.admin-btn-primary:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 4px rgba(212, 175, 55, 0.2);
 }
 
 .admin-btn-primary:disabled {
