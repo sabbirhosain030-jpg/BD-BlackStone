@@ -109,25 +109,29 @@ export async function getProduct(id: string) {
 
 export async function getAdminCategories() {
     try {
-        // Use cache for categories
-        const cacheKey = 'admin:categories';
-        const cached = cache.get(cacheKey);
-        if (cached) return cached;
+        // Check cache first
+        const cached = cache.get('admin:categories');
+        if (cached && Array.isArray(cached)) return cached;
 
         const categories = await prisma.category.findMany({
-            orderBy: {
-                name: 'asc'
-            },
             include: {
-                subCategories: true
-            }
+                subCategories: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+            orderBy: {
+                name: 'asc',
+            },
         });
 
         // Cache for 10 minutes
-        cache.set(cacheKey, categories, 10);
+        cache.set('admin:categories', categories, 10);
         return categories;
     } catch (error) {
-        console.error('Failed to fetch admin categories:', error);
+        console.error("Failed to fetch admin categories:", error);
         return [];
     }
 }

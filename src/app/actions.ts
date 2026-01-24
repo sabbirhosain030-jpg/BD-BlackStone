@@ -8,7 +8,7 @@ export async function getFeaturedProducts() {
     try {
         // Check cache first
         const cached = cache.get(CACHE_KEYS.FEATURED_PRODUCTS);
-        if (cached) return cached;
+        if (cached && Array.isArray(cached)) return cached;
 
         const products = await prisma.product.findMany({
             where: {
@@ -25,14 +25,9 @@ export async function getFeaturedProducts() {
                 previousPrice: true,
                 images: true,
                 categoryId: true,
+                isFeatured: true,
                 isNew: true,
                 stock: true,
-                category: {
-                    select: {
-                        name: true,
-                        slug: true,
-                    }
-                }
             },
         });
 
@@ -90,7 +85,7 @@ export async function getCategories() {
     try {
         // Check cache first - categories rarely change
         const cached = cache.get(CACHE_KEYS.CATEGORIES);
-        if (cached) return cached;
+        if (cached && Array.isArray(cached)) return cached;
 
         const categories = await prisma.category.findMany({
             orderBy: {

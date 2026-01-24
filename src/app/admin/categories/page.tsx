@@ -49,7 +49,7 @@ export default async function AdminCategoriesPage() {
 
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                     {category.subCategories.length > 0 ? (
-                                        category.subCategories.map(sub => (
+                                        category.subCategories.map((sub: { id: string; name: string }) => (
                                             <span key={sub.id} style={{
                                                 background: 'var(--color-background)',
                                                 color: 'var(--color-text-primary)',
