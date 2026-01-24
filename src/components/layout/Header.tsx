@@ -108,7 +108,7 @@ export const Header: React.FC = () => {
                                 Home
                             </Link>
 
-                            {/* Shop By Category Dropdown - ALL CATEGORIES WITH SUBCATEGORIES */}
+                            {/* Shop By Category Dropdown - Main Categories Only */}
                             <div className="nav-dropdown">
                                 <Link
                                     href="/products"
@@ -117,68 +117,18 @@ export const Header: React.FC = () => {
                                     Shop <span style={{ fontSize: '0.7em' }}>▼</span>
                                 </Link>
                                 <div className="nav-dropdown-menu">
-                                    {/* MEN'S FASHION */}
-                                    <Link href="/products?category=mens-fashion" className="dropdown-item dropdown-header">
-                                        Men's Fashion
+                                    <Link href="/products?category=mens-fashion" className="dropdown-item">
+                                        Man
                                     </Link>
-                                    <Link href="/products?subCategory=shirt" className="dropdown-subitem">
-                                        → Shirt
+                                    <Link href="/products?category=womens-fashion" className="dropdown-item">
+                                        Woman
                                     </Link>
-                                    <Link href="/products?subCategory=pant" className="dropdown-subitem">
-                                        → Pant
+                                    <Link href="/products?category=boys" className="dropdown-item">
+                                        Boy
                                     </Link>
-                                    <Link href="/products?subCategory=t-shirt" className="dropdown-subitem">
-                                        → T-Shirt
+                                    <Link href="/products?category=girls" className="dropdown-item">
+                                        Girl
                                     </Link>
-                                    <Link href="/products?subCategory=panjabi" className="dropdown-subitem">
-                                        → Panjabi
-                                    </Link>
-
-                                    {/* WOMEN'S FASHION */}
-                                    <Link href="/products?category=womens-fashion" className="dropdown-item dropdown-header">
-                                        Women's Fashion
-                                    </Link>
-                                    <Link href="/products?subCategory=dress" className="dropdown-subitem">
-                                        → Dress
-                                    </Link>
-                                    <Link href="/products?subCategory=salwar" className="dropdown-subitem">
-                                        → Salwar Kameez
-                                    </Link>
-                                    <Link href="/products?subCategory=saree" className="dropdown-subitem">
-                                        → Saree
-                                    </Link>
-                                    <Link href="/products?subCategory=tops" className="dropdown-subitem">
-                                        → Tops
-                                    </Link>
-
-                                    {/* BOYS */}
-                                    <Link href="/products?category=boys" className="dropdown-item dropdown-header">
-                                        Boys
-                                    </Link>
-                                    <Link href="/products?subCategory=boys-shirt" className="dropdown-subitem">
-                                        → Shirts
-                                    </Link>
-                                    <Link href="/products?subCategory=boys-pant" className="dropdown-subitem">
-                                        → Pants
-                                    </Link>
-                                    <Link href="/products?subCategory=boys-tshirt" className="dropdown-subitem">
-                                        → T-Shirts
-                                    </Link>
-
-                                    {/* GIRLS */}
-                                    <Link href="/products?category=girls" className="dropdown-item dropdown-header">
-                                        Girls
-                                    </Link>
-                                    <Link href="/products?subCategory=girls-dress" className="dropdown-subitem">
-                                        → Dresses
-                                    </Link>
-                                    <Link href="/products?subCategory=girls-tops" className="dropdown-subitem">
-                                        → Tops
-                                    </Link>
-                                    <Link href="/products?subCategory=girls-skirts" className="dropdown-subitem">
-                                        → Skirts
-                                    </Link>
-
                                     <div className="dropdown-divider"></div>
                                     <Link href="/products" className="dropdown-item">
                                         View All Products
