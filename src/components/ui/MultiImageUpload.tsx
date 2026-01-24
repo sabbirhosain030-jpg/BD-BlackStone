@@ -50,7 +50,10 @@ export default function MultiImageUpload({
                     body: formData,
                 });
 
-                if (!res.ok) throw new Error(`Upload failed for ${file.name}`);
+                if (!res.ok) {
+                    const errorData = await res.json().catch(() => ({}));
+                    throw new Error(errorData.error || `Upload failed for ${file.name}`);
+                }
 
                 const data = await res.json();
                 if (data.url) {

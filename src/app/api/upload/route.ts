@@ -38,10 +38,10 @@ export async function POST(request: Request) {
         // @ts-ignore
         return NextResponse.json({ url: result?.secure_url, publicId: result?.public_id });
 
-    } catch (error) {
-        console.error('Upload API error:', error);
+    } catch (error: any) {
+        console.error('Upload API error details:', error);
         return NextResponse.json(
-            { error: 'Internal server error' },
+            { error: error.message || 'Internal server error' },
             { status: 500 }
         );
     }
