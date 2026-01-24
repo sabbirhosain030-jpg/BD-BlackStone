@@ -159,6 +159,24 @@ export const Header: React.FC = () => {
                             >
                                 New Arrivals
                             </Link>
+
+                            {/* Mobile Auth Links */}
+                            <div className="mobile-auth-links">
+                                {session ? (
+                                    <button onClick={() => signOut()} className="nav-link text-left" style={{ width: '100%', textAlign: 'left' }}>
+                                        Logout
+                                    </button>
+                                ) : (
+                                    <>
+                                        <Link href="/login" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                                            Login
+                                        </Link>
+                                        <Link href="/signup" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+                                            Register
+                                        </Link>
+                                    </>
+                                )}
+                            </div>
                         </nav>
 
                         {/* Actions */}
