@@ -25,10 +25,15 @@ interface ProductFormProps {
 
 import { useFormStatus } from 'react-dom';
 
-function SubmitButton({ text }: { text: string }) {
+function SubmitButton({ text, className }: { text: string; className?: string }) {
     const { pending } = useFormStatus();
     return (
-        <button type="submit" className="admin-btn-primary" disabled={pending} style={{ opacity: pending ? 0.7 : 1 }}>
+        <button
+            type="submit"
+            className={`admin-btn-primary ${className || ''}`}
+            disabled={pending}
+            style={{ opacity: pending ? 0.7 : 1 }}
+        >
             {pending ? 'Processing...' : text}
         </button>
     );
@@ -41,6 +46,7 @@ export default function ProductForm({ categories, initialData, action, submitTex
 
     const [images, setImages] = useState<string[]>([]);
     const [imageUrl, setImageUrl] = useState(''); // Compatibility
+    const [isShaking, setIsShaking] = useState(false);
 
     // Error handling wrapper
     async function handleAction(formData: FormData) {
@@ -50,11 +56,19 @@ export default function ProductForm({ categories, initialData, action, submitTex
         const categoryId = formData.get('categoryId');
         const description = formData.get('description');
 
-        if (!name) return alert('Please enter a product name.');
-        if (!price) return alert('Please enter a price.');
-        if (!categoryId) return alert('Please select a category.');
-        if (!description) return alert('Please enter a description.');
-        if (images.length === 0) return alert('Please upload at least one product image.');
+        const errors = [];
+        if (!name) errors.push('Name');
+        if (!price) errors.push('Price');
+        if (!categoryId) errors.push('Category');
+        if (!description) errors.push('Description');
+        if (images.length === 0) errors.push('Images');
+
+        if (errors.length > 0) {
+            // Trigger Shake Animation
+            setIsShaking(true);
+            setTimeout(() => setIsShaking(false), 500); // Remove class after animation
+            return;
+        }
 
         try {
             await action(formData);
