@@ -15,6 +15,11 @@
         0 4px 8px rgba(0, 0, 0, 0.06);
 }
 
+/* Default: Hide mobile button */
+.mobile-cart-btn {
+    display: none;
+}
+
 .product-card::before {
     content: '';
     position: absolute;
@@ -362,37 +367,55 @@
 }
 
 /* FORCED MOBILE OVERRIDES - Fixes stuck hover states */
-@media (max-width: 900px), (hover: none) {
+@media (max-width: 900px),
+(hover: none) {
+
+    /* Force actions to be HIDDEN on touch/mobile - We use the static button instead */
     .product-card .product-actions {
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-        transform: none !important;
-        top: auto !important;
-        left: auto !important;
-        right: 8px !important;
-        bottom: 8px !important;
-        background: rgba(255, 255, 255, 0.95) !important;
-        padding: 4px !important;
-        border-radius: 50px !important;
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 8px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-        width: auto !important;
-        z-index: 999 !important;
+        display: none !important;
     }
+
+    /* Mobile Static Button */
+    .mobile-cart-btn {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+        padding: 8px;
+        background: #1a1a1a;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-cart-btn.added {
+        background: #28a745;
+    }
+
+    .mobile-cart-btn:active {
+        transform: scale(0.98);
+    }
+
     .action-btn {
         width: 44px !important;
         height: 44px !important;
         background: #fff !important;
         color: #1a1a1a !important;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
     }
+
     /* Ensure image does not zoom on touch scroll */
     .product-card:hover .product-image {
         transform: none !important;
     }
+
     /* Reduce shadow on mobile */
     .product-card:hover {
         transform: none !important;

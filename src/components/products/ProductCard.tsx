@@ -165,6 +165,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         <span className="price-previous">{previousPrice.toLocaleString()} BDT</span>
                     )}
                 </div>
+
+                {/* Mobile Only: Static Add to Cart Button */}
+                <button
+                    className={`mobile-cart-btn ${isAdded ? 'added' : ''}`}
+                    onClick={handleAddToCart}
+                >
+                    {isAdded ? 'Added' : 'Add to Cart'}
+                </button>
             </div>
         </motion.div>
     );
