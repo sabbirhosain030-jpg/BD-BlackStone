@@ -246,7 +246,7 @@ export default function ProductForm({ categories, initialData, action, submitTex
             </div>
 
             <div className="form-actions">
-                <SubmitButton text={submitText} />
+                <SubmitButton text={submitText} className={isShaking ? 'animate-shake' : ''} />
             </div>
         </form>
     );
