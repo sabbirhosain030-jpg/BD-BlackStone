@@ -159,6 +159,7 @@ export async function createProduct(formData: FormData) {
     const imageUrl = formData.get('imageUrl') as string;
     const imagesJson = formData.get('imagesJson') as string;
     const imagePublicId = formData.get('imagePublicId') as string || null;
+    const imagePosition = formData.get('imagePosition') as string || 'center';
     const isNew = formData.get('isNew') === 'on';
     const isFeatured = formData.get('isFeatured') === 'on';
     const sizes = formData.get('sizes') as string || '["S", "M", "L", "XL"]';
@@ -194,6 +195,7 @@ export async function createProduct(formData: FormData) {
                 isFeatured,
                 images: finalImages,
                 imagePublicId,
+                imagePosition,
                 sizes: sizes,
                 colors: colors,
             }
@@ -224,6 +226,7 @@ export async function updateProduct(productId: string, formData: FormData) {
     const imageUrl = formData.get('imageUrl') as string;
     const imagesJson = formData.get('imagesJson') as string;
     const imagePublicId = formData.get('imagePublicId') as string || null;
+    const imagePosition = formData.get('imagePosition') as string || 'center';
     const isNew = formData.get('isNew') === 'on';
     const isFeatured = formData.get('isFeatured') === 'on';
     const sizes = formData.get('sizes') as string;
@@ -256,6 +259,7 @@ export async function updateProduct(productId: string, formData: FormData) {
                 isFeatured,
                 images: finalImages,
                 imagePublicId: imagePublicId || undefined,
+                imagePosition: imagePosition || undefined,
                 sizes: sizes || undefined,
                 colors: colors || undefined,
             }

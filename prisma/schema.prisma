@@ -59,6 +59,7 @@ model Product {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   imagePublicId String?
+  imagePosition String?    @default("center")
   orderItems    OrderItem[]
   category      Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])

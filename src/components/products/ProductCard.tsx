@@ -16,6 +16,7 @@ interface ProductCardProps {
     image: string;
     category?: string;
     isNew?: boolean;
+    imagePosition?: string;
     variant?: 'grid' | 'list';
     index?: number; // For stagger animation
 }
@@ -28,6 +29,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     image,
     category,
     isNew,
+    imagePosition = 'center',
     variant = 'grid',
     index = 0
 }) => {
@@ -101,6 +103,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                             fill
                             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                             className="image"
+                            style={{ objectPosition: imagePosition }}
                         />
                     </div>
                 </Link>
