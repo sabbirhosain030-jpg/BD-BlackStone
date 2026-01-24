@@ -27,7 +27,7 @@ export default function ProductForm({ categories, initialData, action, submitTex
     const [selectedCategoryId, setSelectedCategoryId] = useState(initialData?.categoryId || '');
     const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
     const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(initialData?.subCategoryId || '');
-    const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(initialData?.subCategoryId || '');
+
     const [images, setImages] = useState<string[]>([]);
     const [imageUrl, setImageUrl] = useState(''); // Compatibility
 
