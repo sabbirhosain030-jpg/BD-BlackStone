@@ -19,6 +19,7 @@ import { WishlistProvider } from "@/context/WishlistContext"; // Restored
 import SessionProvider from '@/components/providers/SessionProvider';
 import { Suspense } from 'react';
 import { ConditionalWrapper } from "@/components/layout/ConditionalWrapper";
+import ChatBot from "@/components/chat/ChatBot";
 
 export default function RootLayout({
   children,
@@ -49,6 +50,9 @@ export default function RootLayout({
                 <ConditionalWrapper>
                   <Footer />
                 </ConditionalWrapper>
+
+                {/* Live Chat Bot */}
+                <ChatBot />
               </div>
             </WishlistProvider>
           </CartProvider>

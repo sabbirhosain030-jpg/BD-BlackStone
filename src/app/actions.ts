@@ -2,9 +2,14 @@
 
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
+import { cache, CACHE_KEYS } from '@/lib/cache';
 
 export async function getFeaturedProducts() {
     try {
+        // Check cache first
+        const cached = cache.get(CACHE_KEYS.FEATURED_PRODUCTS);
+        if (cached) return cached;
+
         const products = await prisma.product.findMany({
             where: {
                 isFeatured: true,
@@ -13,7 +18,26 @@ export async function getFeaturedProducts() {
             orderBy: {
                 createdAt: 'desc',
             },
+            select: {
+                id: true,
+                name: true,
+                price: true,
+                previousPrice: true,
+                images: true,
+                categoryId: true,
+                isNew: true,
+                stock: true,
+                category: {
+                    select: {
+                        name: true,
+                        slug: true,
+                    }
+                }
+            },
         });
+
+        // Cache for 5 minutes
+        cache.set(CACHE_KEYS.FEATURED_PRODUCTS, products, 5);
         return products;
     } catch (error) {
         console.error('Failed to fetch featured products:', error);
@@ -23,6 +47,10 @@ export async function getFeaturedProducts() {
 
 export async function getNewArrivals() {
     try {
+        // Check cache first
+        const cached = cache.get(CACHE_KEYS.NEW_ARRIVALS);
+        if (cached) return cached;
+
         const products = await prisma.product.findMany({
             where: {
                 isNew: true,
@@ -31,7 +59,26 @@ export async function getNewArrivals() {
             orderBy: {
                 createdAt: 'desc',
             },
+            select: {
+                id: true,
+                name: true,
+                price: true,
+                previousPrice: true,
+                images: true,
+                categoryId: true,
+                isNew: true,
+                stock: true,
+                category: {
+                    select: {
+                        name: true,
+                        slug: true,
+                    }
+                }
+            },
         });
+
+        // Cache for 5 minutes
+        cache.set(CACHE_KEYS.NEW_ARRIVALS, products, 5);
         return products;
     } catch (error) {
         console.error('Failed to fetch new arrivals:', error);
@@ -41,11 +88,25 @@ export async function getNewArrivals() {
 
 export async function getCategories() {
     try {
-        return await prisma.category.findMany({
+        // Check cache first - categories rarely change
+        const cached = cache.get(CACHE_KEYS.CATEGORIES);
+        if (cached) return cached;
+
+        const categories = await prisma.category.findMany({
             orderBy: {
                 name: 'asc'
+            },
+            select: {
+                id: true,
+                name: true,
+                slug: true,
+                description: true,
             }
         });
+
+        // Cache for 30 minutes - categories change infrequently
+        cache.set(CACHE_KEYS.CATEGORIES, categories, 30);
+        return categories;
     } catch (error) {
         console.error('Failed to fetch categories:', error);
         return [];

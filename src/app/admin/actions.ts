@@ -3,32 +3,34 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { cache, CACHE_KEYS } from '@/lib/cache';
 
 // --- Dashboard Stats ---
 export async function getDashboardStats() {
     try {
-        const totalOrders = await prisma.order.count();
-        const totalProducts = await prisma.product.count();
-        const totalRevenueResult = await prisma.order.aggregate({
-            _sum: {
-                total: true,
-            },
-            where: {
-                status: 'DELIVERED',
-            },
-        });
-
-        const activeCustomers = await prisma.order.groupBy({
-            by: ['customerEmail'],
-        });
-
-        const lowStockCount = await prisma.product.count({
-            where: {
-                stock: {
-                    lte: 5,
+        // Parallelize independent queries for faster response
+        const [totalOrders, totalProducts, totalRevenueResult, activeCustomers, lowStockCount] = await Promise.all([
+            prisma.order.count(),
+            prisma.product.count(),
+            prisma.order.aggregate({
+                _sum: {
+                    total: true,
                 },
-            },
-        });
+                where: {
+                    status: 'DELIVERED',
+                },
+            }),
+            prisma.order.groupBy({
+                by: ['customerEmail'],
+            }),
+            prisma.product.count({
+                where: {
+                    stock: {
+                        lte: 5,
+                    },
+                },
+            }),
+        ]);
 
         return {
             totalOrders,
@@ -107,7 +109,12 @@ export async function getProduct(id: string) {
 
 export async function getAdminCategories() {
     try {
-        return await prisma.category.findMany({
+        // Use cache for categories
+        const cacheKey = 'admin:categories';
+        const cached = cache.get(cacheKey);
+        if (cached) return cached;
+
+        const categories = await prisma.category.findMany({
             orderBy: {
                 name: 'asc'
             },
@@ -115,6 +122,10 @@ export async function getAdminCategories() {
                 subCategories: true
             }
         });
+
+        // Cache for 10 minutes
+        cache.set(cacheKey, categories, 10);
+        return categories;
     } catch (error) {
         console.error('Failed to fetch admin categories:', error);
         return [];
@@ -176,6 +187,10 @@ export async function createProduct(formData: FormData) {
         throw error;
     }
 
+    // Invalidate product and category caches
+    cache.delete(CACHE_KEYS.FEATURED_PRODUCTS);
+    cache.delete(CACHE_KEYS.NEW_ARRIVALS);
+
     revalidatePath('/admin/products');
     revalidatePath('/products');
     revalidatePath('/');
@@ -225,6 +240,10 @@ export async function updateProduct(productId: string, formData: FormData) {
         throw error;
     }
 
+    // Invalidate product caches
+    cache.delete(CACHE_KEYS.FEATURED_PRODUCTS);
+    cache.delete(CACHE_KEYS.NEW_ARRIVALS);
+
     revalidatePath('/admin/products');
     revalidatePath(`/products/${productId}`);
     revalidatePath('/products');
@@ -256,6 +275,10 @@ export async function deleteProduct(productId: string) {
         await prisma.product.delete({
             where: { id: productId }
         });
+
+        // Invalidate product caches
+        cache.delete(CACHE_KEYS.FEATURED_PRODUCTS);
+        cache.delete(CACHE_KEYS.NEW_ARRIVALS);
 
         revalidatePath('/admin/products');
         revalidatePath('/products');
@@ -294,6 +317,10 @@ export async function createCategory(formData: FormData) {
         return;
     }
 
+    // Invalidate category caches
+    cache.delete(CACHE_KEYS.CATEGORIES);
+    cache.delete('admin:categories');
+
     revalidatePath('/admin/categories');
     redirect('/admin/categories');
 }
@@ -304,6 +331,11 @@ export async function deleteCategory(categoryId: string) {
         await prisma.category.delete({
             where: { id: categoryId }
         });
+
+        // Invalidate category caches
+        cache.delete(CACHE_KEYS.CATEGORIES);
+        cache.delete('admin:categories');
+
         revalidatePath('/admin/categories');
         return { success: true };
     } catch (error) {
