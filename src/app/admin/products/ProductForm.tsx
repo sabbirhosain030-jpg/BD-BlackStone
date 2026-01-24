@@ -23,6 +23,17 @@ interface ProductFormProps {
     submitText: string;
 }
 
+import { useFormStatus } from 'react-dom';
+
+function SubmitButton({ text }: { text: string }) {
+    const { pending } = useFormStatus();
+    return (
+        <button type="submit" className="admin-btn-primary" disabled={pending} style={{ opacity: pending ? 0.7 : 1 }}>
+            {pending ? 'Processing...' : text}
+        </button>
+    );
+}
+
 export default function ProductForm({ categories, initialData, action, submitText }: ProductFormProps) {
     const [selectedCategoryId, setSelectedCategoryId] = useState(initialData?.categoryId || '');
     const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
@@ -30,6 +41,15 @@ export default function ProductForm({ categories, initialData, action, submitTex
 
     const [images, setImages] = useState<string[]>([]);
     const [imageUrl, setImageUrl] = useState(''); // Compatibility
+
+    // Error handling wrapper
+    async function handleAction(formData: FormData) {
+        try {
+            await action(formData);
+        } catch (error: any) {
+            alert(`Error: ${error.message || 'Something went wrong. Please check all required fields.'}`);
+        }
+    }
 
     useEffect(() => {
         if (initialData?.images) {
@@ -62,7 +82,7 @@ export default function ProductForm({ categories, initialData, action, submitTex
     }, [selectedCategoryId, categories, initialData]);
 
     return (
-        <form action={action} className="admin-form">
+        <form action={handleAction} className="admin-form">
             <input type="hidden" name="imageUrl" value={imageUrl} />
             <input type="hidden" name="imagesJson" value={JSON.stringify(images)} />
 
@@ -214,9 +234,7 @@ export default function ProductForm({ categories, initialData, action, submitTex
             </div>
 
             <div className="form-actions">
-                <button type="submit" className="admin-btn-primary">
-                    {submitText}
-                </button>
+                <SubmitButton text={submitText} />
             </div>
         </form>
     );
