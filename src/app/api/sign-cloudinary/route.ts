@@ -11,7 +11,11 @@ export async function POST(request: Request) {
             process.env.CLOUDINARY_API_SECRET as string
         );
 
-        return NextResponse.json({ signature });
+        return NextResponse.json({
+            signature,
+            apiKey: process.env.CLOUDINARY_API_KEY,
+            cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_CLOUD_NAME
+        });
     } catch (error) {
         console.error('Request signing failed:', error);
         return NextResponse.json(

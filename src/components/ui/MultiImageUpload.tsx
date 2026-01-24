@@ -49,17 +49,16 @@ export default function MultiImageUpload({
                 });
 
                 if (!signResponse.ok) throw new Error('Failed to get upload signature');
-                const { signature } = await signResponse.json();
+                const { signature, apiKey, cloudName } = await signResponse.json();
 
                 // 2. Direct Upload to Cloudinary
                 const formData = new FormData();
                 formData.append('file', file);
-                formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '463378964356476');
+                formData.append('api_key', apiKey);
                 formData.append('timestamp', String(Math.round((new Date).getTime() / 1000)));
                 formData.append('signature', signature);
                 formData.append('folder', 'bd-blackstone-products');
 
-                const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dgd6cj2il';
                 const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
                     method: 'POST',
                     body: formData,
