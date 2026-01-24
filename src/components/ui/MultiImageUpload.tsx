@@ -139,23 +139,28 @@ export default function MultiImageUpload({
                         />
                         <button
                             type="button"
-                            onClick={() => removeImage(index)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                removeImage(index);
+                            }}
                             style={{
                                 position: 'absolute',
-                                top: '4px',
-                                right: '4px',
+                                top: '5px',
+                                right: '5px',
                                 background: 'rgba(239, 68, 68, 0.9)',
                                 color: 'white',
                                 border: 'none',
                                 borderRadius: '50%',
-                                width: '24px',
-                                height: '24px',
+                                width: '32px', // Increased touch target
+                                height: '32px',
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                fontSize: '14px',
-                                zIndex: 10
+                                fontSize: '18px',
+                                zIndex: 20, // Highlighted z-index
+                                boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
                             }}
                             title="Remove image"
                         >
