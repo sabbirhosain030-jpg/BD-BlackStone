@@ -155,8 +155,12 @@ export default function MultiImageUpload({
                         disabled={uploading}
                         style={{
                             position: 'absolute',
-                            inset: 0,
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
                             opacity: 0,
+                            zIndex: 50,
                             cursor: uploading ? 'not-allowed' : 'pointer'
                         }}
                     />
