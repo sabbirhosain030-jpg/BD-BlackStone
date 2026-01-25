@@ -20,9 +20,10 @@
 }
 
 .btn:active {
-    transform: scale(0.95);
+    transform: scale(0.96) translateY(0);
     transition: transform 0.05s ease-out;
     /* Super fast feedback */
+    box-shadow: none;
 }
 
 .btn:disabled {

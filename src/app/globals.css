@@ -245,3 +245,52 @@ a:active {
     font-size: 1.5rem;
   }
 }
+
+/* --- Global Polish & Refinements --- */
+
+/* Smooth Image Loading */
+img {
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Global Transition Enforcer */
+button,
+.btn,
+.action-btn,
+.nav-link,
+.category-pill,
+a {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Universal Active State (Click Feedback) */
+button:active,
+.btn:active,
+.action-btn:active,
+.category-pill:active {
+  transform: scale(0.96);
+}
+
+/* Form Polish */
+input,
+textarea,
+select {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15) !important;
+  border-color: var(--color-gold) !important;
+  outline: none;
+}
+
+/* Chatbot Polish */
+.chatbot-toggle {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease !important;
+}
+
+.chatbot-toggle:hover {
+  transform: scale(1.1) rotate(5deg) !important;
+}
