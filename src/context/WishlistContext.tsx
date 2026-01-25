@@ -44,13 +44,19 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
 
     const addToWishlist = async (productId: string) => {
         if (!session?.user) {
-            alert('Please login to add items to wishlist');
+            // Check if we have a custom storage in future, for now alert
+            const shouldLogin = confirm('Please login to add items to your wishlist. Go to login page?');
+            if (shouldLogin) {
+                window.location.href = '/login';
+            }
             return;
         }
 
-        // Optimistic update: Update UI immediately
+        // Optimistic update
         const prevItems = [...wishlistItems];
-        setWishlistItems(prev => [...prev, productId]);
+        if (!wishlistItems.includes(productId)) {
+            setWishlistItems(prev => [...prev, productId]);
+        }
 
         try {
             const res = await fetch('/api/wishlist', {
@@ -60,19 +66,17 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
             });
 
             if (!res.ok) {
-                // Revert on failure
-                setWishlistItems(prevItems);
-                console.error('Failed to add to wishlist');
+                throw new Error('Failed to add');
             }
         } catch (error) {
-            // Revert on error
             setWishlistItems(prevItems);
             console.error('Failed to add to wishlist:', error);
+            alert('Something went wrong. Please try again.');
         }
     };
 
     const removeFromWishlist = async (productId: string) => {
-        // Optimistic update: Update UI immediately
+        // Optimistic update
         const prevItems = [...wishlistItems];
         setWishlistItems(prev => prev.filter(id => id !== productId));
 
@@ -82,14 +86,12 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
             });
 
             if (!res.ok) {
-                // Revert on failure
-                setWishlistItems(prevItems);
-                console.error('Failed to remove from wishlist');
+                throw new Error('Failed to remove');
             }
         } catch (error) {
-            // Revert on error
             setWishlistItems(prevItems);
             console.error('Failed to remove from wishlist:', error);
+            alert('Something went wrong. Please try again.');
         }
     };
 

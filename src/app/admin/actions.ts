@@ -162,8 +162,26 @@ export async function createProduct(formData: FormData) {
     const imagePosition = formData.get('imagePosition') as string || 'center';
     const isNew = formData.get('isNew') === 'on';
     const isFeatured = formData.get('isFeatured') === 'on';
-    const sizes = formData.get('sizes') as string || '["S", "M", "L", "XL"]';
-    const colors = formData.get('colors') as string || '["Black", "Navy", "Grey"]';
+    const sizesInput = formData.get('sizes') as string || 'S, M, L, XL';
+    const colorsInput = formData.get('colors') as string || '[]';
+
+    // Parse sizes: handle comma-separated or JSON
+    let sizes = '[\"S\", \"M\", \"L\", \"XL\"]';
+    try {
+        // Try parsing as JSON first
+        JSON.parse(sizesInput);
+        sizes = sizesInput;
+    } catch {
+        // If not JSON, treat as comma-separated
+        const sizeArray = sizesInput.split(',').map(s => s.trim()).filter(Boolean);
+        sizes = JSON.stringify(sizeArray);
+    }
+
+    // Parse colors: should already be JSON from ColorPicker
+    let colors = colorsInput;
+    if (!colors || colors === '[]') {
+        colors = '[\"#000000\", \"#1a1a1a\", \"#808080\"]'; // Default colors
+    }
 
     // Basic validation
     // We check if either imageUrl or imagesJson provides at least one image
@@ -322,15 +340,17 @@ export async function deleteProduct(productId: string) {
 // --- Category Management ---
 export async function createCategory(formData: FormData) {
     const name = formData.get('name') as string;
-    const description = formData.get('description') as string;
     let slug = formData.get('slug') as string;
+    const description = formData.get('description') as string;
+    const brand = formData.get('brand') as string || 'BLACK STONE';
 
     if (!name) {
-        throw new Error('Name is required');
+        throw new Error('Category name is required');
     }
 
+    // Auto-generate slug if not provided
     if (!slug) {
-        slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+        slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     }
 
     try {
@@ -338,12 +358,13 @@ export async function createCategory(formData: FormData) {
             data: {
                 name,
                 slug,
-                description
-            }
+                description: description || undefined,
+                brand,
+            },
         });
     } catch (error) {
-        console.error("Failed to create category:", error);
-        return;
+        console.error('Failed to create category:', error);
+        throw error;
     }
 
     // Invalidate category caches

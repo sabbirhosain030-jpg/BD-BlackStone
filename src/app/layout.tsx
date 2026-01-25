@@ -14,6 +14,13 @@ export const metadata: Metadata = {
   description: "Your destination for premium, professional clothing. Timeless elegance meets modern sophistication. Cash on Delivery available.",
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext"; // Restored
 import SessionProvider from '@/components/providers/SessionProvider';
@@ -32,7 +39,7 @@ export default function RootLayout({
         <SessionProvider>
           <CartProvider>
             <WishlistProvider>
-              <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
                 <ConditionalWrapper>
                   <MarketingBanner />
                   <Suspense fallback={<div style={{ height: '80px' }} />}>

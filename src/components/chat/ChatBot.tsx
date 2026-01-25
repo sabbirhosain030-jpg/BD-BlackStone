@@ -245,7 +245,7 @@ export default function ChatBot() {
                 <div className="chatbot-window">
                     <div className="chatbot-header">
                         <div className="chatbot-header-title">
-                            <img src="/chatbot-avatar.png" alt="Assistant" className="chatbot-header-avatar" />
+                            <img src="/chatbot-robot.png" alt="Assistant" className="chatbot-header-avatar" />
                             <div>
                                 <h3>BlackStone Assistant</h3>
                                 <p>Always here to help</p>
@@ -263,7 +263,7 @@ export default function ChatBot() {
                             <div key={msg.id} className={`chatbot-message ${msg.type}`}>
                                 {msg.type === 'bot' && (
                                     <div className="chatbot-avatar">
-                                        <img src="/chatbot-avatar.png" alt="Bot" />
+                                        <img src="/chatbot-robot.png" alt="Bot" />
                                     </div>
                                 )}
                                 <div>
@@ -325,7 +325,7 @@ export default function ChatBot() {
                         {isTyping && (
                             <div className="chatbot-message bot">
                                 <div className="chatbot-avatar">
-                                    <img src="/chatbot-avatar.png" alt="Bot" />
+                                    <img src="/chatbot-robot.png" alt="Bot" />
                                 </div>
                                 <div className="chatbot-typing">
                                     <div className="chatbot-typing-dot"></div>

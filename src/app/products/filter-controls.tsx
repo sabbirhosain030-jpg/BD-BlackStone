@@ -7,6 +7,7 @@ type Category = {
     id: string;
     name: string;
     slug: string;
+    brand?: string | null;
 };
 
 export default function FilterControls({
@@ -44,9 +45,33 @@ export default function FilterControls({
                     onChange={(e) => handleFilterChange('category', e.target.value)}
                 >
                     <option value="">All Categories</option>
-                    {categories.map(cat => (
-                        <option key={cat.id} value={cat.slug}>{cat.name}</option>
-                    ))}
+                    {(() => {
+                        const blackStone = categories.filter(c => c.brand === 'BLACK STONE');
+                        const gazzelle = categories.filter(c => c.brand === 'GAZZELLE');
+                        const others = categories.filter(c => !c.brand || (c.brand !== 'BLACK STONE' && c.brand !== 'GAZZELLE'));
+
+                        return (
+                            <>
+                                {blackStone.length > 0 && (
+                                    <optgroup label="BLACK STONE">
+                                        {blackStone.map(cat => (
+                                            <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                                        ))}
+                                    </optgroup>
+                                )}
+                                {gazzelle.length > 0 && (
+                                    <optgroup label="GAZZELLE">
+                                        {gazzelle.map(cat => (
+                                            <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                                        ))}
+                                    </optgroup>
+                                )}
+                                {others.length > 0 && others.map(cat => (
+                                    <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                                ))}
+                            </>
+                        );
+                    })()}
                 </select>
 
                 {/* Price Filter */}

@@ -105,7 +105,9 @@ export default async function HomePage() {
                       className="category-circle-image"
                     />
                   </div>
-                  <h3 className="category-circle-name">{category.name}</h3>
+                  <h3 className="category-circle-name">
+                    {category.brand ? `${category.name} - ${category.brand}` : category.name}
+                  </h3>
                 </Link>
               ))
             ) : (

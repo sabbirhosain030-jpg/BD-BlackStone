@@ -80,6 +80,9 @@ body {
   overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
+  min-height: 100dvh;
+  /* Mobile Safe Areas */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Typography Styles */

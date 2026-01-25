@@ -1,19 +1,71 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getAdminCategories } from '../actions';
 
-export const dynamic = 'force-dynamic';
+export default function AdminCategoriesPage() {
+    const [categories, setCategories] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
-export default async function AdminCategoriesPage() {
-    const categories = await getAdminCategories();
+    useEffect(() => {
+        loadCategories();
+    }, []);
+
+    const loadCategories = async () => {
+        try {
+            const response = await fetch('/api/admin/categories');
+            const data = await response.json();
+            setCategories(data);
+        } catch (error) {
+            console.error('Failed to load categories:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDelete = async (id: string, name: string) => {
+        if (!confirm(`Are you sure you want to delete "${name}"? This will also delete all its subcategories and products.`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/admin/categories/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                // Reload categories
+                loadCategories();
+            } else {
+                const error = await response.text();
+                alert('Error deleting category: ' + error);
+            }
+        } catch (error) {
+            console.error('Failed to delete category:', error);
+            alert('Failed to delete category');
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="admin-content" style={{ display: 'flex', justifyContent: 'center', padding: '3rem' }}>
+                <div style={{ color: 'var(--color-white)' }}>Loading categories...</div>
+            </div>
+        );
+    }
 
     return (
         <div className="admin-categories">
             <div className="admin-header">
-                <h1 className="admin-title">Categories & Subcategories</h1>
+                <div>
+                    <h1 className="admin-title">📦 Main Categories & Subcategories</h1>
+                    <p style={{ color: 'var(--color-stone-text)', marginTop: '0.5rem', fontSize: '0.875rem' }}>
+                        Main categories (e.g., Men, Women, Kids) contain subcategories (e.g., T-Shirts, Pants, Kurtis)
+                    </p>
+                </div>
                 <Link href="/admin/categories/add">
                     <button className="btn btn-secondary">
-                        + Add Category
+                        + Add Main Category
                     </button>
                 </Link>
             </div>
@@ -31,7 +83,14 @@ export default async function AdminCategoriesPage() {
                                     <Link href={`/admin/categories/${category.id}/edit`}>
                                         <button className="btn btn-sm btn-ghost" title="Edit">✏️</button>
                                     </Link>
-                                    <button className="btn btn-sm btn-ghost" style={{ color: 'var(--color-error)' }} title="Delete">🗑️</button>
+                                    <button
+                                        className="btn btn-sm btn-ghost"
+                                        style={{ color: 'var(--color-error)' }}
+                                        title="Delete"
+                                        onClick={() => handleDelete(category.id, category.name)}
+                                    >
+                                        🗑️
+                                    </button>
                                 </div>
                             </div>
 
@@ -41,7 +100,9 @@ export default async function AdminCategoriesPage() {
 
                             <div className="subcategories-section" style={{ marginTop: 'auto', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-gold)' }}>Subcategories ({category.subCategories.length})</span>
+                                    <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-gold)' }}>
+                                        🏷️ Subcategories ({category.subCategories.length})
+                                    </span>
                                     <Link href={`/admin/categories/${category.id}/subcategories`}>
                                         <button style={{ fontSize: '0.8rem', color: 'var(--color-white)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Manage</button>
                                     </Link>
@@ -58,7 +119,7 @@ export default async function AdminCategoriesPage() {
                                                 fontSize: '0.85rem',
                                                 border: '1px solid var(--color-border)'
                                             }}>
-                                                {sub.name}
+                                                └─ {sub.name}
                                             </span>
                                         ))
                                     ) : (

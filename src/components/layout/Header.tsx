@@ -8,6 +8,13 @@ import './Header.css';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext'; // Restored
 
+type Category = {
+    id: string;
+    name: string;
+    slug: string;
+    brand?: string | null;
+};
+
 // Client-side wishlist badge component
 function WishlistBadge() {
     const { wishlistCount } = useWishlist();
@@ -28,6 +35,7 @@ export const Header: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
+    const [categories, setCategories] = useState<Category[]>([]);
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const { cartCount } = useCart();
@@ -44,6 +52,17 @@ export const Header: React.FC = () => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    useEffect(() => {
+        // Fetch categories with brand info
+        fetch('/api/categories')
+            .then(res => res.json())
+            .then(data => setCategories(data))
+            .catch(err => console.error('Failed to fetch categories:', err));
+    }, []);
+
+    const blackStoneCategories = categories.filter(c => c.brand === 'BLACK STONE');
+    const gazelleCategories = categories.filter(c => c.brand === 'GAZZELLE');
 
     const isActive = (path: string) => pathname === path;
 
@@ -117,18 +136,31 @@ export const Header: React.FC = () => {
                                     Shop <span style={{ fontSize: '0.7em' }}>▼</span>
                                 </Link>
                                 <div className="nav-dropdown-menu">
-                                    <Link href="/products?category=mens-fashion" className="dropdown-item">
-                                        Man
-                                    </Link>
-                                    <Link href="/products?category=womens-fashion" className="dropdown-item">
-                                        Woman
-                                    </Link>
-                                    <Link href="/products?category=boys" className="dropdown-item">
-                                        Boy
-                                    </Link>
-                                    <Link href="/products?category=girls" className="dropdown-item">
-                                        Girl
-                                    </Link>
+                                    {blackStoneCategories.length > 0 && (
+                                        <>
+                                            <div style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--color-gold)', textTransform: 'uppercase' }}>
+                                                BLACK STONE
+                                            </div>
+                                            {blackStoneCategories.map(cat => (
+                                                <Link key={cat.id} href={`/products?category=${cat.slug}`} className="dropdown-item">
+                                                    {cat.name}
+                                                </Link>
+                                            ))}
+                                        </>
+                                    )}
+                                    {gazelleCategories.length > 0 && (
+                                        <>
+                                            <div className="dropdown-divider"></div>
+                                            <div style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--color-gold)', textTransform: 'uppercase' }}>
+                                                GAZZELLE
+                                            </div>
+                                            {gazelleCategories.map(cat => (
+                                                <Link key={cat.id} href={`/products?category=${cat.slug}`} className="dropdown-item">
+                                                    {cat.name}
+                                                </Link>
+                                            ))}
+                                        </>
+                                    )}
                                     <div className="dropdown-divider"></div>
                                     <Link href="/products" className="dropdown-item">
                                         View All Products
@@ -138,15 +170,15 @@ export const Header: React.FC = () => {
 
                             {/* Direct Category Links */}
                             <Link
-                                href="/products?category=mens-fashion"
-                                className={`nav-link ${category === 'mens-fashion' || category === 'men' ? 'nav-link-active' : ''}`}
+                                href="/products?category=men"
+                                className={`nav-link ${category === 'men' || category === 'mens-fashion' ? 'nav-link-active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Men
                             </Link>
                             <Link
-                                href="/products?category=womens-fashion"
-                                className={`nav-link ${category === 'womens-fashion' || category === 'women' ? 'nav-link-active' : ''}`}
+                                href="/products?category=women"
+                                className={`nav-link ${category === 'women' || category === 'womens-fashion' ? 'nav-link-active' : ''}`}
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Women

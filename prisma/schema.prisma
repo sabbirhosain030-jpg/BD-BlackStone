@@ -24,6 +24,7 @@ model Category {
   id            String        @id @default(uuid())
   name          String        @unique
   slug          String        @unique
+  brand         String?       @default("BLACK STONE")
   description   String?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
@@ -150,15 +151,25 @@ model EmailSubscriber {
 }
 
 model PopupSettings {
-  id              String   @id @default(uuid())
-  isEnabled       Boolean  @default(true)
-  title           String   @default("GET 12% OFF YOUR FIRST ORDER")
-  subtitle        String   @default("And be the first to hear about our new product drops!")
-  discountPercent Int      @default(12)
-  couponPrefix    String   @default("WELCOME")
-  buttonText      String   @default("GET 12% OFF")
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id               String    @id @default(uuid())
+  isEnabled        Boolean   @default(true)
+  title            String    @default("GET 12% OFF YOUR FIRST ORDER")
+  subtitle         String    @default("And be the first to hear about our new product drops!")
+  discountPercent  Int       @default(12)
+  couponPrefix     String    @default("WELCOME")
+  buttonText       String    @default("GET 12% OFF")
+  
+  // Coupon Management
+  publicCouponCode  String?  // Public coupon visible to all users
+  hiddenCouponCode  String?  // Hidden coupon for relatives/specific groups
+  
+  // Countdown Timer
+  offerEndTime     DateTime? // Countdown timer end time
+  showCountdown    Boolean   @default(false)
+  countdownText    String?   @default("Offer ends in:")
+  
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model FooterLink {

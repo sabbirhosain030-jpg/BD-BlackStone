@@ -7,7 +7,7 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border-radius: var(--radius-sm);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease, background-color 0.2s ease;
     cursor: pointer;
     border: 1px solid transparent;
     position: relative;
@@ -16,10 +16,13 @@
     /* Prevent text selection on rapid clicks */
     -webkit-tap-highlight-color: transparent;
     /* Remove mobile tap highlight box */
+    touch-action: manipulation;
 }
 
 .btn:active {
-    transform: scale(0.96) translateY(0);
+    transform: scale(0.95);
+    transition: transform 0.05s ease-out;
+    /* Super fast feedback */
 }
 
 .btn:disabled {

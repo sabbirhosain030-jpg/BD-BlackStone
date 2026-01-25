@@ -21,7 +21,14 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const { name, slug, categoryId } = await request.json();
+        const body = await request.json();
+        const { name, categoryId } = body;
+        let { slug } = body;
+
+        // Auto-generate slug if not provided
+        if (!slug) {
+            slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        }
 
         const subcategory = await prisma.subCategory.create({
             data: { name, slug, categoryId }

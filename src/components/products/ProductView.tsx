@@ -175,11 +175,33 @@ export default function ProductView({ product }: ProductViewProps) {
                     <Button size="lg" fullWidth onClick={handleAddToCart}>
                         Add to Cart
                     </Button>
-                    <Link href="/checkout" style={{ width: '100%' }}>
-                        <Button size="lg" variant="secondary" fullWidth>
-                            Buy Now
-                        </Button>
-                    </Link>
+                    <Button
+                        size="lg"
+                        variant="secondary"
+                        fullWidth
+                        onClick={() => {
+                            if (!selectedSize && product.sizes.length > 0) {
+                                alert('Please select a size');
+                                return;
+                            }
+                            if (!selectedColor && product.colors && product.colors.length > 0) {
+                                alert('Please select a color');
+                                return;
+                            }
+                            addToCart({
+                                id: product.id,
+                                name: product.name,
+                                price: product.price,
+                                image: product.images[0] || '/placeholder.png',
+                                size: selectedSize,
+                                color: selectedColor,
+                                quantity: quantity
+                            });
+                            window.location.href = '/checkout';
+                        }}
+                    >
+                        Buy Now
+                    </Button>
                 </div>
 
                 {/* Features */}

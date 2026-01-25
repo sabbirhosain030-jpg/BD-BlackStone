@@ -1,29 +1,102 @@
 .chatbot-container {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: 1.5rem;
+    right: 1.5rem;
     z-index: 9999;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-family: var(--font-body);
 }
 
+/* Animations for Robot Avatar */
+@keyframes floatBot {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes waveHand {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+        transform-origin: bottom right;
+    }
+
+    10%,
+    30%,
+    50% {
+        transform: rotate(15deg);
+        transform-origin: bottom right;
+    }
+
+    20%,
+    40% {
+        transform: rotate(-10deg);
+        transform-origin: bottom right;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 0 15px rgba(212, 175, 55, 0);
+    }
+}
+
+/* Chatbot Toggle Button */
 .chatbot-toggle {
-    width: 64px;
-    height: 64px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: 3px solid #fff;
-    color: white;
+    background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
+    border: none;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: floatBot 3s ease-in-out infinite, pulse 2s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+.chatbot-toggle::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, var(--color-gold), var(--color-gold-light), var(--color-gold));
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.chatbot-toggle:hover::before {
+    opacity: 1;
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .chatbot-toggle:hover {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6);
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+    animation: floatBot 3s ease-in-out infinite, pulse 2s ease-in-out infinite, waveHand 1s ease-in-out;
 }
 
 .chatbot-toggle svg {
@@ -390,18 +463,77 @@
     height: 20px;
 }
 
-@media (max-width: 480px) {
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .chatbot-container {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
     .chatbot-window {
-        width: calc(100vw - 32px);
-        height: auto;
-        max-height: 70vh;
-        right: 16px;
-        bottom: 90px;
-        border-radius: 16px;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 80vh;
+        max-height: 80vh;
+        border-radius: 16px 16px 0 0;
+        margin: 0;
     }
 
     .chatbot-toggle {
         width: 56px;
         height: 56px;
+    }
+
+    .chatbot-toggle svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .chatbot-header {
+        padding: 1rem;
+    }
+
+    .chatbot-header-avatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .chatbot-messages {
+        padding: 1rem;
+    }
+
+    .chatbot-input-container {
+        padding: 1rem;
+    }
+
+    .chatbot-input {
+        padding: 0.875rem;
+        font-size: 16px;
+        /* Prevent zoom on iOS */
+    }
+
+    .chatbot-send {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .chatbot-quick-action {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+        min-height: 44px;
+        /* Touch-friendly */
+    }
+
+    .chatbot-product-card {
+        flex-direction: column;
+    }
+
+    .chatbot-product-image {
+        width: 100%;
+        height: 150px;
     }
 }

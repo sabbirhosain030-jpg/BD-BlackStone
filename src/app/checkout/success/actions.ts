@@ -13,7 +13,11 @@ export async function getOrderWithWhatsAppLink(orderId: string) {
             include: {
                 items: {
                     include: {
-                        product: true
+                        product: {
+                            include: {
+                                category: true
+                            }
+                        }
                     }
                 }
             }
@@ -32,7 +36,7 @@ export async function getOrderWithWhatsAppLink(orderId: string) {
             city: order.city,
             deliveryZone: order.deliveryZone,
             items: order.items.map(item => ({
-                productId: item.productId,  // Include for URL generation
+                productId: item.productId,
                 product: item.product,
                 quantity: item.quantity,
                 price: item.price,
@@ -50,9 +54,15 @@ export async function getOrderWithWhatsAppLink(orderId: string) {
         return {
             success: true,
             order: {
-                orderNumber: order.orderNumber,
-                total: order.total,
-                customerName: order.customerName
+                ...order,
+                items: order.items.map(item => ({
+                    ...item,
+                    product: {
+                        name: item.product.name,
+                        category: item.product.category?.name || 'Uncategorized',
+                        brand: item.product.category?.brand || 'BLACK STONE'
+                    }
+                }))
             },
             whatsappLink
         };

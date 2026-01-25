@@ -15,6 +15,8 @@ function SuccessFallback() {
     );
 }
 
+import Receipt from '@/components/checkout/Receipt';
+
 function SuccessContent() {
     const searchParams = useSearchParams();
     const orderId = searchParams.get('orderId');
@@ -36,6 +38,30 @@ function SuccessContent() {
         }
     }, [orderId]);
 
+    // Simple Confetti Animation CSS
+    useEffect(() => {
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes popScale {
+                0% { transform: scale(0.5); opacity: 0; }
+                50% { transform: scale(1.2); }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            @keyframes rainbow {
+                0% { color: var(--color-gold); }
+                50% { color: #ff6b6b; }
+                100% { color: var(--color-gold); }
+            }
+            .congrats-text {
+                animation: popScale 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, rainbow 3s infinite linear;
+            }
+        `;
+        document.head.appendChild(style);
+        return () => { document.head.removeChild(style); };
+    }, []);
+
+    if (loading) return <SuccessFallback />;
+
     return (
         <div className="container" style={{ padding: '6rem 2rem', textAlign: 'center', maxWidth: '600px' }}>
             <div style={{
@@ -47,44 +73,28 @@ function SuccessContent() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 margin: '0 auto 2rem',
-                color: 'var(--color-charcoal)'
+                color: 'var(--color-charcoal)',
+                animation: 'popScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards'
             }}>
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                     <path d="M20 6L9 17l-5-5"></path>
                 </svg>
             </div>
 
-            <h1 style={{
-                color: 'var(--color-gold)',
+            <h1 className="congrats-text" style={{
                 marginBottom: '1rem',
-                fontFamily: 'var(--font-heading)'
-            }}>Order Placed Successfully!</h1>
+                fontFamily: 'var(--font-heading)',
+                fontSize: '2.5rem'
+            }}>Congratulations!</h1>
 
             <p style={{ color: 'var(--color-text-dim)', marginBottom: '2rem', lineHeight: '1.6' }}>
-                Thank you for your purchase. Your order has been received and is being processed.
-                We will contact you shortly to confirm the delivery details.
+                Your order has been placed successfully.
             </p>
 
+            {/* Receipt Component */}
             {orderData && (
-                <div style={{
-                    background: '#1a1a1a',
-                    padding: '1.5rem',
-                    borderRadius: '12px',
-                    marginBottom: '2rem',
-                    border: '1px solid #333'
-                }}>
-                    <div style={{ marginBottom: '0.5rem' }}>
-                        <span style={{ color: '#888', display: 'block', fontSize: '0.9rem' }}>Order Number</span>
-                        <span style={{ color: 'white', fontSize: '1.4rem', fontFamily: 'monospace', fontWeight: 'bold' }}>
-                            {orderData.orderNumber}
-                        </span>
-                    </div>
-                    <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #333' }}>
-                        <span style={{ color: '#888', display: 'block', fontSize: '0.9rem' }}>Total Amount</span>
-                        <span style={{ color: 'var(--color-gold)', fontSize: '1.6rem', fontWeight: 'bold' }}>
-                            ৳{orderData.total.toLocaleString()}
-                        </span>
-                    </div>
+                <div style={{ marginBottom: '3rem' }}>
+                    <Receipt order={orderData} />
                 </div>
             )}
 
@@ -95,7 +105,9 @@ function SuccessContent() {
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{
-                            display: 'inline-block',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
                             background: '#25D366',
                             color: 'white',
                             padding: '1rem 2rem',
@@ -103,16 +115,14 @@ function SuccessContent() {
                             textDecoration: 'none',
                             fontWeight: '600',
                             fontSize: '1.1rem',
-                            transition: 'transform 0.2s'
+                            transition: 'transform 0.2s',
+                            boxShadow: '0 4px 12px rgba(37, 211, 102, 0.3)'
                         }}
-                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                        onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
                     >
-                        📱 Send Order to WhatsApp
+                        <span>📱</span> Send Order to WhatsApp
                     </a>
-                    <p style={{ color: '#888', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                        Get instant confirmation on WhatsApp
-                    </p>
                 </div>
             )}
 

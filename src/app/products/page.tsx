@@ -75,16 +75,31 @@ export default async function ProductsPage({
                 {/* Page Header */}
                 <div className="page-header">
                     <h1 className="page-title collection-title">
-                        {categoryFilter
-                            ? categoryFilter.toLowerCase().includes('women')
-                                ? 'GEZZEEL'
-                                : categoryFilter.toLowerCase().includes('men') && !categoryFilter.toLowerCase().includes('women')
-                                    ? 'BLACK STONE'
-                                    : `${categories.find(c => c.slug === categoryFilter)?.name || categoryFilter} Collection`
-                            : 'All Products'}
+                        {(() => {
+                            const selectedCategory = categories.find(c => c.slug === categoryFilter);
+                            if (selectedCategory) {
+                                return selectedCategory.brand || selectedCategory.name;
+                            }
+                            return 'All Products';
+                        })()}
                     </h1>
                     <p className="page-description">
-                        Browse our complete collection of premium professional clothing
+                        {(() => {
+                            const selectedCategory = categories.find(c => c.slug === categoryFilter);
+                            if (!selectedCategory) return 'Browse our complete collection of premium clothing';
+
+                            const brand = selectedCategory.brand;
+                            if (brand === 'GAZZELLE') {
+                                return selectedCategory.name.toLowerCase().includes('girl')
+                                    ? 'Beautiful styles for young girls'
+                                    : 'Elegant collection for modern women';
+                            } else if (brand === 'BLACK STONE') {
+                                return selectedCategory.name.toLowerCase().includes('boy')
+                                    ? 'Stylish collection for boys'
+                                    : 'Premium professional clothing for men';
+                            }
+                            return `Explore our ${selectedCategory.name} collection`;
+                        })()}
                     </p>
                 </div>
 

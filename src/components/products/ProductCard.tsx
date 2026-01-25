@@ -145,6 +145,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                             </svg>
                         )}
                     </button>
+                    <button
+                        className="action-btn"
+                        title="Buy Now"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            addToCart({ id, name, price, image, size: 'Standard', quantity: 1 });
+                            window.location.href = '/checkout';
+                        }}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                            <polyline points="13 2 13 9 20 9"></polyline>
+                        </svg>
+                    </button>
                     <Link href={`/products/${id}`} className="action-btn" title="Quick View">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -167,12 +181,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 </div>
 
                 {/* Mobile Only: Static Add to Cart Button */}
-                <button
-                    className={`mobile-cart-btn ${isAdded ? 'added' : ''}`}
-                    onClick={handleAddToCart}
-                >
-                    {isAdded ? 'Added' : 'Add to Cart'}
-                </button>
+                {/* Mobile Only: Action Buttons */}
+                <div className="mobile-actions" style={{ display: 'none', gap: '0.5rem', marginTop: '0.5rem' }}>
+                    <button
+                        className={`mobile-cart-btn ${isAdded ? 'added' : ''}`}
+                        onClick={handleAddToCart}
+                        style={{ flex: 1 }}
+                    >
+                        {isAdded ? 'Added' : 'Add to Cart'}
+                    </button>
+                    <button
+                        className="mobile-cart-btn"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            addToCart({ id, name, price, image, size: 'Standard', quantity: 1 });
+                            window.location.href = '/checkout';
+                        }}
+                        style={{ flex: 1, background: 'var(--color-gold)', color: 'var(--color-charcoal)', borderColor: 'var(--color-gold)' }}
+                    >
+                        Buy Now
+                    </button>
+                </div>
+
+                <style jsx>{`
+                    @media (max-width: 768px) {
+                        .mobile-actions {
+                            display: flex !important;
+                        }
+                    }
+                `}</style>
             </div>
         </motion.div>
     );

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 import MultiImageUpload from '@/components/ui/MultiImageUpload';
+import ColorPicker from '@/components/ui/ColorPicker';
 
 interface Category {
     id: string;
@@ -48,6 +49,9 @@ export default function ProductForm({ categories, initialData, action, submitTex
     const [imageUrl, setImageUrl] = useState(''); // Compatibility
     const [isShaking, setIsShaking] = useState(false);
 
+    // Color management
+    const [colors, setColors] = useState<string[]>([]);
+
     // Error handling wrapper
     async function handleAction(formData: FormData) {
         // Client-side validation
@@ -90,6 +94,20 @@ export default function ProductForm({ categories, initialData, action, submitTex
                 }
             } catch (e) {
                 // ignore
+            }
+        }
+
+        // Initialize colors from initialData
+        if (initialData?.colors) {
+            try {
+                const parsedColors = JSON.parse(initialData.colors);
+                if (Array.isArray(parsedColors)) {
+                    setColors(parsedColors);
+                }
+            } catch (e) {
+                // If it's not JSON, treat as comma-separated string
+                const colorArray = initialData.colors.split(',').map((c: string) => c.trim()).filter(Boolean);
+                setColors(colorArray);
             }
         }
     }, [initialData]);
@@ -216,25 +234,28 @@ export default function ProductForm({ categories, initialData, action, submitTex
                 />
             </div>
 
-            <div className="form-grid">
-                <div className="form-group">
-                    <label className="form-label">Sizes (JSON string)</label>
-                    <input
-                        type="text"
-                        name="sizes"
-                        className="form-input"
-                        defaultValue={initialData?.sizes || '["S", "M", "L", "XL"]'}
-                    />
-                </div>
-                <div className="form-group">
-                    <label className="form-label">Colors (JSON string)</label>
-                    <input
-                        type="text"
-                        name="colors"
-                        className="form-input"
-                        defaultValue={initialData?.colors || '["Black", "Navy", "Grey"]'}
-                    />
-                </div>
+            {/* Color Picker */}
+            <ColorPicker
+                label="Product Colors"
+                initialColors={colors}
+                onChange={setColors}
+                required={false}
+            />
+            <input type="hidden" name="colors" value={JSON.stringify(colors)} />
+
+            {/* Sizes */}
+            <div className="form-group">
+                <label className="form-label">Available Sizes (comma-separated)</label>
+                <input
+                    type="text"
+                    name="sizes"
+                    className="form-input"
+                    defaultValue={initialData?.sizes ? JSON.parse(initialData.sizes).join(', ') : 'S, M, L, XL'}
+                    placeholder="e.g. S, M, L, XL, XXL"
+                />
+                <small style={{ color: 'var(--color-stone-text)', fontSize: '0.875rem', marginTop: '0.5rem', display: 'block' }}>
+                    Enter sizes separated by commas. They will be stored as individual options.
+                </small>
             </div>
 
             <div className="form-checks" style={{ display: 'flex', gap: '2rem', marginTop: '1rem', marginBottom: '2rem' }}>
