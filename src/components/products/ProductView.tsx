@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/context/CartContext';
 
@@ -28,6 +29,7 @@ export default function ProductView({ product }: ProductViewProps) {
     const [selectedColor, setSelectedColor] = useState('');
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
+    const router = useRouter(); // Initialize router
 
     const discount = product.previousPrice ? Math.round(((product.previousPrice - product.price) / product.previousPrice) * 100) : 0;
 
@@ -171,7 +173,7 @@ export default function ProductView({ product }: ProductViewProps) {
                 </div>
 
                 {/* Actions */}
-                <div className="product-actions">
+                <div className="detail-actions">
                     <Button size="lg" fullWidth onClick={handleAddToCart}>
                         Add to Cart
                     </Button>
@@ -197,7 +199,11 @@ export default function ProductView({ product }: ProductViewProps) {
                                 color: selectedColor,
                                 quantity: quantity
                             });
-                            window.location.href = '/checkout';
+                            // Use Next.js router for instant client-side transition instead of full reload
+                            const params = new URLSearchParams();
+                            // Optional: Pass pre-filled data if we wanted to skip cart, but for now we use cart context.
+                            // Just navigating is distinctively faster.
+                            router.push('/checkout');
                         }}
                     >
                         Buy Now

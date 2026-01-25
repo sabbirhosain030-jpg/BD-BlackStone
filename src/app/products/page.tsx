@@ -78,6 +78,10 @@ export default async function ProductsPage({
                         {(() => {
                             const selectedCategory = categories.find(c => c.slug === categoryFilter);
                             if (selectedCategory) {
+                                // Manual Override for Display Names as per user request
+                                const name = selectedCategory.name.toLowerCase();
+                                if (name === 'men') return 'BLACK STONE';
+                                if (name === 'women') return 'GAZZELLE';
                                 return selectedCategory.brand || selectedCategory.name;
                             }
                             return 'All Products';
@@ -88,13 +92,19 @@ export default async function ProductsPage({
                             const selectedCategory = categories.find(c => c.slug === categoryFilter);
                             if (!selectedCategory) return 'Browse our complete collection of premium clothing';
 
+                            const name = selectedCategory.name.toLowerCase();
+
+                            // Custom descriptions for rebranded categories
+                            if (name === 'men') return 'Explore our Black Stone collection for men';
+                            if (name === 'women') return 'Explore our Gazzelle collection for women';
+
                             const brand = selectedCategory.brand;
                             if (brand === 'GAZZELLE') {
-                                return selectedCategory.name.toLowerCase().includes('girl')
+                                return name.includes('girl')
                                     ? 'Beautiful styles for young girls'
                                     : 'Elegant collection for modern women';
                             } else if (brand === 'BLACK STONE') {
-                                return selectedCategory.name.toLowerCase().includes('boy')
+                                return name.includes('boy')
                                     ? 'Stylish collection for boys'
                                     : 'Premium professional clothing for men';
                             }

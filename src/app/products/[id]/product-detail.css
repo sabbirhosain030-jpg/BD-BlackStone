@@ -234,7 +234,7 @@
     padding-bottom: 1.5rem;
 }
 
-.product-actions {
+.detail-actions {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
@@ -244,11 +244,11 @@
     margin: 1rem 0;
 }
 
-.product-actions a {
+.detail-actions a {
     width: 100%;
 }
 
-.product-actions .btn {
+.detail-actions .btn {
     height: 56px;
     font-size: 1rem;
     letter-spacing: 1px;
@@ -343,7 +343,7 @@
         font-size: 1.5rem;
     }
 
-    .product-actions {
+    .detail-actions {
         grid-template-columns: 1fr;
         gap: 1rem;
     }

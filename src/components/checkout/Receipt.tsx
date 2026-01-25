@@ -31,9 +31,18 @@ export default function Receipt({ order, onClose }: ReceiptProps) {
         const content = receiptRef.current;
         if (!content) return;
 
-        const printWindow = window.open('', '', 'width=600,height=800');
-        if (printWindow) {
-            printWindow.document.write(`
+        // Create a hidden iframe
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.width = '0px';
+        iframe.style.height = '0px';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
+
+        const doc = iframe.contentWindow?.document;
+        if (doc) {
+            doc.open();
+            doc.write(`
                 <html>
                     <head>
                         <title>Receipt - ${order.orderNumber}</title>
@@ -71,17 +80,20 @@ export default function Receipt({ order, onClose }: ReceiptProps) {
                     </head>
                     <body>
                         ${content.innerHTML}
-                        <script>
-                            // Wait for styles and rendering
-                            setTimeout(function() {
-                                window.print();
-                                window.close();
-                            }, 500);
-                        </script>
                     </body>
                 </html>
             `);
-            printWindow.document.close();
+            doc.close();
+
+            // Print after images/styles load
+            iframe.onload = () => {
+                iframe.contentWindow?.focus();
+                iframe.contentWindow?.print();
+                // Clean up after print dialog closes (approximate)
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 1000);
+            };
         }
     };
 
