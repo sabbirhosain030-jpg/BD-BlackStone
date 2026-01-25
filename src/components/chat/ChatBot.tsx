@@ -245,7 +245,13 @@ export default function ChatBot() {
                 <div className="chatbot-window">
                     <div className="chatbot-header">
                         <div className="chatbot-header-title">
-                            <img src="/chatbot-robot.png" alt="Assistant" className="chatbot-header-avatar" />
+                            <div className="chatbot-header-avatar">
+                                <img
+                                    src="/chatbot-robot.png"
+                                    alt="Assistant"
+                                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                                />
+                            </div>
                             <div>
                                 <h3>BlackStone Assistant</h3>
                                 <p>Always here to help</p>

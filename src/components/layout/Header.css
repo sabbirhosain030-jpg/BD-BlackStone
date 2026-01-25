@@ -204,6 +204,8 @@
     display: flex;
     gap: 1.25rem;
     align-items: center;
+    z-index: 10;
+    /* Ensure on top */
 }
 
 .action-btn {
@@ -212,6 +214,10 @@
     transition: all var(--transition-fast);
     border-radius: var(--radius-sm);
     position: relative;
+    display: flex;
+    /* Ensure flex for centering svg */
+    align-items: center;
+    justify-content: center;
 }
 
 .action-btn:hover {

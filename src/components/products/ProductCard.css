@@ -151,7 +151,6 @@
     transform: scale(0.9);
 }
 
-
 .product-actions {
     position: absolute;
     top: 50%;
@@ -159,20 +158,22 @@
     transform: translate(-50%, -20%) scale(0.9);
     width: auto;
     display: flex;
+    flex-direction: column;
+    /* Vertical layout */
     justify-content: center;
     gap: 12px;
     padding: 12px;
     /* Glassmorphism effect */
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 50px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
     pointer-events: none;
     z-index: 3;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .product-card:hover .product-actions {
@@ -339,21 +340,23 @@
         align-items: center;
     }
 
-    /* Mobile: Small, horizontal, bottom-right */
+    /* Mobile: Vertical list on right side */
     .product-actions {
         opacity: 1 !important;
         pointer-events: auto !important;
         transform: translate(0, 0) !important;
-        top: auto !important;
+        top: 50% !important;
         left: auto !important;
         right: 8px !important;
-        bottom: 8px !important;
+        bottom: auto !important;
+        transform: translateY(-50%) !important;
         background: rgba(255, 255, 255, 0.95) !important;
-        padding: 4px !important;
-        border-radius: 50px !important;
+        padding: 8px 4px !important;
+        border-radius: 20px !important;
         display: flex !important;
-        flex-direction: row !important;
-        gap: 6px !important;
+        flex-direction: column !important;
+        /* Stack vertically */
+        gap: 10px !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
         width: auto !important;
     }

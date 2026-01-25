@@ -106,7 +106,12 @@ export default async function HomePage() {
                     />
                   </div>
                   <h3 className="category-circle-name">
-                    {category.brand ? `${category.name} - ${category.brand}` : category.name}
+                    {category.name}
+                    <span style={{ display: 'block', fontSize: '0.8em', color: 'var(--color-gold)', fontWeight: 400, marginTop: '4px' }}>
+                      {category.brand ||
+                        (category.name.toLowerCase().includes('men') && !category.name.toLowerCase().includes('wo') ? 'BLACK STONE' :
+                          category.name.toLowerCase().includes('women') ? 'GAZZELLE' : '')}
+                    </span>
                   </h3>
                 </Link>
               ))

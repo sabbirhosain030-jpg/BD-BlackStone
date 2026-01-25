@@ -57,7 +57,7 @@ export default function Receipt({ order, onClose }: ReceiptProps) {
                             .brand-title { 
                                 font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase;
                                 color: #1a1a1a;
-                                text-shadow: 2px 2px 0px #c9a55a; /* 3D Effect */
+                                text-shadow: 2px 2px 0px #c9a55a;
                             }
                             .order-meta { display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; font-size: 14px; position: relative; z-index: 1; }
                             .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; position: relative; z-index: 1; }
@@ -72,7 +72,11 @@ export default function Receipt({ order, onClose }: ReceiptProps) {
                     <body>
                         ${content.innerHTML}
                         <script>
-                            window.onload = function() { window.print(); window.close(); }
+                            // Wait for styles and rendering
+                            setTimeout(function() {
+                                window.print();
+                                window.close();
+                            }, 500);
                         </script>
                     </body>
                 </html>
