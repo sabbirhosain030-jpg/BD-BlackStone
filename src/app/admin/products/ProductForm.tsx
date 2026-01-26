@@ -68,6 +68,8 @@ export default function ProductForm({ categories, initialData, action, submitTex
         if (images.length === 0) errors.push('Images');
 
         if (errors.length > 0) {
+            // Show error message to user
+            alert(`Please fill in the following required fields:\n\n${errors.join('\n')}`);
             // Trigger Shake Animation
             setIsShaking(true);
             setTimeout(() => setIsShaking(false), 500); // Remove class after animation

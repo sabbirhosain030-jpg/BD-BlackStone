@@ -1,0 +1,79 @@
+/* Breakpoint System - Mobile First */
+
+:root {
+    /* Breakpoint values */
+    --breakpoint-xs: 320px;
+    --breakpoint-sm: 480px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1440px;
+    --breakpoint-xxl: 1920px;
+}
+
+/* Base Mobile Styles (0-479px) */
+/* Styles apply to all devices by default */
+
+/* Small Mobile (480px+) */
+@media (min-width: 480px) {
+    /* Slightly larger phones */
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+    /* iPad portrait, smaller tablets */
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+    /* iPad landscape, laptops */
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+    /* 1440p displays, large monitors */
+}
+
+/* Extra Large Desktop (1920px+) */
+@media (min-width: 1920px) {
+    /* 1080p+ displays, very large monitors */
+}
+
+/* Mobile-only (max-width: 767px) */
+@media (max-width: 767px) {
+    /* Mobile-specific overrides */
+}
+
+/* Tablet-only (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Tablet-specific styles */
+}
+
+/* Desktop-only (1024px+) */
+@media (min-width: 1024px) {
+    /* Desktop-specific styles */
+}
+
+/* Touch device detection */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Touch devices - disable hover effects */
+    *:hover {
+        /* Reset hover states that don't work on touch */
+    }
+}
+
+/* High DPI / Retina displays */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    /* Retina-specific optimizations */
+}
+
+/* Print styles */
+@media print {
+
+    /* Print-friendly styles */
+    body {
+        background: white;
+        color: black;
+    }
+}

@@ -1,0 +1,240 @@
+/* Orientation-Specific Styles */
+
+/* Portrait orientation (height > width) */
+@media (orientation: portrait) {
+
+    /* Optimize vertical layouts */
+    .orientation-portrait {
+        display: block;
+    }
+
+    .orientation-landscape {
+        display: none;
+    }
+
+    /* Stack navigation on portrait mobile */
+    @media (max-width: 767px) {
+        .nav-horizontal {
+            flex-direction: column;
+        }
+    }
+
+    /* Product grid adjustments */
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 768px) {
+        .products-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    /* Hero sections take more vertical space */
+    .hero-section {
+        min-height: 60vh;
+    }
+}
+
+/* Landscape orientation (width > height) */
+@media (orientation: landscape) {
+
+    /* Optimize horizontal layouts */
+    .orientation-landscape {
+        display: block;
+    }
+
+    .orientation-portrait {
+        display: none;
+    }
+
+    /* Mobile landscape specific (phones in landscape) */
+    @media (max-height: 600px) {
+
+        /* Reduce header height for more content visibility */
+        .header-main {
+            padding: 0.5rem 0;
+        }
+
+        .header-top {
+            display: none;
+            /* Hide announcement bar */
+        }
+
+        /* Reduce hero height */
+        .hero-section {
+            min-height: 80vh;
+        }
+
+        /* Reduce padding in modals */
+        .modal-content {
+            padding: 1rem;
+        }
+
+        /* Make product images wider */
+        .product-image-wrapper {
+            padding-top: 60%;
+            /* Wider aspect ratio */
+        }
+    }
+
+    /* Tablet landscape */
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .products-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    /* Desktop landscape */
+    @media (min-width: 1024px) {
+        .products-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        /* Wider content containers */
+        .content-wrapper {
+            max-width: 90%;
+        }
+    }
+}
+
+/* Handling orientation changes */
+@media (orientation: portrait) {
+    .auto-orient-container {
+        flex-direction: column;
+    }
+}
+
+@media (orientation: landscape) {
+    .auto-orient-container {
+        flex-direction: row;
+    }
+}
+
+/* iPad Pro specific (1024x1366 portrait / 1366x1024 landscape) */
+@media (min-width: 1024px) and (orientation: portrait) {
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .container {
+        max-width: 900px;
+    }
+}
+
+@media (min-width: 1024px) and (orientation: landscape) {
+    .products-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Prevent zoom on orientation change */
+@viewport {
+    width: device-width;
+    zoom: 1;
+}
+
+/* Smooth transition on orientation change */
+.orient-transition {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Gallery views optimized for orientation */
+@media (orientation: portrait) {
+    .image-gallery {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gallery-main {
+        order: 1;
+        width: 100%;
+    }
+
+    .gallery-thumbnails {
+        order: 2;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+}
+
+@media (orientation: landscape) {
+    .image-gallery {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .gallery-thumbnails {
+        order: 1;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        max-height: 500px;
+    }
+
+    .gallery-main {
+        order: 2;
+        flex: 1;
+    }
+}
+
+/* Video players */
+@media (orientation: landscape) {
+    .video-player {
+        aspect-ratio: 16 / 9;
+    }
+}
+
+@media (orientation: portrait) {
+    .video-player {
+        aspect-ratio: 9 / 16;
+    }
+}
+
+/* Forms in landscape mobile */
+@media (orientation: landscape) and (max-height: 600px) {
+    .form-section {
+        padding: 0.75rem;
+    }
+
+    .form-input,
+    .form-textarea {
+        padding: 0.5rem;
+        min-height: 40px;
+    }
+
+    /* Reduce spacing between form groups */
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+}
+
+/* Checkout flow orientation */
+@media (orientation: portrait) {
+    .checkout-layout {
+        flex-direction: column;
+    }
+
+    .checkout-form,
+    .order-summary {
+        width: 100%;
+    }
+}
+
+@media (orientation: landscape) and (min-width: 1024px) {
+    .checkout-layout {
+        flex-direction: row;
+        gap: 2rem;
+    }
+
+    .checkout-form {
+        flex: 2;
+    }
+
+    .order-summary {
+        flex: 1;
+        position: sticky;
+        top: 2rem;
+    }
+}

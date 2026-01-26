@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./animations.css";
 import "./3d-effects.css";
-import "./mobile-optimizations.css"; // Mobile-first touch optimizations
+import "./mobile-optimizations.css";
+// Responsive Design System
+import "@/styles/breakpoints.css";
+import "@/styles/grid-system.css";
+import "@/styles/responsive-typography.css";
+import "@/styles/orientation.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MarketingModal } from "@/components/layout/MarketingModal";
@@ -17,8 +22,9 @@ export const metadata: Metadata = {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5, // Allow zoom for accessibility
+  userScalable: true, // Better accessibility
+  viewportFit: 'cover',
 };
 
 import { CartProvider } from "@/context/CartContext";

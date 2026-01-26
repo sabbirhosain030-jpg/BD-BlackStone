@@ -1,0 +1,312 @@
+/* Responsive Typography - Fluid Scaling */
+
+/* Root font size scaling */
+:root {
+    /* Base: 16px at 320px viewport, scales to 18px at 1440px */
+    font-size: clamp(16px, 0.18vw + 15.4px, 18px);
+}
+
+/* Headings with fluid scaling */
+h1,
+.h1 {
+    font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
+h2,
+.h2 {
+    font-size: clamp(1.75rem, 4vw + 0.5rem, 2.75rem);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.875rem;
+    letter-spacing: -0.01em;
+}
+
+h3,
+.h3 {
+    font-size: clamp(1.5rem, 3vw + 0.5rem, 2.25rem);
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+}
+
+h4,
+.h4 {
+    font-size: clamp(1.25rem, 2.5vw + 0.5rem, 1.875rem);
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 0.625rem;
+}
+
+h5,
+.h5 {
+    font-size: clamp(1.125rem, 2vw + 0.5rem, 1.5rem);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+h6,
+.h6 {
+    font-size: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
+    font-weight: 600;
+    line-height: 1.45;
+    margin-bottom: 0.5rem;
+}
+
+/* Body text */
+p {
+    font-size: clamp(0.875rem, 1vw + 0.5rem, 1.125rem);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+/* Small text */
+small,
+.text-small {
+    font-size: clamp(0.75rem, 0.8vw + 0.4rem, 0.875rem);
+    line-height: 1.5;
+}
+
+/* Extra small text */
+.text-xs {
+    font-size: clamp(0.7rem, 0.7vw + 0.35rem, 0.8rem);
+    line-height: 1.4;
+}
+
+/* Large text */
+.text-lg {
+    font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.375rem);
+    line-height: 1.5;
+}
+
+/* Extra large text */
+.text-xl {
+    font-size: clamp(1.25rem, 2vw + 0.5rem, 1.75rem);
+    line-height: 1.4;
+}
+
+/* Display text (hero sections) */
+.display-1 {
+    font-size: clamp(3rem, 8vw + 1rem, 6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+}
+
+.display-2 {
+    font-size: clamp(2.5rem, 6vw + 1rem, 5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+/* Lead text (intro paragraphs) */
+.lead {
+    font-size: clamp(1.125rem, 1.5vw + 0.5rem, 1.5rem);
+    font-weight: 400;
+    line-height: 1.7;
+}
+
+/* Blockquotes */
+blockquote {
+    font-size: clamp(1rem, 1.2vw + 0.5rem, 1.25rem);
+    line-height: 1.6;
+    font-style: italic;
+    padding-left: clamp(1rem, 2vw, 2rem);
+    border-left: 3px solid var(--color-gold);
+}
+
+/* Lists */
+ul,
+ol {
+    font-size: clamp(0.875rem, 1vw + 0.5rem, 1.125rem);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    padding-left: clamp(1.25rem, 2vw, 2rem);
+}
+
+/* Font weight utilities */
+.font-light {
+    font-weight: 300;
+}
+
+.font-normal {
+    font-weight: 400;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.font-extrabold {
+    font-weight: 800;
+}
+
+/* Line height utilities */
+.leading-none {
+    line-height: 1;
+}
+
+.leading-tight {
+    line-height: 1.25;
+}
+
+.leading-snug {
+    line-height: 1.375;
+}
+
+.leading-normal {
+    line-height: 1.5;
+}
+
+.leading-relaxed {
+    line-height: 1.625;
+}
+
+.leading-loose {
+    line-height: 2;
+}
+
+/* Letter spacing utilities */
+.tracking-tighter {
+    letter-spacing: -0.05em;
+}
+
+.tracking-tight {
+    letter-spacing: -0.025em;
+}
+
+.tracking-normal {
+    letter-spacing: 0;
+}
+
+.tracking-wide {
+    letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+    letter-spacing: 0.05em;
+}
+
+.tracking-widest {
+    letter-spacing: 0.1em;
+}
+
+/* Text alignment responsive */
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+@media (min-width: 768px) {
+    .text-md-left {
+        text-align: left;
+    }
+
+    .text-md-center {
+        text-align: center;
+    }
+
+    .text-md-right {
+        text-align: right;
+    }
+}
+
+/* Text transform */
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-lowercase {
+    text-transform: lowercase;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+/* Text decoration */
+.text-underline {
+    text-decoration: underline;
+}
+
+.text-no-underline {
+    text-decoration: none;
+}
+
+/* Text color utilities */
+.text-muted {
+    color: var(--color-text-secondary);
+}
+
+.text-dim {
+    color: var(--color-text-dim);
+}
+
+.text-gold {
+    color: var(--color-gold);
+}
+
+.text-white {
+    color: var(--color-white);
+}
+
+.text-charcoal {
+    color: var(--color-charcoal);
+}
+
+/* Truncate text */
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Line clamp (multi-line truncate) */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Responsive visibility for text */
+@media (max-width: 767px) {
+    .hide-mobile-text {
+        font-size: 0;
+        visibility: hidden;
+    }
+}
+
+/* Optimize text rendering */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
