@@ -3,6 +3,7 @@ import "./globals.css";
 import "./animations.css";
 import "./3d-effects.css";
 import "./mobile-optimizations.css";
+import "./mobile-fixes.css"; // Android mobile fixes
 // Responsive Design System
 import "@/styles/breakpoints.css";
 import "@/styles/grid-system.css";
@@ -17,11 +18,17 @@ import { EmailPopup } from "@/components/layout/EmailPopup";
 export const metadata: Metadata = {
   title: "Black Stone - Premium Professional Clothing",
   description: "Your destination for premium, professional clothing. Timeless elegance meets modern sophistication. Cash on Delivery available.",
+  themeColor: '#1a1a1a',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+  },
 };
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
+  minimumScale: 1,
   maximumScale: 5, // Allow zoom for accessibility
   userScalable: true, // Better accessibility
   viewportFit: 'cover',

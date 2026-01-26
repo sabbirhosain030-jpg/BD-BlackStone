@@ -1,0 +1,132 @@
+/* Robot Avatar Animations */
+
+/* Eye Blinking Animation */
+@keyframes blink {
+
+    0%,
+    90%,
+    100% {
+        transform: scaleY(1);
+    }
+
+    93%,
+    97% {
+        transform: scaleY(0.1);
+    }
+}
+
+.robot-avatar.animated .eye-left,
+.robot-avatar.animated .eye-right {
+    transform-origin: center;
+    animation: blink 5s ease-in-out infinite;
+}
+
+.robot-avatar.animated .eye-left {
+    animation-delay: 0s;
+}
+
+.robot-avatar.animated .eye-right {
+    animation-delay: 0.1s;
+}
+
+/* Antenna Pulse Animation */
+@keyframes antennaPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.3);
+        opacity: 0.8;
+    }
+}
+
+.robot-avatar.animated .antenna-tip {
+    animation: antennaPulse 2s ease-in-out infinite;
+    transform-origin: center;
+}
+
+/* Glow Ring Animation */
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(1.05);
+    }
+}
+
+.robot-avatar.animated .glow-ring {
+    animation: glowPulse 2.5s ease-in-out infinite;
+    transform-origin: center;
+}
+
+/* Breathing Effect for Whole Avatar */
+@keyframes breathe {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+.robot-avatar.animated {
+    animation: breathe 3s ease-in-out infinite;
+}
+
+/* Pupil Movement (subtle) */
+@keyframes pupilMove {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    25% {
+        transform: translate(1px, -1px);
+    }
+
+    50% {
+        transform: translate(-1px, 0);
+    }
+
+    75% {
+        transform: translate(0, 1px);
+    }
+}
+
+.robot-avatar.animated .pupil-left,
+.robot-avatar.animated .pupil-right {
+    animation: pupilMove 8s ease-in-out infinite;
+}
+
+/* Hover state for interactivity */
+.robot-avatar:hover {
+    filter: brightness(1.1);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+    .robot-avatar.animated,
+    .robot-avatar.animated .eye-left,
+    .robot-avatar.animated .eye-right,
+    .robot-avatar.animated .antenna-tip,
+    .robot-avatar.animated .glow-ring,
+    .robot-avatar.animated .pupil-left,
+    .robot-avatar.animated .pupil-right {
+        animation: none !important;
+    }
+}
