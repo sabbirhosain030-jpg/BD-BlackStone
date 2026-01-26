@@ -77,7 +77,6 @@ export default function AddHomepageBannerPage() {
                         <label className="form-label">Banner Image</label>
                         <ImageUpload
                             onUpload={(url) => setImageUrl(url)}
-                            currentImageUrl={imageUrl}
                         />
                         {!imageUrl && (
                             <small style={{ color: 'var(--color-stone-text)', display: 'block', marginTop: '0.5rem' }}>

@@ -20,7 +20,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: true }, { status: 201 });
         } else {
             return NextResponse.json(
-                { message: result.error || 'Failed to create banner' },
+                { message: 'Failed to create banner' },
                 { status: 500 }
             );
         }

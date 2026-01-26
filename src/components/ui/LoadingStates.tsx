@@ -35,8 +35,12 @@ export const ProductCardSkeleton = () => (
         <Skeleton height="250px" borderRadius="8px" />
         <div style={{ marginTop: '1rem' }}>
             <Skeleton width="70%" height="0.875rem" />
-            <Skeleton width="100%" height="1rem" style={{ marginTop: '0.5rem' }} />
-            <Skeleton width="40%" height="1.25rem" style={{ marginTop: '0.75rem' }} />
+            <div style={{ marginTop: '0.5rem' }}>
+                <Skeleton width="100%" height="1rem" />
+            </div>
+            <div style={{ marginTop: '0.75rem' }}>
+                <Skeleton width="40%" height="1.25rem" />
+            </div>
             <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
                 <Skeleton width="50%" height="2.5rem" borderRadius="6px" />
                 <Skeleton width="50%" height="2.5rem" borderRadius="6px" />
@@ -53,7 +57,9 @@ export const OrderCardSkeleton = () => (
             <Skeleton width="80px" height="1.5rem" borderRadius="12px" />
         </div>
         <Skeleton width="60%" height="0.875rem" />
-        <Skeleton width="40%" height="0.875rem" style={{ marginTop: '0.5rem' }} />
+        <div style={{ marginTop: '0.5rem' }}>
+            <Skeleton width="40%" height="0.875rem" />
+        </div>
         <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #f0f0f0' }}>
             <Skeleton width="30%" height="1.25rem" />
         </div>
