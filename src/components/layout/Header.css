@@ -89,7 +89,8 @@
 /* Navigation */
 .nav {
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
+    /* Reduced from 2.5rem to prevent wrapping */
     align-items: center;
 }
 
@@ -380,6 +381,36 @@
     .action-btn svg {
         width: 24px;
         height: 24px;
+    }
+
+    .header-main {
+        padding: 0.75rem 0;
+        /* Reduced padding */
+    }
+
+    .header-content {
+        padding: 0 0.5rem;
+        /* Reduced side space */
+        gap: 0.5rem;
+    }
+
+    .logo-text {
+        font-size: 1.25rem;
+        /* Smaller logo for mobile to save space */
+    }
+
+    /* Hide specific desktop-only icons heavily requested */
+    .action-btn.cart-btn,
+    .action-btn[href="/account"],
+    .action-btn[href="/login"] {
+        display: none !important;
+    }
+
+    /* Ensure Search and Wishlist remain visible */
+    .action-btn[aria-label="Search"],
+    .action-btn[title="Wishlist"],
+    .action-btn[href="/wishlist"] {
+        display: flex !important;
     }
 
     .mobile-auth-links {

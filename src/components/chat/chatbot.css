@@ -82,38 +82,41 @@
         0 8px 24px rgba(120, 75, 160, 0.4),
         0 0 0 0 rgba(255, 60, 172, 0.4);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: breatheBot 3s ease-in-out infinite, pulseRing 2s infinite;
+    animation: helloBounce 2s ease-in-out infinite, pulseRing 3s infinite;
     position: relative;
     overflow: visible;
 }
 
-.chatbot-toggle::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border-radius: 50%;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    filter: blur(8px);
-}
+@keyframes helloBounce {
 
-.chatbot-toggle:hover::before {
-    opacity: 1;
-    animation: spin 3s linear infinite;
-}
-
-@keyframes spin {
+    0%,
     100% {
-        transform: rotate(360deg);
+        transform: translateY(0) rotate(0);
+    }
+
+    10% {
+        transform: translateY(-3px) rotate(-2deg);
+    }
+
+    20% {
+        transform: translateY(0) rotate(0);
+    }
+
+    30% {
+        transform: translateY(-3px) rotate(2deg);
+    }
+
+    40% {
+        transform: translateY(0) rotate(0);
     }
 }
 
 .chatbot-toggle:hover {
-    transform: scale(1.1) translateY(-2px);
-    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
-    animation: floatBot 3s ease-in-out infinite, pulse 2s ease-in-out infinite, waveHand 1s ease-in-out;
+    transform: scale(1.1) !important;
+    /* Simple scale, no rotation to avoid conflict */
+    box-shadow: 0 8px 30px rgba(255, 0, 204, 0.6);
+    animation: helloBounce 1s ease-in-out infinite;
+    /* Speed up on hover */
 }
 
 .chatbot-toggle svg {

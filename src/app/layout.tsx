@@ -30,8 +30,8 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   minimumScale: 1,
-  maximumScale: 5, // Allow zoom for accessibility
-  userScalable: true, // Better accessibility
+  maximumScale: 1, // Disable zoom
+  userScalable: false, // Prevent manual zooming
   viewportFit: 'cover',
 };
 

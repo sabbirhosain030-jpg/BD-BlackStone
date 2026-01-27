@@ -53,6 +53,8 @@ async function main() {
     const subcategoriesData = [
         { name: 'Boys', slug: 'boys', categoryName: "Men's Fashion" },
         { name: 'Girls', slug: 'girls', categoryName: "Women's Fashion" },
+        { name: 'Polo T-Shirt', slug: 'polo-t-shirt', categoryName: "Men's Fashion" },
+        { name: 'Trouser', slug: 'trouser', categoryName: "Men's Fashion" },
     ];
 
     const subcategories = [];

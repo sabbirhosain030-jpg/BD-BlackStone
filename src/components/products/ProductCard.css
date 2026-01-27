@@ -8,7 +8,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    transform-style: preserve-3d;
+    /* transform-style: preserve-3d; Removed rotation effect */
     /* Multi-layer shadow for depth */
     box-shadow:
         0 1px 2px rgba(0, 0, 0, 0.04),
@@ -347,32 +347,8 @@
         align-items: center;
     }
 
-    /* Mobile: Vertical list on right side */
     .product-actions {
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        transform: translate(0, 0) !important;
-        top: 50% !important;
-        left: auto !important;
-        right: 8px !important;
-        bottom: auto !important;
-        transform: translateY(-50%) !important;
-        background: rgba(255, 255, 255, 0.95) !important;
-        padding: 8px 4px !important;
-        border-radius: 20px !important;
-        display: flex !important;
-        flex-direction: column !important;
-        /* Stack vertically */
-        gap: 10px !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
-        width: auto !important;
-    }
-
-    .action-btn {
-        width: 44px !important;
-        /* Minimum touch target */
-        height: 44px !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        display: none !important;
     }
 }
 
@@ -385,45 +361,58 @@
         display: none !important;
     }
 
-    /* Mobile Static Button */
+    /* Mobile Static Button Container */
     .mobile-actions {
-        display: grid;
-        /* Use grid as defined in component style, or block */
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+        width: 100%;
+        padding: 0 4px;
     }
 
+    /* "Add to Cart" - Outlined */
     .mobile-cart-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 8px 4px;
+        background: transparent;
+        color: #1a1a1a;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+        opacity: 1;
+        visibility: visible;
+        gap: 6px;
+    }
+
+    .mobile-cart-btn:active {
+        background: #f3f4f6;
+    }
+
+    /* "Order Now" - Solid Gold/Dark */
+    .mobile-buy-btn {
         display: block;
         width: 100%;
-        margin-top: 10px;
-        padding: 8px;
+        padding: 8px 4px;
         background: #1a1a1a;
         color: white;
         border: none;
         border-radius: 4px;
-        font-size: 0.85rem;
-        font-weight: 600;
+        font-size: 0.75rem;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         cursor: pointer;
-        opacity: 1;
-        visibility: visible;
-        transition: all 0.2s ease;
     }
 
-    .mobile-cart-btn.added {
-        background: #28a745;
-    }
-
-    .mobile-cart-btn:active {
+    .mobile-buy-btn:active {
         transform: scale(0.98);
-    }
-
-    .action-btn {
-        width: 44px !important;
-        height: 44px !important;
-        background: #fff !important;
-        color: #1a1a1a !important;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
     }
 
     /* Ensure image does not zoom on touch scroll */
