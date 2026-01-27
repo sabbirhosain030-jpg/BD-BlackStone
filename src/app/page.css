@@ -278,10 +278,35 @@
         padding: 0 1rem;
     }
 
+    /* Mobile Category Grid - 2 Columns */
+    .categories-circular,
     .categories-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 Columns */
+        gap: 1.5rem 1rem;
+        /* Row, Column gap */
         padding: 0 1rem;
+        justify-items: center;
+        /* Center items in their cells */
+    }
+
+    .category-circle-item {
+        width: 100%;
+        /* Flexible width */
+        gap: 0.75rem;
+    }
+
+    .category-circle-image-wrapper {
+        width: 140px;
+        /* Smaller for mobile */
+        height: 140px;
+        border-width: 3px;
+    }
+
+    .category-circle-name {
+        font-size: 1rem;
+        /* Smaller text */
     }
 
     .category-card {
@@ -302,6 +327,12 @@
 }
 
 @media (max-width: 480px) {
+    .category-circle-image-wrapper {
+        width: 110px;
+        /* Even smaller for very small screens */
+        height: 110px;
+    }
+
     .hero-title {
         font-size: 2rem;
     }
