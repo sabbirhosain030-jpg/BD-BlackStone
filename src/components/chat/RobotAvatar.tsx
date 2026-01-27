@@ -20,13 +20,14 @@ export default function RobotAvatar({ animated = true, size = 48 }: RobotAvatarP
             {/* Gradient Definitions */}
             <defs>
                 <linearGradient id="robotGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#667eea" />
-                    <stop offset="100%" stopColor="#764ba2" />
+                    <stop offset="0%" stopColor="#FF3CAC" />
+                    <stop offset="50%" stopColor="#784BA0" />
+                    <stop offset="100%" stopColor="#2B86C5" />
                 </linearGradient>
 
                 <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#667eea" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#764ba2" stopOpacity="0.6" />
+                    <stop offset="0%" stopColor="#FF3CAC" stopOpacity="0.8" />
+                    <stop offset="100%" stopColor="#2B86C5" stopOpacity="0.8" />
                 </linearGradient>
 
                 <filter id="glow">

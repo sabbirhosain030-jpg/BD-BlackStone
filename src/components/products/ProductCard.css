@@ -16,7 +16,8 @@
 }
 
 /* Default: Hide mobile button */
-.mobile-cart-btn {
+.mobile-cart-btn,
+.mobile-actions {
     display: none;
 }
 
@@ -385,6 +386,11 @@
     }
 
     /* Mobile Static Button */
+    .mobile-actions {
+        display: grid;
+        /* Use grid as defined in component style, or block */
+    }
+
     .mobile-cart-btn {
         display: block;
         width: 100%;

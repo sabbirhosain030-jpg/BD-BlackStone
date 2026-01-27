@@ -106,6 +106,7 @@
     background: linear-gradient(135deg, #1a1a1c 0%, #242426 100%);
     min-height: 100vh;
     position: relative;
+    isolation: isolate;
 }
 
 .admin-main::before {
@@ -1011,12 +1012,26 @@
         page-break-inside: avoid;
     }
 }
+
 /* Error Shake Animation */
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
 }
 
 .animate-shake {
@@ -1025,4 +1040,3 @@
     border-color: #ef4444 !important;
     box-shadow: 0 0 15px rgba(239, 68, 68, 0.5) !important;
 }
-

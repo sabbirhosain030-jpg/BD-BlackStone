@@ -1,0 +1,123 @@
+/* Mobile Navigation Styles */
+.mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #1a1a1c;
+    /* Dark premium background matching admin/footer */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    padding-bottom: env(safe-area-inset-bottom);
+    display: none;
+    /* Hidden on desktop by default */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.mobile-nav-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 60px;
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    text-decoration: none;
+    font-size: 10px;
+    gap: 4px;
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-item.active {
+    color: var(--color-gold);
+    /* Gold active state */
+}
+
+.mobile-nav-item svg {
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-item.active svg {
+    transform: translateY(-2px);
+    stroke: var(--color-gold);
+}
+
+/* Center Popped-up Cart */
+.mobile-nav-center {
+    position: relative;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    flex: 0 0 60px;
+}
+
+.mobile-cart-btn {
+    position: absolute;
+    bottom: 15px;
+    /* Lifts it up */
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--color-gold), #b8860b);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a1a;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3),
+        0 4px 10px rgba(212, 175, 55, 0.3);
+    /* Gold glow */
+    border: 4px solid #1a1a1c;
+    /* Matches nav background to create "cutout" effect */
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mobile-cart-btn:active {
+    transform: scale(0.95);
+}
+
+.cart-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #1a1a1c;
+}
+
+/* Only show on mobile */
+@media (max-width: 768px) {
+    .mobile-nav {
+        display: block;
+    }
+
+    /* Add padding to body so content isn't hidden */
+    body {
+        padding-bottom: 70px !important;
+    }
+}

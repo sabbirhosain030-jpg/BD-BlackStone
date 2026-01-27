@@ -6,8 +6,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
-    background: var(--color-white);
-    border-bottom: 1px solid #eee;
+    background: linear-gradient(135deg, var(--color-stone-surface) 0%, var(--color-stone-dark) 100%);
+    border-bottom: 1px solid var(--color-stone-border);
     position: sticky;
     top: 0;
     z-index: 1001;
@@ -25,7 +25,7 @@
     padding: 0.625rem;
     background: none;
     border: none;
-    color: var(--color-charcoal);
+    color: var(--color-white);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -35,14 +35,14 @@
 }
 
 .mobile-menu-toggle:hover {
-    background: var(--color-cream);
+    background: rgba(212, 175, 55, 0.1);
 }
 
 .mobile-brand {
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-charcoal);
+    color: var(--color-white);
     text-decoration: none;
 }
 

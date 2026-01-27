@@ -182,31 +182,78 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
                 {/* Mobile Only: Static Add to Cart Button */}
                 {/* Mobile Only: Action Buttons */}
-                <div className="mobile-actions" style={{ display: 'none', gap: '0.5rem', marginTop: '0.5rem' }}>
+                {/* Mobile Only: Dual Action Buttons */}
+                <div className="mobile-actions">
                     <button
-                        className={`mobile-cart-btn ${isAdded ? 'added' : ''}`}
+                        className={`mobile-cart-btn ${isAdded ? 'added' : 'outline'}`}
                         onClick={handleAddToCart}
-                        style={{ flex: 1 }}
                     >
-                        {isAdded ? 'Added' : 'Add to Cart'}
+                        {isAdded ? (
+                            <>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Added
+                            </>
+                        ) : (
+                            'Add to Cart'
+                        )}
                     </button>
                     <button
-                        className="mobile-cart-btn"
+                        className="mobile-buy-btn"
                         onClick={(e) => {
                             e.preventDefault();
                             addToCart({ id, name, price, image, size: 'Standard', quantity: 1 });
                             window.location.href = '/checkout';
                         }}
-                        style={{ flex: 1, background: 'var(--color-gold)', color: 'var(--color-charcoal)', borderColor: 'var(--color-gold)' }}
                     >
-                        Buy Now
+                        Order Now
                     </button>
                 </div>
 
                 <style jsx>{`
                     @media (max-width: 768px) {
                         .mobile-actions {
-                            display: flex !important;
+                            display: grid !important;
+                            grid-template-columns: 1fr;
+                            gap: 0.5rem;
+                            margin-top: 0.75rem;
+                            width: 100%;
+                        }
+                        
+                        .mobile-cart-btn, .mobile-buy-btn {
+                            width: 100%;
+                            padding: 0.5rem;
+                            font-size: 0.75rem;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                            border-radius: 4px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 32px;
+                            transition: all 0.2s;
+                            letter-spacing: 0.5px;
+                        }
+
+                        .mobile-cart-btn.outline {
+                            background: transparent;
+                            border: 1px solid var(--color-charcoal);
+                            color: var(--color-charcoal);
+                        }
+                        
+                        .mobile-cart-btn.added {
+                            background: var(--color-success);
+                            border: 1px solid var(--color-success);
+                            color: white;
+                            gap: 4px;
+                        }
+
+                        .mobile-buy-btn {
+                            background: linear-gradient(135deg, #1a1a1c 0%, #000 100%);
+                            border: none;
+                            color: var(--color-gold);
+                            border: 1px solid var(--color-gold);
                         }
                     }
                 `}</style>

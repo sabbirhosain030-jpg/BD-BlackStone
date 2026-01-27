@@ -14,6 +14,7 @@ import { Footer } from "@/components/layout/Footer";
 import { MarketingModal } from "@/components/layout/MarketingModal";
 import { MarketingBanner } from "@/components/layout/MarketingBanner";
 import { EmailPopup } from "@/components/layout/EmailPopup";
+import { MobileNav } from "@/components/layout/MobileNav";
 
 export const metadata: Metadata = {
   title: "Black Stone - Premium Professional Clothing",
@@ -69,10 +70,10 @@ export default function RootLayout({
 
                 <ConditionalWrapper>
                   <Footer />
+                  <MobileNav />
+                  {/* Live Chat Bot - only show on customer-facing pages */}
+                  <ChatBot />
                 </ConditionalWrapper>
-
-                {/* Live Chat Bot */}
-                <ChatBot />
               </div>
             </WishlistProvider>
           </CartProvider>

@@ -44,6 +44,9 @@ export const authOptions: NextAuthOptions = {
             }
         })
     ],
+    pages: {
+        signIn: '/login', // Regular users login page
+    },
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
@@ -58,10 +61,16 @@ export const authOptions: NextAuthOptions = {
                 (session.user as any).role = token.role;
             }
             return session;
-        }
-    },
-    pages: {
-        signIn: '/login',
+        },
+        async redirect({ url, baseUrl }) {
+            // If user is admin and just logged in, redirect to admin panel
+            const urlObj = new URL(url, baseUrl);
+            if (urlObj.searchParams.get('callbackUrl')?.startsWith('/admin')) {
+                return urlObj.searchParams.get('callbackUrl') || '/admin';
+            }
+            // Otherwise use default behavior
+            return url.startsWith(baseUrl) ? url : baseUrl;
+        },
     },
     session: {
         strategy: "jwt",
