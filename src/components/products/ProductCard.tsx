@@ -133,8 +133,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     {discount > 0 && <span className="product-badge badge-sale">-{discount}%</span>}
                 </div>
 
-                {/* Action Buttons Overlay */}
-                <div className="product-actions">
+                {/* Action Buttons Overlay - Desktop Only */}
+                <div className="product-actions desktop-actions">
                     <button
                         className={`action-btn ${isAdded ? 'btn-success' : ''}`}
                         title="Add to Cart"
