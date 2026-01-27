@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import './ProductCard.css';
 import { useCart } from '@/context/CartContext';
-import { useWishlist } from '@/context/WishlistContext'; // Restored
+import { useWishlist } from '@/context/WishlistContext';
 
 interface ProductCardProps {
     id: string;
@@ -18,7 +18,7 @@ interface ProductCardProps {
     isNew?: boolean;
     imagePosition?: string;
     variant?: 'grid' | 'list';
-    index?: number; // For stagger animation
+    index?: number;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -34,7 +34,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     index = 0
 }) => {
     const { addToCart } = useCart();
-    const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist(); // Restored
+    const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
     const [isAdded, setIsAdded] = useState(false);
     const discount = previousPrice ? Math.round(((previousPrice - price) / previousPrice) * 100) : 0;
 
@@ -44,7 +44,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         e.preventDefault();
         e.stopPropagation();
 
-        // Haptic feedback
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
             navigator.vibrate(50);
         }
@@ -60,7 +59,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         e.preventDefault();
         e.stopPropagation();
 
-        // Haptic feedback
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
             navigator.vibrate(50);
         }
@@ -85,14 +83,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{
                 duration: 0.3,
-                delay: index * 0.05, // Stagger effect
-                ease: [0.4, 0, 0.2, 1] // Custom easing
+                delay: index * 0.05,
+                ease: [0.4, 0, 0.2, 1]
             }}
             whileHover={{
                 y: -8,
                 transition: { duration: 0.2 }
             }}
-            whileTap={{ scale: 0.98 }} // Touch feedback on mobile
+            whileTap={{ scale: 0.98 }}
         >
             <div className="product-image-wrapper">
                 <Link href={`/products/${id}`}>
@@ -187,78 +185,40 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     )}
                 </div>
 
-                {/* Mobile Only: Static Add to Cart Button */}
-                {/* Mobile Only: Action Buttons */}
-                {/* Mobile Only: Dual Action Buttons */}
+                {/* Mobile Only: Dual Action Buttons - Stacked */}
                 <div className="mobile-actions">
                     <button
+                        className={`mobile-cart-btn ${isAdded ? 'added' : 'outline'}`}
+                        onClick={handleAddToCart}
+                    >
+                        {isAdded ? (
+                            <>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Added
+                            </>
+                        ) : (
                             'ADD TO CART'
                         )}
-                </button>
-                <button
-                    className="mobile-buy-btn"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        addToCart({ id, name, price, image, size: 'Standard', quantity: 1 });
-                        window.location.href = '/checkout';
-                    }}
-                >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '6px' }}>
-                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                        <path d="M16 10a4 4 0 0 1-8 0"></path>
-                    </svg>
-                    ORDER NOW
-                </button>
+                    </button>
+                    <button
+                        className="mobile-buy-btn"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            addToCart({ id, name, price, image, size: 'Standard', quantity: 1 });
+                            window.location.href = '/checkout';
+                        }}
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '6px' }}>
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        ORDER NOW
+                    </button>
+                </div>
             </div>
-
-            <style jsx>{`
-                    @media (max-width: 768px) {
-                        .mobile-actions {
-                            display: grid !important;
-                            grid-template-columns: 1fr;
-                            gap: 0.5rem;
-                            margin-top: 0.75rem;
-                            width: 100%;
-                        }
-                        
-                        .mobile-cart-btn, .mobile-buy-btn {
-                            width: 100%;
-                            padding: 0.5rem;
-                            font-size: 0.75rem;
-                            font-weight: 700;
-                            text-transform: uppercase;
-                            border-radius: 4px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            height: 32px;
-                            transition: all 0.2s;
-                            letter-spacing: 0.5px;
-                        }
-
-                        .mobile-cart-btn.outline {
-                            background: transparent;
-                            border: 1px solid var(--color-charcoal);
-                            color: var(--color-charcoal);
-                        }
-                        
-                        .mobile-cart-btn.added {
-                            background: var(--color-success);
-                            border: 1px solid var(--color-success);
-                            color: white;
-                            gap: 4px;
-                        }
-
-                        .mobile-buy-btn {
-                            background: linear-gradient(135deg, #1a1a1c 0%, #000 100%);
-                            border: none;
-                            color: var(--color-gold);
-                            border: 1px solid var(--color-gold);
-                        }
-                    }
-                `}</style>
-        </div>
-        </motion.div >
+        </motion.div>
     );
 };
