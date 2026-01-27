@@ -108,32 +108,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     </div>
                 </Link>
 
-                {/* Wishlist Button (Restored) */}
-                {/* Wishlist Button (Heart Symbol) */}
+                {/* Wishlist Button (Subtle Grey Heart) */}
                 <button
                     onClick={handleWishlistToggle}
                     className={`wishlist-btn ${inWishlist ? 'active' : ''}`}
                     title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
                     aria-label="Toggle wishlist"
-                    style={{
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        borderRadius: '50%',
-                        padding: '8px',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        border: 'none',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease'
-                    }}
                 >
                     <svg
                         width="22"
                         height="22"
                         viewBox="0 0 24 24"
-                        fill={inWishlist ? '#dc2626' : 'none'}
-                        stroke={inWishlist ? '#dc2626' : 'currentColor'}
+                        fill={inWishlist ? '#ef4444' : 'none'}
+                        stroke={inWishlist ? '#ef4444' : '#666'}
                         strokeWidth="2"
                     >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />

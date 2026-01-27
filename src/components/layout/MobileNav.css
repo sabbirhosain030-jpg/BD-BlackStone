@@ -21,10 +21,10 @@
     height: 60px;
     position: relative;
     width: 100%;
-    max-width: 100%;
     margin: 0;
     padding: 0 1rem;
-    /* minimal side padding */
+    box-sizing: border-box;
+    /* Key fix for overflow */
 }
 
 .mobile-nav-item {
