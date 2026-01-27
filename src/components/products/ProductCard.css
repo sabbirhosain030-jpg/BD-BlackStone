@@ -145,16 +145,29 @@
         pointer-events: none !important;
     }
 
+    /* FIX OVERFLOW/OVERLAP: Allow card to grow taller */
+    .product-card {
+        height: auto !important;
+        min-height: 100%;
+        overflow: visible !important;
+        padding-bottom: 55px !important;
+        /* Huge padding for absolute buttons if needed, or just flow */
+        display: flex;
+        flex-direction: column;
+    }
+
     .mobile-actions {
         display: flex;
         flex-direction: column;
-        /* Stacked Vertically */
-        gap: 8px;
+        gap: 12px;
+        /* Increased gap */
         margin-top: auto;
+        /* Pushes to bottom */
         width: 100%;
-        padding: 0 8px;
+        padding: 0 4px;
         position: relative;
         z-index: 5;
+        padding-bottom: 4px;
     }
 
     /* "ADD TO CART" - Outlined Style */
@@ -163,13 +176,12 @@
         align-items: center;
         justify-content: center;
         width: 100%;
-        /* Full Width */
         height: 38px;
         padding: 0;
         background: #fff;
         color: #1a1a1a;
-        border: 1px solid #1a1a1a;
-        /* Dark border */
+        border: 2px solid #1a1a1a;
+        /* Thicker border */
         border-radius: 4px;
         font-size: 0.75rem;
         font-weight: 700;
@@ -178,12 +190,12 @@
         flex-shrink: 0;
         letter-spacing: 0.5px;
         gap: 6px;
-        /* Spacing for icon */
+        margin-bottom: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
 
     .mobile-cart-btn svg {
         display: block;
-        /* SHOW ICON */
         width: 16px;
         height: 16px;
     }
@@ -203,7 +215,6 @@
         display: flex;
         width: 100%;
         height: 42px;
-        /* Taller */
         background: var(--color-gold);
         background-color: #d4af37;
         color: white;
@@ -211,16 +222,14 @@
         border-radius: 4px;
         font-size: 0.85rem;
         font-weight: 800;
-        /* Bolder */
         text-transform: uppercase;
         letter-spacing: 1px;
         cursor: pointer;
         align-items: center;
         justify-content: center;
         line-height: 1;
-        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.25);
         gap: 8px;
-        /* Spacing for icon */
     }
 
     .mobile-buy-btn svg {
