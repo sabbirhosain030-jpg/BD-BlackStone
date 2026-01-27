@@ -19,9 +19,9 @@ import { MobileNav } from "@/components/layout/MobileNav";
 import { FacebookPixel } from "@/components/analytics/FacebookPixel";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://bdblackstone.com'),
   title: "Black Stone - Premium Professional Clothing",
   description: "Your destination for premium, professional clothing. Timeless elegance meets modern sophistication. Cash on Delivery available.",
-  themeColor: '#1a1a1a',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -35,6 +35,7 @@ export const viewport = {
   maximumScale: 1, // Disable zoom
   userScalable: false, // Prevent manual zooming
   viewportFit: 'cover',
+  themeColor: '#1a1a1a',
 };
 
 import { CartProvider } from "@/context/CartContext";
@@ -58,7 +59,9 @@ export default function RootLayout({
               <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
                 <ConditionalWrapper>
                   {/* Facebook Pixel for Ad Tracking */}
-                  <FacebookPixel />
+                  <Suspense fallback={null}>
+                    <FacebookPixel />
+                  </Suspense>
                   <MarketingBanner />
                   <Suspense fallback={<div style={{ height: '80px' }} />}>
                     <Header />

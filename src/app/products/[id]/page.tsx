@@ -70,11 +70,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     };
 }
 
+// Pre-render top products at build time for maximum speed
+// DISABLED temporarily to fix Vercel Build "Max DB Connections" error
 export async function generateStaticParams() {
+    return [];
+    /*
     try {
         const products = await prisma.product.findMany({
             select: { id: true },
-            take: 100, // Pre-render top 100 products
+            take: 10,
             orderBy: { createdAt: 'desc' }
         });
 
@@ -85,6 +89,7 @@ export async function generateStaticParams() {
         console.error('Failed to generate static params:', error);
         return [];
     }
+    */
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {

@@ -114,18 +114,22 @@ export default async function ProductsPage({
                 </div>
 
                 {/* Filters and Sort (Client Component) */}
-                <FilterControls
-                    categories={categories}
-                    currentCategory={categoryFilter}
-                    currentSort={sortFilter}
-                    currentPrice={resolvedParams.price}
-                />
+                <React.Suspense fallback={<div className="h-16 bg-gray-100 animate-pulse rounded-lg mb-6" />}>
+                    <FilterControls
+                        categories={categories}
+                        currentCategory={categoryFilter}
+                        currentSort={sortFilter}
+                        currentPrice={resolvedParams.price}
+                    />
+                </React.Suspense>
 
                 {/* Sub-Category Pills */}
-                <CategoryPills
-                    categories={categories}
-                    currentCategory={categoryFilter}
-                />
+                <React.Suspense fallback={<div className="h-12 bg-gray-100 animate-pulse rounded-lg mb-6" />}>
+                    <CategoryPills
+                        categories={categories}
+                        currentCategory={categoryFilter}
+                    />
+                </React.Suspense>
 
                 {/* Products Grid */}
                 <div className={viewMode === 'list' ? "products-list" : "products-grid"}>
