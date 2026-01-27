@@ -16,6 +16,8 @@ import { MarketingBanner } from "@/components/layout/MarketingBanner";
 import { EmailPopup } from "@/components/layout/EmailPopup";
 import { MobileNav } from "@/components/layout/MobileNav";
 
+import { FacebookPixel } from "@/components/analytics/FacebookPixel";
+
 export const metadata: Metadata = {
   title: "Black Stone - Premium Professional Clothing",
   description: "Your destination for premium, professional clothing. Timeless elegance meets modern sophistication. Cash on Delivery available.",
@@ -55,6 +57,8 @@ export default function RootLayout({
             <WishlistProvider>
               <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
                 <ConditionalWrapper>
+                  {/* Facebook Pixel for Ad Tracking */}
+                  <FacebookPixel />
                   <MarketingBanner />
                   <Suspense fallback={<div style={{ height: '80px' }} />}>
                     <Header />
