@@ -133,76 +133,98 @@
     gap: 6px;
 }
 
-/* Mobile Actions Layout - Clean Row */
+/* Mobile Actions Layout - Stacked for Visibility */
 @media (max-width: 900px),
 (hover: none) {
-    .mobile-actions {
-        display: flex;
-        flex-direction: row;
-        /* Side by Side */
-        gap: 8px;
-        margin-top: 10px;
-        width: 100%;
-        padding: 0 4px;
-        align-items: center;
+
+    /* FORCE HIDE Desktop Overlay */
+    .product-card .product-actions,
+    .desktop-actions {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
     }
 
-    /* "Add to Cart" - Icon Only or Compact Outline */
+    .mobile-actions {
+        display: flex;
+        flex-direction: column;
+        /* Stacked Vertically */
+        gap: 8px;
+        margin-top: auto;
+        width: 100%;
+        padding: 0 8px;
+        position: relative;
+        z-index: 5;
+    }
+
+    /* "ADD TO CART" - Outlined Style */
     .mobile-cart-btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        /* Square button */
-        height: 40px;
+        width: 100%;
+        /* Full Width */
+        height: 36px;
         padding: 0;
         background: #fff;
         color: #1a1a1a;
-        border: 1px solid #e5e5e5;
+        border: 1px solid #1a1a1a;
+        /* Dark border */
         border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
         cursor: pointer;
         flex-shrink: 0;
-        /* Keep it square */
+        letter-spacing: 0.5px;
     }
 
     .mobile-cart-btn svg {
-        width: 20px;
-        height: 20px;
+        display: none;
+        /* Text only */
     }
 
-    /* Remove text from Add to Cart on mobile for cleaner look */
+    /* Restore text display */
     .mobile-cart-btn span {
-        display: none;
+        display: inline-block;
     }
 
     .mobile-cart-btn.added {
-        background: #e6fffa;
-        color: #047857;
-        border-color: #047857;
+        background: #1a1a1a;
+        color: #fff;
     }
 
-    /* "Order Now" - Solid Primary Button */
+    /* "ORDER NOW" - Solid Primary Button */
     .mobile-buy-btn {
-        display: block;
-        flex-grow: 1;
-        /* Take remaining space */
+        display: flex;
+        width: 100%;
+        /* Full Width */
         height: 40px;
-        background: #1a1a1a;
+        /* Slightly taller */
+        background: var(--color-gold);
+        /* Use Gold Variable if available */
+        background-color: #d4af37;
+        /* Fallback Gold */
         color: white;
         border: none;
         border-radius: 4px;
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 0.85rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
         cursor: pointer;
-        display: flex;
-        /* Added for vertical centering */
         align-items: center;
-        /* Vertically center text */
         justify-content: center;
-        /* Horizontally center text */
         line-height: 1;
-        /* Reset line height */
+        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .mobile-buy-btn:active {
+        transform: scale(0.98);
+    }
+
+    /* Ensure image does not zoom on touch scroll */
+    .product-card:hover .product-image {
+        transform: none !important;
     }
 }
