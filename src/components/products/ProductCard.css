@@ -164,7 +164,7 @@
         justify-content: center;
         width: 100%;
         /* Full Width */
-        height: 36px;
+        height: 38px;
         padding: 0;
         background: #fff;
         color: #1a1a1a;
@@ -177,11 +177,15 @@
         cursor: pointer;
         flex-shrink: 0;
         letter-spacing: 0.5px;
+        gap: 6px;
+        /* Spacing for icon */
     }
 
     .mobile-cart-btn svg {
-        display: none;
-        /* Text only */
+        display: block;
+        /* SHOW ICON */
+        width: 16px;
+        height: 16px;
     }
 
     /* Restore text display */
@@ -198,25 +202,30 @@
     .mobile-buy-btn {
         display: flex;
         width: 100%;
-        /* Full Width */
-        height: 40px;
-        /* Slightly taller */
+        height: 42px;
+        /* Taller */
         background: var(--color-gold);
-        /* Use Gold Variable if available */
         background-color: #d4af37;
-        /* Fallback Gold */
         color: white;
         border: none;
         border-radius: 4px;
         font-size: 0.85rem;
-        font-weight: 700;
+        font-weight: 800;
+        /* Bolder */
         text-transform: uppercase;
         letter-spacing: 1px;
         cursor: pointer;
         align-items: center;
         justify-content: center;
         line-height: 1;
-        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+        gap: 8px;
+        /* Spacing for icon */
+    }
+
+    .mobile-buy-btn svg {
+        width: 18px;
+        height: 18px;
     }
 
     .mobile-buy-btn:active {
