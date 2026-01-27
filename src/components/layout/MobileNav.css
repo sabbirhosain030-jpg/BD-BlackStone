@@ -60,58 +60,88 @@
 /* Center Popped-up Cart */
 .mobile-nav-center {
     position: relative;
-    width: 60px;
+    width: 20%;
+    /* 1 of 5 items */
     display: flex;
     justify-content: center;
-    flex: 0 0 60px;
+    align-items: flex-end;
+    /* Align label with others */
+    height: 100%;
+}
+
+.mobile-cart-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 4px;
+    /* Align text baseline */
 }
 
 .mobile-cart-btn {
     position: absolute;
-    bottom: 15px;
-    /* Lifts it up */
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--color-gold), #b8860b);
+    bottom: 24px;
+    /* Lifts it up significantly */
+    width: 50px;
+    height: 50px;
+    background: #000;
+    /* Black Center */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #1a1a1a;
-    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3),
-        0 4px 10px rgba(212, 175, 55, 0.3);
-    /* Gold glow */
-    border: 4px solid #1a1a1c;
-    /* Matches nav background to create "cutout" effect */
+    color: #fff;
+    /* Neon/Gold Ring */
+    border: 2px solid var(--color-gold);
+    box-shadow: 0 0 0 4px #000,
+        /* The "Cutout" effect (matches nav bg) */
+        0 -4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.mobile-cart-btn:active {
-    transform: scale(0.95);
+.active .mobile-cart-btn {
+    border-color: #fff;
+    /* White ring when active? or keep gold */
+    box-shadow: 0 0 0 4px #000, 0 0 10px var(--color-gold);
+    /* Flow */
 }
 
-.cart-icon-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.cart-label {
+    font-size: 10px;
+    color: #888;
+    margin-top: 28px;
+    /* Push text down to align with others */
+    font-weight: 500;
+}
+
+.mobile-cart-wrapper.active .cart-label {
+    color: var(--color-gold);
+}
+
+.mobile-cart-btn svg {
+    width: 22px;
+    height: 22px;
 }
 
 .mobile-cart-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -4px;
+    right: -4px;
     background: #ef4444;
     color: white;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: bold;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 9px;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #1a1a1c;
+    border: 2px solid #000;
 }
 
 /* Only show on mobile */
