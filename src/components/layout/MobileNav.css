@@ -4,14 +4,15 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background: #1a1a1c;
-    /* Dark premium background matching admin/footer */
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: #000000;
+    /* Pure Black for contrast */
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    /* Gold divider */
     z-index: 9999;
     padding-bottom: env(safe-area-inset-bottom);
     display: none;
     /* Hidden on desktop by default */
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .mobile-nav-container {
