@@ -6,6 +6,19 @@
     transition: all var(--transition-smooth);
 }
 
+/* Full Width Header Container */
+.header .container {
+    max-width: 100%;
+    padding: 0 3rem;
+    /* Add side padding for breathing room */
+}
+
+@media (max-width: 768px) {
+    .header .container {
+        padding: 0 1rem;
+    }
+}
+
 .header-scrolled {
     box-shadow: var(--shadow-md);
 }
@@ -210,12 +223,13 @@
 
 .action-btn {
     /* Mobile-first touch target: 44x44px minimum */
-    min-width: 44px;
-    min-height: 44px;
-    padding: 0.625rem;
+    min-width: 48px;
+    min-height: 48px;
+    padding: 0.75rem;
     color: var(--color-charcoal);
-    transition: all var(--transition-fast);
-    border-radius: var(--radius-sm);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.1s ease;
+    border-radius: 50%;
+    /* Circle shape for cleaner look */
     position: relative;
     display: flex;
     align-items: center;
@@ -224,8 +238,22 @@
 
 /* Better icon visibility on mobile */
 .action-btn svg {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
+    stroke-width: 1.5px;
+    /* Thinner, more elegant strokes */
+}
+
+.action-btn:hover {
+    color: var(--color-gold);
+    background: var(--color-cream);
+    transform: translateY(-2px);
+    /* Subtle lift */
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+    /* Click feedback */
 }
 
 .action-btn:hover {
@@ -307,15 +335,25 @@
 .menu-toggle {
     display: none;
     flex-direction: column;
-    gap: 4px;
-    padding: 0.5rem;
+    gap: 6px;
+    padding: 12px;
+    background: transparent;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.menu-toggle:active {
+    background: var(--color-cream);
+    transform: scale(0.95);
 }
 
 .menu-icon {
-    width: 24px;
+    width: 26px;
     height: 2px;
     background: var(--color-charcoal);
-    transition: all var(--transition-fast);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Responsive */
@@ -389,8 +427,8 @@
     }
 
     .header-content {
-        padding: 0 0.5rem;
-        /* Reduced side space */
+        padding: 0 1rem;
+        /* Aligned with global container */
         gap: 0.5rem;
     }
 

@@ -83,6 +83,20 @@ body {
   min-height: 100dvh;
   /* Mobile Safe Areas */
   padding-bottom: env(safe-area-inset-bottom);
+
+  /* Touch Optimization */
+  touch-action: manipulation;
+  /* Removes 300ms tap delay on legacy devices */
+  -webkit-tap-highlight-color: transparent;
+  /* Remove gray tap box on iOS */
+}
+
+/* Hardware Acceleration Class for Smoother Animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* Typography Styles */
@@ -145,9 +159,10 @@ a:active {
 
 /* Utility Classes */
 .container {
-  max-width: 1400px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  padding: 0 3rem;
+  /* Aligned with Header padding */
 }
 
 .text-center {
@@ -230,7 +245,7 @@ a:active {
 /* Responsive */
 @media (max-width: 768px) {
   .container {
-    padding: 0 var(--spacing-sm);
+    padding: 0 1rem;
   }
 
   h1 {
@@ -248,9 +263,13 @@ a:active {
 
 /* --- Global Polish & Refinements --- */
 
-/* Smooth Image Loading */
+/* Smooth Image Loading & Performance */
 img {
   transition: opacity 0.5s ease-in-out;
+  /* Optimize for speed on low-end devices */
+  image-rendering: -webkit-optimize-contrast;
+  /* Prevents layout shift from alt text before load */
+  text-indent: -9999px;
 }
 
 /* Global Transition Enforcer */
