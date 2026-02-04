@@ -36,6 +36,15 @@ export const Footer = async () => {
                                 Your destination for premium, professional clothing.
                                 Timeless elegance meets modern sophistication.
                             </p>
+                            <p className="footer-ai-tagline" style={{
+                                color: 'var(--color-gold)',
+                                fontSize: '0.875rem',
+                                fontWeight: 500,
+                                marginTop: '0.75rem',
+                                fontStyle: 'italic'
+                            }}>
+                                ✨ Smart shopping, powered by AI
+                            </p>
                             <div className="footer-social">
                                 <Link href="#" aria-label="Facebook">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">

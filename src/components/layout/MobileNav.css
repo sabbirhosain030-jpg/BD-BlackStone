@@ -4,15 +4,13 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background: #000000;
-    /* Pure Black for contrast */
-    border-top: 1px solid rgba(212, 175, 55, 0.2);
-    /* Gold divider */
+    background: var(--color-black);
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
     z-index: 9999;
     padding-bottom: env(safe-area-inset-bottom);
     display: none;
     /* Hidden on desktop by default */
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .mobile-nav-container {
@@ -23,9 +21,8 @@
     position: relative;
     width: 100%;
     margin: 0;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
     box-sizing: border-box;
-    /* Key fix for overflow */
 }
 
 .mobile-nav-item {
@@ -33,28 +30,43 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: #888;
+    color: var(--color-gray-500);
     text-decoration: none;
     font-size: 10px;
     gap: 4px;
     flex: 1;
-    transition: all 0.3s ease;
+    transition: all var(--transition-button);
+    /* Fast 120ms response */
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    min-height: 44px;
+    /* 44px tap target */
+}
+
+.mobile-nav-item span {
+    font-weight: 500;
+    letter-spacing: 0.2px;
 }
 
 .mobile-nav-item.active {
     color: var(--color-gold);
-    /* Gold active state */
 }
 
 .mobile-nav-item svg {
-    width: 20px;
-    height: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 22px;
+    height: 22px;
+    transition: transform var(--transition-button);
 }
 
 .mobile-nav-item.active svg {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     stroke: var(--color-gold);
+}
+
+.mobile-nav-item:active {
+    transform: scale(0.95);
 }
 
 /* Center Popped-up Cart */

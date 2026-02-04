@@ -1,6 +1,7 @@
 import React from 'react';
 import { getOrderDetails, updateOrderStatus } from '../../actions';
 import { DownloadReceiptButton } from './DownloadButton';
+import PremiumInvoice from '@/components/admin/PremiumInvoice';
 
 export default async function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -29,6 +30,9 @@ export default async function OrderDetailsPage({ params }: { params: Promise<{ i
                     </div>
                 </div>
             </div>
+
+            {/* Premium Invoice Component */}
+            <PremiumInvoice order={order} />
 
             <div className="admin-grid-layout" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
 

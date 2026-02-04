@@ -1,0 +1,30 @@
+.skeleton-product-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.skeleton-card-image {
+    width: 100%;
+    padding-top: 100%;
+    /* 1:1 aspect ratio */
+    position: relative;
+}
+
+.skeleton-card-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.skeleton-list-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Animation is inherited from globals.css .skeleton class */

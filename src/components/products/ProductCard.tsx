@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -21,7 +21,7 @@ interface ProductCardProps {
     index?: number;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({
+const ProductCardComponent: React.FC<ProductCardProps> = ({
     id,
     name,
     price,
@@ -222,3 +222,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </motion.div>
     );
 };
+
+// Memoize ProductCard to prevent unnecessary re-renders
+// Only re-render if props actually change
+export const ProductCard = memo(ProductCardComponent, (prevProps, nextProps) => {
+    return (
+        prevProps.id === nextProps.id &&
+        prevProps.price === nextProps.price &&
+        prevProps.name === nextProps.name &&
+        prevProps.image === nextProps.image
+    );
+});
+
+ProductCard.displayName = 'ProductCard';

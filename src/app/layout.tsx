@@ -1,14 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import "./animations.css";
-import "./3d-effects.css";
-import "./mobile-optimizations.css";
-import "./mobile-fixes.css"; // Android mobile fixes
-// Responsive Design System
-import "@/styles/breakpoints.css";
-import "@/styles/grid-system.css";
-import "@/styles/responsive-typography.css";
-import "@/styles/orientation.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MarketingModal } from "@/components/layout/MarketingModal";
@@ -39,11 +30,13 @@ export const viewport = {
 };
 
 import { CartProvider } from "@/context/CartContext";
-import { WishlistProvider } from "@/context/WishlistContext"; // Restored
+import { WishlistProvider } from "@/context/WishlistContext";
 import SessionProvider from '@/components/providers/SessionProvider';
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { ConditionalWrapper } from "@/components/layout/ConditionalWrapper";
-import ChatBot from "@/components/chat/ChatBot";
+
+// Lazy load ChatBot to reduce initial bundle size
+const ChatBot = lazy(() => import("@/components/chat/ChatBot"));
 
 export default function RootLayout({
   children,
@@ -78,8 +71,10 @@ export default function RootLayout({
                 <ConditionalWrapper>
                   <Footer />
                   <MobileNav />
-                  {/* Live Chat Bot - only show on customer-facing pages */}
-                  <ChatBot />
+                  {/* Live Chat Bot - Lazy loaded for performance */}
+                  <Suspense fallback={null}>
+                    <ChatBot />
+                  </Suspense>
                 </ConditionalWrapper>
               </div>
             </WishlistProvider>

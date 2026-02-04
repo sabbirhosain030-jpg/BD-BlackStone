@@ -43,10 +43,18 @@ export default function ChatBot() {
 
     useEffect(() => {
         if (isOpen && messages.length === 0) {
-            // Welcome message
+            // Welcome message with AI branding
             setTimeout(() => {
                 addBotMessage(
-                    "👋 Welcome to BlackStone BD! I'm here to help you find products, check prices, and track your orders. How can I assist you today?",
+                    "👋 Welcome to BlackStone! I'm your AI shopping assistant.\n\n" +
+                    "✨ Smart shopping, powered by AI.\n\n" +
+                    "I can help you:\n" +
+                    "• Find products instantly\n" +
+                    "• Check real-time stock \u0026 availability\n" +
+                    "• Get instant answers about delivery (Cash on Delivery - Bangladesh)\n" +
+                    "• Browse size guides\n" +
+                    "• Track your orders\n\n" +
+                    "How can I assist you today?",
                     undefined,
                     ['Show new arrivals', 'Browse categories', 'Check discounts', 'Track my order']
                 );
@@ -255,8 +263,8 @@ export default function ChatBot() {
                                 />
                             </div>
                             <div>
-                                <h3>BlackStone Assistant</h3>
-                                <p>Always here to help</p>
+                                <h3>BlackStone AI Assistant</h3>
+                                <p>Smart shopping, powered by AI</p>
                             </div>
                         </div>
                         <button className="chatbot-close" onClick={() => setIsOpen(false)}>
