@@ -47,7 +47,7 @@ export const MobileNav: React.FC = () => {
         <>
             <nav className="mobile-nav">
                 <div className="mobile-nav-container">
-                    <Link href="/" className={`mobile-nav-item ${isActive('/') ? 'active' : ''}`}>
+                    <Link href="/" className={`mobile-nav-item ${isActive('/') ? 'active' : ''}`} prefetch={true}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9 22 9 12 15 12 15 22"></polyline>
@@ -69,7 +69,7 @@ export const MobileNav: React.FC = () => {
                     </button>
 
                     <div className="mobile-nav-center">
-                        <Link href="/cart" className={`mobile-cart-wrapper ${isActive('/cart') ? 'active' : ''}`}>
+                        <Link href="/cart" className={`mobile-cart-wrapper ${isActive('/cart') ? 'active' : ''}`} prefetch={true}>
                             <div className="mobile-cart-btn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                     <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
@@ -82,7 +82,7 @@ export const MobileNav: React.FC = () => {
                         </Link>
                     </div>
 
-                    <Link href="/orders" className={`mobile-nav-item ${isActive('/orders') ? 'active' : ''}`}>
+                    <Link href="/account" className={`mobile-nav-item ${isActive('/account') || pathname?.startsWith('/order') ? 'active' : ''}`} prefetch={true}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <rect x="1" y="3" width="15" height="13"></rect>
                             <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
@@ -92,7 +92,7 @@ export const MobileNav: React.FC = () => {
                         <span>Track</span>
                     </Link>
 
-                    <Link href="/account" className={`mobile-nav-item ${isActive('/account') ? 'active' : ''}`}>
+                    <Link href="/account" className={`mobile-nav-item ${isActive('/account') ? 'active' : ''}`} prefetch={true}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>

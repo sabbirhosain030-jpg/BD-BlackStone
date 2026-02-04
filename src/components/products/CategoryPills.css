@@ -1,68 +1,120 @@
+/* Category Pills - Mobile-First Horizontal Scroll */
 .category-pills-container {
-    margin-bottom: 2rem;
     width: 100%;
-    overflow-x: hidden;
-    /* Hide scrollbar for container */
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
 }
 
+/* Horizontal Scrollable Container */
 .category-pills-scroll {
     display: flex;
-    gap: 1rem;
+    gap: 10px;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
-    justify-content: center;
-    /* Centered alignment */
-    /* Hide scrollbar but keep functionality */
-    -ms-overflow-style: none;
-    /* IE and Edge */
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
     scrollbar-width: none;
-    /* Firefox */
+    -ms-overflow-style: none;
+    padding: 0 1rem 0.5rem 1rem;
+    /* Padding for container edges, bottom for scrollbar space */
 }
 
 .category-pills-scroll::-webkit-scrollbar {
     display: none;
 }
 
+/* Category Pill Buttons */
 .category-pill {
-    padding: 0.5rem 1.5rem;
-    border-radius: 50px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    white-space: nowrap;
+    flex: 0 0 auto;
+    padding: 12px 24px;
+    min-height: 48px;
+    /* Touch-friendly */
+    min-width: 120px;
+    background: var(--color-white);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
     cursor: pointer;
     transition: all 0.2s ease;
-    border: 1px solid transparent;
-
-    /* Default - Inactive (Dark style per image) */
-    background-color: #1a1a1a;
-    color: #a0a0a0;
-    border-color: #333;
+    white-space: nowrap;
+    text-align: center;
+    scroll-snap-align: start;
 }
 
 .category-pill:hover {
-    background-color: #333;
-    color: #fff;
+    border-color: var(--color-gold);
+    background: var(--color-gold-pale);
 }
 
-/* Active State (Gold style per image) */
 .category-pill.active {
-    background-color: #d4af37;
-    /* Gold */
-    color: #1a1a1a;
-    /* Dark text for contrast */
-    border-color: #d4af37;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    background: var(--color-gold);
+    color: var(--color-white);
+    border-color: var(--color-gold);
+    box-shadow: var(--shadow-gold);
 }
 
-.category-pill.active:hover {
-    background-color: #c4a030;
+.category-pill:active {
+    transform: scale(0.98);
 }
 
+/* Desktop Adjustments */
+@media (min-width: 769px) {
+    .category-pills-scroll {
+        gap: 12px;
+        padding: 0 0 0.5rem 0;
+        /* No side padding on desktop */
+        justify-content: center;
+    }
+
+    .category-pill {
+        min-width: auto;
+        /* Auto width on desktop */
+    }
+}
+
+/* Mobile Optimizations */
 @media (max-width: 768px) {
+    .category-pills-container {
+        margin: 0 calc(-1 * var(--container-padding, 1rem)) 1.5rem;
+        /* Extend to screen edges */
+        width: 100vw;
+    }
+
     .category-pills-scroll {
         padding: 0 1rem 0.5rem 1rem;
-        /* Negative margin to pull scroll area to edges on mobile */
-        margin: 0 -1rem;
+        gap: 8px;
+        scroll-padding: 1rem;
+        justify-content: flex-start;
+    }
+
+    .category-pill {
+        min-height: 48px;
+        min-width: 110px;
+        padding: 10px 20px;
+        font-size: 0.875rem;
+    }
+
+    .category-pill:first-child {
+        scroll-snap-align: start;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 400px) {
+    .category-pills-scroll {
+        padding: 0 0.875rem 0.5rem 0.875rem;
+        gap: 6px;
+        scroll-padding: 0.875rem;
+    }
+
+    .category-pill {
+        min-height: 44px;
+        min-width: 100px;
+        padding: 8px 16px;
+        font-size: 0.8125rem;
     }
 }

@@ -310,7 +310,7 @@
     color: var(--color-gold);
 }
 
-@media (max-width: 992px) {
+@media (max-width:992px) {
     .checkout-grid {
         grid-template-columns: 1fr;
     }
@@ -329,27 +329,136 @@
     }
 }
 
+/* Mobile optimization to prevent zoom */
+@media (max-width: 768px) {
+    .checkout-page {
+        padding: 1rem 0 6rem;
+        /* Extra bottom padding for sticky button */
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-section {
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-section:hover {
+        transform: none;
+        /* Disable hover effects on mobile */
+    }
+
+    .section-title {
+        font-size: 1.125rem;
+    }
+
+    /* Prevent iOS zoom - 16px minimum */
+    .checkout-page input,
+    .checkout-page select,
+    .checkout-page textarea {
+        font-size: 16px !important;
+        /* Prevents zoom on iOS */
+        padding: 14px 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .order-notes {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    /* Sticky Place Order button on mobile */
+    .order-summary-sidebar {
+        position: static;
+    }
+
+    .summary-sticky {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 1rem;
+        background: var(--color-white);
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .summary-title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .zone-btn {
+        padding: 1.25rem;
+        min-height: 70px;
+    }
+
+    .zone-btn span:first-child {
+        font-size: 0.875rem;
+    }
+
+    .trust-badges {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .badge-item {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
 @media (max-width: 576px) {
     .page-title {
-        font-size: 2rem;
+        font-size: 1.5rem;
         text-align: center;
     }
 
     .form-section {
-        padding: 1.25rem;
+        padding: 1rem 0.875rem;
     }
 
     .summary-sticky {
-        padding: 1.25rem;
+        padding: 1rem 0.875rem;
     }
 
-    .trust-badges {
+    .summary-items {
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .item-name {
+        font-size: 0.875rem;
+    }
+
+    .zone-options {
         gap: 1rem;
+    }
+
+    .zone-btn {
+        padding: 1rem;
     }
 
     .cod-badge {
         flex-direction: column;
         text-align: center;
         gap: 0.75rem;
+    }
+
+    /* Ensure button is always visible and accessible */
+    .summary-sticky button[type="submit"] {
+        position: sticky;
+        bottom: 1rem;
+        width: 100%;
+        min-height: 52px;
+        font-size: 1rem;
+        z-index: 101;
     }
 }

@@ -79,14 +79,21 @@
 }
 
 .header-content {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 /* Logo */
 .logo {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    grid-column: 2;
+    justify-self: center;
     display: flex;
     align-items: center;
 }
@@ -335,22 +342,30 @@
 .menu-toggle {
     display: none;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
     padding: 12px;
     background: transparent;
-    border-radius: 50%;
+    border-radius: 8px;
     transition: background 0.2s ease;
     cursor: pointer;
+    min-width: 48px;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-toggle:hover {
+    background: var(--color-cream);
 }
 
 .menu-toggle:active {
-    background: var(--color-cream);
+    background: var(--color-gold-pale);
     transform: scale(0.95);
 }
 
 .menu-icon {
-    width: 26px;
-    height: 2px;
+    width: 24px;
+    height: 2.5px;
     background: var(--color-charcoal);
     border-radius: 2px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -363,11 +378,35 @@
     }
 
     .header-main {
-        padding: 1rem 0;
+        padding: 0.75rem 0;
+    }
+
+    .header-content {
+        grid-template-columns: 48px 1fr 96px;
+        gap: 0.5rem;
+        padding: 0;
     }
 
     .menu-toggle {
         display: flex;
+        grid-column: 1;
+        min-width: 48px;
+        min-height: 48px;
+    }
+
+    .header-logo {
+        grid-column: 2;
+        justify-self: center;
+    }
+
+    .header-logo img {
+        height: 50px !important;
+        max-width: 200px !important;
+    }
+
+    .header-actions {
+        grid-column: 3;
+        gap: 0.25rem;
     }
 
     .logo-text {
@@ -388,6 +427,8 @@
         opacity: 0;
         visibility: hidden;
         transition: all var(--transition-smooth);
+        max-height: calc(100vh - 65px);
+        overflow-y: auto;
     }
 
     .nav-open {
@@ -406,45 +447,25 @@
         display: none;
     }
 
-    .header-actions {
-        gap: 0.5rem;
-    }
-
     .action-btn {
-        min-width: 44px;
-        min-height: 44px;
-        padding: 0.625rem;
+        min-width: 48px;
+        min-height: 48px;
+        padding: 12px;
     }
 
     .action-btn svg {
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
     }
 
-    .header-main {
-        padding: 0.75rem 0;
-        /* Reduced padding */
-    }
-
-    .header-content {
-        padding: 0 1rem;
-        /* Aligned with global container */
-        gap: 0.5rem;
-    }
-
-    .logo-text {
-        font-size: 1.25rem;
-        /* Smaller logo for mobile to save space */
-    }
-
-    /* Hide specific desktop-only icons heavily requested */
+    /* Hide cart and account icons on mobile (available in bottom nav) */
     .action-btn.cart-btn,
     .action-btn[href="/account"],
     .action-btn[href="/login"] {
         display: none !important;
     }
 
-    /* Ensure Search and Wishlist remain visible */
+    /* Keep search and wishlist visible */
     .action-btn[aria-label="Search"],
     .action-btn[title="Wishlist"],
     .action-btn[href="/wishlist"] {
@@ -458,5 +479,42 @@
         border-top: 1px solid var(--color-border);
         margin-top: 1rem;
         padding-top: 1rem;
+    }
+
+    .nav-dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+    }
+
+    .search-bar .container {
+        padding: 0 1rem;
+    }
+}
+
+/* Extra small devices (360px - common Android) */
+@media (max-width: 400px) {
+    .header-content {
+        grid-template-columns: 44px 1fr 88px;
+    }
+
+    .header-logo img {
+        height: 45px !important;
+        max-width: 180px !important;
+    }
+
+    .action-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 10px;
+    }
+
+    .action-btn svg {
+        width: 20px;
+        height: 20px;
     }
 }

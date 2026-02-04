@@ -5,10 +5,10 @@
     transition: all var(--transition-smooth);
     position: relative;
     overflow: hidden;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
     box-shadow: var(--shadow-sm);
+    min-height: 480px;
 }
 
 /* Default: Hide mobile buttons on desktop */
@@ -75,37 +75,47 @@
     transform: scale(1.05);
 }
 
-/* Wishlist Button - Always Visible */
+/* Wishlist Button - Always Visible with Dark Background */
 .wishlist-btn {
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 36px;
-    height: 36px;
-    min-height: 36px;
-    /* Smaller than standard tap target, but acceptable for wishlist */
+    width: 40px;
+    height: 40px;
+    min-height: 40px;
     border-radius: var(--radius-full);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10;
     transition: all var(--transition-fast);
-    box-shadow: var(--shadow-sm);
-}
-
-.wishlist-btn:hover {
-    transform: scale(1.08);
-    background: var(--color-white);
     box-shadow: var(--shadow-md);
 }
 
+.wishlist-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+}
+
+.wishlist-btn:hover {
+    transform: scale(1.1);
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: var(--shadow-lg);
+}
+
 .wishlist-btn.active {
-    background: var(--color-white);
-    border-color: #ef4444;
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+}
+
+.wishlist-btn.active svg {
+    fill: white;
+    stroke: white;
 }
 
 /* Badges - Top Left */
@@ -139,13 +149,14 @@
     background: var(--color-error);
 }
 
-/* Product Info Section */
+/* Product Info Section - Grid Row 2 */
 .product-info {
     padding: 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    flex: 1;
+    min-height: 120px;
+    overflow: hidden;
 }
 
 .product-category {
@@ -154,6 +165,10 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-name {
@@ -167,17 +182,18 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: 2.8em;
-    /* Reserve space for 2 lines */
+    max-height: 2.8em;
 }
 
+/* Price Section - Grid Row 3 (Fixed Height) */
 .product-price {
     font-weight: 700;
     color: var(--color-black);
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-top: auto;
+    padding: 0 1rem 1rem 1rem;
+    min-height: 60px;
 }
 
 .price-current {
@@ -191,92 +207,86 @@
     text-decoration: line-through;
 }
 
-/* Mobile Actions Layout - Stacked for Visibility */
-@media (max-width: 900px),
-(hover: none) {
+/* Mobile Actions Layout - NO OVERLAP GUARANTEED */
+@media (max-width: 768px) {
 
-    /* FORCE HIDE Desktop Overlay */
+    /* Hide desktop overlay actions */
     .product-card .product-actions,
     .desktop-actions {
         display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
     }
 
-    /* FIX OVERFLOW/OVERLAP: Allow card to grow taller */
+    /* Card grid structure for mobile */
     .product-card {
-        height: auto !important;
-        min-height: 100%;
-        overflow: visible !important;
-        padding-bottom: 55px !important;
-        /* Huge padding for absolute buttons if needed, or just flow */
-        display: flex;
-        flex-direction: column;
+        grid-template-rows: auto minmax(120px, 1fr) auto auto;
+        min-height: 460px;
+        max-height: none;
     }
 
+    /* Ensure image section doesn't collapse */
+    .product-image-wrapper {
+        min-height: 240px;
+    }
+
+    /* Mobile actions container - Grid Row 4 */
     .mobile-actions {
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        /* Increased gap */
-        margin-top: auto;
-        /* Pushes to bottom */
+        gap: 10px;
+        padding: 0 1rem 1rem 1rem;
         width: 100%;
-        padding: 0 4px;
-        position: relative;
-        z-index: 5;
-        padding-bottom: 4px;
+        min-height: 110px;
+        background: var(--color-white);
     }
 
-    /* Mobile Action Buttons */
+    /* Add to Cart Button - Full Width */
     .mobile-cart-btn {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
-        min-height: var(--btn-height-md);
-        /* 44px tap target */
-        height: var(--btn-height-md);
+        height: 48px;
+        min-height: 48px;
         padding: 0 1rem;
         background: var(--color-white);
         color: var(--color-charcoal);
         border: 2px solid var(--color-charcoal);
         border-radius: var(--radius-md);
-        font-size: 0.8125rem;
+        font-size: 0.875rem;
         font-weight: 700;
         text-transform: uppercase;
         cursor: pointer;
-        flex-shrink: 0;
         letter-spacing: 0.5px;
-        gap: 6px;
+        gap: 8px;
         box-shadow: var(--shadow-sm);
-        transition: all var(--transition-button);
+        transition: all 0.2s ease;
+        flex-shrink: 0;
     }
 
     .mobile-cart-btn svg {
-        display: block;
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
         flex-shrink: 0;
     }
 
     .mobile-cart-btn:active {
-        transform: scale(0.97);
+        transform: scale(0.98);
+        box-shadow: none;
     }
 
     .mobile-cart-btn.added {
         background: var(--color-charcoal);
         color: var(--color-white);
-        border-color: var(--color-charcoal);
     }
 
-    /* ORDER NOW - Primary Gold Button */
+    /* Buy Now Button - Full Width Gold */
     .mobile-buy-btn {
         display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
-        min-height: var(--btn-height-md);
-        /* 44px tap target */
-        height: var(--btn-height-md);
+        height: 48px;
+        min-height: 48px;
         background: var(--color-gold);
         color: var(--color-white);
         border: none;
@@ -286,12 +296,10 @@
         text-transform: uppercase;
         letter-spacing: 0.8px;
         cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-        box-shadow: var(--shadow-gold);
         gap: 8px;
-        transition: all var(--transition-button);
+        box-shadow: var(--shadow-gold);
+        transition: all 0.2s ease;
+        flex-shrink: 0;
     }
 
     .mobile-buy-btn svg {
@@ -300,17 +308,71 @@
         flex-shrink: 0;
     }
 
-    .mobile-buy-btn:hover {
-        background: var(--color-gold-dark);
-        box-shadow: var(--shadow-lg);
-    }
-
     .mobile-buy-btn:active {
-        transform: scale(0.97);
+        transform: scale(0.98);
+        background: var(--color-gold-dark);
     }
 
     /* Disable hover effects on mobile */
+    .product-card:hover {
+        transform: none;
+    }
+
     .product-card:hover .image {
-        transform: none !important;
+        transform: none;
+    }
+
+    .product-card::before {
+        display: none;
+    }
+
+    /* Wishlist button mobile adjustment */
+    .wishlist-btn {
+        width: 44px;
+        height: 44px;
+        min-height: 44px;
+    }
+
+    .wishlist-btn svg {
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* Extra small screens (360px Android) */
+@media (max-width: 400px) {
+    .product-card {
+        min-height: 440px;
+    }
+
+    .product-image-wrapper {
+        min-height: 220px;
+    }
+
+    .product-info {
+        padding: 0.875rem;
+        min-height: 110px;
+    }
+
+    .product-name {
+        font-size: 0.875rem;
+    }
+
+    .product-price {
+        padding: 0 0.875rem 0.875rem 0.875rem;
+        min-height: 50px;
+    }
+
+    .mobile-actions {
+        padding: 0 0.875rem 0.875rem 0.875rem;
+        gap: 8px;
+        min-height: 104px;
+    }
+
+    .mobile-cart-btn,
+    .mobile-buy-btn {
+        height: 44px;
+        min-height: 44px;
+        font-size: 0.8125rem;
     }
 }

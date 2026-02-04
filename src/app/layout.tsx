@@ -23,8 +23,7 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   minimumScale: 1,
-  maximumScale: 1, // Disable zoom
-  userScalable: false, // Prevent manual zooming
+  maximumScale: 5, // Allow zoom for accessibility
   viewportFit: 'cover',
   themeColor: '#1a1a1a',
 };
