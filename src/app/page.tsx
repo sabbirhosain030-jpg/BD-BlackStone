@@ -15,6 +15,12 @@ export default async function HomePage() {
   const featuredDbProducts = await getFeaturedProducts();
   const dbCategories = await getCategories();
 
+  // Filter out duplicate/redundant categories (e.g. if "Men" exists, hide "Men's Fashion")
+  // We prioritize the shorter, cleaner names usually manually created
+  const visibleCategories = dbCategories.filter(cat =>
+    !['mens-fashion', 'womens-fashion'].includes(cat.slug)
+  );
+
   // Map DB products to ProductCard props
   const featuredProducts = featuredDbProducts.map(p => {
     let imageUrl = '/placeholder.png';
@@ -86,8 +92,8 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="categories-grid categories-circular">
-            {dbCategories.length > 0 ? (
-              dbCategories.map((category) => (
+            {visibleCategories.length > 0 ? (
+              visibleCategories.map((category) => (
                 <Link
                   key={category.slug}
                   href={`/products?category=${category.slug}`}
