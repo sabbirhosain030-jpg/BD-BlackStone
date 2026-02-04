@@ -76,9 +76,15 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
         setTimeout(() => setIsAdded(false), 2000);
     };
 
+    const handleOrderNow = (e: React.MouseEvent) => {
+        e.preventDefault();
+        addToCart({ id, name, price, image, size: 'Standard', quantity: 1 });
+        window.location.href = '/checkout';
+    };
+
     return (
         <motion.div
-            className={`product-card ${variant === 'list' ? 'product-card-list' : ''}`}
+            className="product-card"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
@@ -86,145 +92,112 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
                 delay: index * 0.05,
                 ease: [0.4, 0, 0.2, 1]
             }}
-            whileHover={{
-                y: -8,
-                transition: { duration: 0.2 }
-            }}
-            whileTap={{ scale: 0.98 }}
         >
+            {/* Image Section */}
             <div className="product-image-wrapper">
                 <Link href={`/products/${id}`}>
-                    <div className="product-image">
-                        <Image
-                            src={image}
-                            alt={name}
-                            fill
-                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                            className="image"
-                            style={{ objectPosition: imagePosition }}
-                        />
-                    </div>
+                    <Image
+                        src={image}
+                        alt={name}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                        className="product-image"
+                        style={{ objectPosition: imagePosition }}
+                    />
                 </Link>
 
-                {/* Wishlist Button (Subtle Grey Heart) */}
-                <button
-                    onClick={handleWishlistToggle}
-                    className={`wishlist-btn ${inWishlist ? 'active' : ''}`}
-                    title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-                    aria-label="Toggle wishlist"
-                >
-                    <svg
-                        width="22"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        fill={inWishlist ? '#ef4444' : 'none'}
-                        stroke={inWishlist ? '#ef4444' : '#666'}
-                        strokeWidth="2"
-                    >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                    </svg>
-                </button>
-
-                {/* Badges */}
+                {/* Top Badges */}
                 <div className="product-badges">
-                    {isNew && <span className="product-badge badge-new">New</span>}
-                    {discount > 0 && <span className="product-badge badge-sale">-{discount}%</span>}
-                </div>
+                    <div className="badge-left">
+                        {isNew && <span className="new-badge">NEW</span>}
+                        {discount > 0 && <span className="discount-badge">-{discount}%</span>}
+                    </div>
 
-                {/* Action Buttons Overlay - Desktop Only */}
-                <div className="product-actions desktop-actions">
+                    {/* Wishlist Button */}
                     <button
-                        className={`action-btn ${isAdded ? 'btn-success' : ''}`}
-                        title="Add to Cart"
-                        onClick={handleAddToCart}
+                        onClick={handleWishlistToggle}
+                        className={`wishlist-btn ${inWishlist ? 'active' : ''}`}
+                        title={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
+                        aria-label="Toggle wishlist"
                     >
-                        {isAdded ? (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        ) : (
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <path d="M16 10a4 4 0 0 1-8 0"></path>
-                            </svg>
-                        )}
-                    </button>
-                    <button
-                        className="action-btn"
-                        title="Buy Now"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            addToCart({ id, name, price, image, size: 'Standard', quantity: 1 });
-                            window.location.href = '/checkout';
-                        }}
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                            <polyline points="13 2 13 9 20 9"></polyline>
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill={inWishlist ? '#d4af37' : 'none'}
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                         </svg>
                     </button>
-                    <Link href={`/products/${id}`} className="action-btn" title="Quick View">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </Link>
                 </div>
             </div>
 
+            {/* Text Section */}
             <div className="product-info">
                 {category && <span className="product-category">{category}</span>}
+
                 <Link href={`/products/${id}`}>
                     <h3 className="product-name">{name}</h3>
                 </Link>
-                <div className="product-price">
-                    <span className="price-current">{price.toLocaleString()} BDT</span>
+
+                <div className="product-price-section">
+                    <span className="product-price">
+                        ৳{price.toLocaleString()}
+                        <span className="currency">BDT</span>
+                    </span>
                     {previousPrice && (
-                        <span className="price-previous">{previousPrice.toLocaleString()} BDT</span>
+                        <span className="product-previous-price">
+                            ৳{previousPrice.toLocaleString()}
+                        </span>
                     )}
                 </div>
+            </div>
 
-                {/* Mobile Only: Dual Action Buttons - Stacked */}
-                <div className="mobile-actions">
-                    <button
-                        className={`mobile-cart-btn ${isAdded ? 'added' : 'outline'}`}
-                        onClick={handleAddToCart}
-                    >
-                        {isAdded ? (
-                            <>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                                Added
-                            </>
-                        ) : (
-                            'ADD TO CART'
-                        )}
-                    </button>
-                    <button
-                        className="mobile-buy-btn"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            addToCart({ id, name, price, image, size: 'Standard', quantity: 1 });
-                            window.location.href = '/checkout';
-                        }}
-                    >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginRight: '6px' }}>
-                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <path d="M16 10a4 4 0 0 1-8 0"></path>
-                        </svg>
-                        ORDER NOW
-                    </button>
-                </div>
+            {/* Button Section */}
+            <div className="product-actions">
+                <button
+                    className="btn-order-now"
+                    onClick={handleOrderNow}
+                >
+                    <svg className="btn-icon" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+                        <polyline points="13 2 13 9 20 9" />
+                    </svg>
+                    Order Now
+                </button>
+
+                <button
+                    className={`btn-add-cart ${isAdded ? 'added' : ''}`}
+                    onClick={handleAddToCart}
+                >
+                    {isAdded ? (
+                        <>
+                            <svg className="btn-icon" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Added
+                        </>
+                    ) : (
+                        <>
+                            <svg className="btn-icon" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                <line x1="3" y1="6" x2="21" y2="6" />
+                                <path d="M16 10a4 4 0 0 1-8 0" />
+                            </svg>
+                            Add to Cart
+                        </>
+                    )}
+                </button>
             </div>
         </motion.div>
     );
 };
 
 // Memoize ProductCard to prevent unnecessary re-renders
-// Only re-render if props actually change
 export const ProductCard = memo(ProductCardComponent, (prevProps, nextProps) => {
     return (
         prevProps.id === nextProps.id &&

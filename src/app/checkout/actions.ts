@@ -79,17 +79,41 @@ export async function validateCoupon(code: string, subtotal: number) {
 }
 
 export async function createOrder(data: CreateOrderInput) {
+    console.log('[SERVER] createOrder called with:', JSON.stringify(data, null, 2));
+
     if (!data.items || data.items.length === 0) {
-        throw new Error('No items in order');
+        console.error('[SERVER] No items in order');
+        return { success: false, error: 'No items in order' };
+    }
+
+    // Validate required fields
+    if (!data.customerName || !data.customerEmail || !data.customerPhone || !data.shippingAddress || !data.city) {
+        console.error('[SERVER] Missing required fields');
+        return { success: false, error: 'Missing required customer information' };
     }
 
     // Generate specific Order Number
     const orderNumber = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    console.log('[SERVER] Generated order number:', orderNumber);
 
     try {
         let createdOrder: any = null;
 
         await prisma.$transaction(async (tx) => {
+            console.log('[SERVER] Starting transaction');
+
+            // Verify products exist
+            for (const item of data.items) {
+                const product = await tx.product.findUnique({
+                    where: { id: item.productId }
+                });
+
+                if (!product) {
+                    throw new Error(`Product ${item.productId} not found`);
+                }
+                console.log(`[SERVER] Product verified: ${product.name}`);
+            }
+
             const order = await tx.order.create({
                 data: {
                     orderNumber,
@@ -98,7 +122,7 @@ export async function createOrder(data: CreateOrderInput) {
                     customerPhone: data.customerPhone,
                     shippingAddress: data.shippingAddress,
                     city: data.city,
-                    postalCode: data.postalCode,
+                    postalCode: data.postalCode || '',
                     deliveryZone: data.deliveryZone === 'inside' ? 'Inside Dhaka' : 'Outside Dhaka',
                     deliveryCharge: data.deliveryCharge,
                     subtotal: data.subtotal,
@@ -106,15 +130,15 @@ export async function createOrder(data: CreateOrderInput) {
                     total: data.total,
                     status: 'PENDING',
                     paymentMethod: data.paymentMethod,
-                    notes: data.notes,
+                    notes: data.notes || '',
                     couponId: data.couponId || null,
                     items: {
                         create: data.items.map(item => ({
                             productId: item.productId,
                             quantity: item.quantity,
                             price: item.price,
-                            size: item.size,
-                            color: item.color
+                            size: item.size || 'N/A',
+                            color: item.color || null
                         }))
                     }
                 },
@@ -127,6 +151,7 @@ export async function createOrder(data: CreateOrderInput) {
                 }
             });
 
+            console.log('[SERVER] Order created successfully:', order.id);
             createdOrder = order;
 
             if (data.couponId) {
@@ -134,10 +159,12 @@ export async function createOrder(data: CreateOrderInput) {
                     where: { id: data.couponId },
                     data: { usedCount: { increment: 1 } }
                 });
+                console.log('[SERVER] Coupon usage updated');
             }
         });
 
         revalidatePath('/admin/orders');
+        console.log('[SERVER] Order creation complete, returning success');
 
         // Return order data for WhatsApp link generation (done on client side)
         return {
@@ -147,7 +174,14 @@ export async function createOrder(data: CreateOrderInput) {
         };
 
     } catch (error) {
-        console.error('Failed to create order:', error);
-        return { success: false, error: 'Failed to create order' };
+        console.error('[SERVER] Failed to create order - Full error:', error);
+        console.error('[SERVER] Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        return {
+            success: false,
+            error: `Order creation failed: ${errorMessage}`
+        };
     }
 }
+

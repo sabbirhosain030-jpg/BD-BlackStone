@@ -1,5 +1,5 @@
 .footer {
-    background: #000000;
+    background: var(--color-charcoal);
     color: var(--color-cream);
     margin-top: auto;
 }
@@ -10,8 +10,9 @@
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
-    gap: 3rem;
+    grid-template-columns: 1.8fr 1fr 1fr 1.5fr;
+    gap: 2.5rem;
+    align-items: start;
 }
 
 .footer-col {
@@ -140,6 +141,19 @@
     font-weight: 600;
 }
 
+
+
+/* Desktop Optimizations */
+@media (min-width: 1200px) {
+    .footer-grid {
+        grid-template-columns: 2fr 1fr 1fr 1.8fr;
+        gap: 3.5rem;
+    }
+
+    .footer-main {
+        padding: 5rem 0 2.5rem;
+    }
+}
 
 /* Responsive */
 @media (max-width: 992px) {

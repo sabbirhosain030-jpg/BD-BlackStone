@@ -60,14 +60,31 @@ export default function CheckoutPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        console.log('Submit triggered', { cartItems, formData });
+
         if (cartItems.length === 0) {
             alert('Your cart is empty');
+            return;
+        }
+
+        if (!formData.fullName || !formData.phone || !formData.email || !formData.address || !formData.city) {
+            alert('Please fill in all required fields');
             return;
         }
 
         setIsSubmitting(true);
 
         try {
+            console.log('Creating order with data:', {
+                ...formData,
+                deliveryZone,
+                items: cartItems,
+                subtotal,
+                deliveryCharge,
+                discount,
+                total
+            });
+
             const result = await createOrder({
                 customerName: formData.fullName,
                 customerEmail: formData.email,
@@ -81,7 +98,7 @@ export default function CheckoutPage() {
                     productId: item.id,
                     quantity: item.quantity,
                     price: item.price,
-                    size: item.size,
+                    size: item.size || 'N/A',
                     color: item.color
                 })),
                 subtotal,
@@ -92,15 +109,17 @@ export default function CheckoutPage() {
                 couponId: appliedCoupon?.id
             });
 
+            console.log('Order result:', result);
+
             if (result.success) {
                 clearCart();
                 router.push(`/checkout/success?orderId=${result.orderId}`);
             } else {
-                alert('Failed to place order. Please try again.');
+                alert(`Failed to place order: ${result.error || 'Unknown error'}`);
             }
         } catch (error) {
             console.error('Order error:', error);
-            alert('An unexpected error occurred.');
+            alert(`An unexpected error occurred: ${error instanceof Error ? error.message : 'Unknown error'}`);
         } finally {
             setIsSubmitting(false);
         }
@@ -319,7 +338,7 @@ export default function CheckoutPage() {
                             {/* Place Order Button */}
                             <Button
                                 type="submit"
-                                variant="primary"
+                                variant="secondary"
                                 size="lg"
                                 fullWidth
                                 disabled={isSubmitting}
