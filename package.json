@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "reset": "npx -y tsx scripts/reset.ts"
+    "reset": "npx -y tsx scripts/reset.ts",
+    "seed": "npx -y tsx scripts/seed.ts",
+    "seed:demo": "npx -y tsx scripts/seed-demo-products.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

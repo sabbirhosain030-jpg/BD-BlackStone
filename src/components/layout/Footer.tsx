@@ -25,7 +25,7 @@ export const Footer = async () => {
                                     src="/images/logo.png"
                                     alt="Black Stone"
                                     style={{
-                                        height: '40px',
+                                        height: '60px',
                                         width: 'auto',
                                         objectFit: 'contain',
                                         marginBottom: '1rem'
@@ -35,15 +35,6 @@ export const Footer = async () => {
                             <p className="footer-description">
                                 Your destination for premium, professional clothing.
                                 Timeless elegance meets modern sophistication.
-                            </p>
-                            <p className="footer-ai-tagline" style={{
-                                color: 'var(--color-gold)',
-                                fontSize: '0.875rem',
-                                fontWeight: 500,
-                                marginTop: '0.75rem',
-                                fontStyle: 'italic'
-                            }}>
-                                ✨ Smart shopping, powered by AI
                             </p>
                             <div className="footer-social">
                                 <Link href="#" aria-label="Facebook">

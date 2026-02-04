@@ -1,6 +1,6 @@
 .footer {
-    background: var(--color-charcoal);
-    color: var(--color-cream);
+    background: #1a1a1a;
+    color: #f5f5f5;
     margin-top: auto;
 }
 
@@ -31,7 +31,7 @@
 
 .footer-description {
     line-height: 1.7;
-    color: var(--color-cream-dark);
+    color: #d4d4d4;
     font-size: 0.938rem;
     max-width: 350px;
 }
@@ -50,7 +50,7 @@
     justify-content: center;
     background: rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-sm);
-    color: var(--color-cream);
+    color: #f5f5f5;
     transition: all var(--transition-smooth);
 }
 
@@ -78,7 +78,7 @@
 }
 
 .footer-links a {
-    color: var(--color-cream-dark);
+    color: #d4d4d4;
     font-size: 0.938rem;
     transition: all var(--transition-fast);
     display: inline-block;
@@ -111,7 +111,7 @@
 }
 
 .footer-contact p {
-    color: var(--color-cream-dark);
+    color: #d4d4d4;
     font-size: 0.938rem;
     line-height: 1.6;
     margin: 0;
@@ -124,7 +124,7 @@
 
 .footer-copyright {
     text-align: center;
-    color: var(--color-cream-dark);
+    color: #d4d4d4;
     font-size: 0.875rem;
     margin: 0;
 }
@@ -132,7 +132,7 @@
 .footer-developer {
     text-align: center;
     font-size: 0.875rem;
-    color: var(--color-cream-dark);
+    color: #d4d4d4;
     margin: 0.5rem 0 0 0;
 }
 
@@ -140,7 +140,6 @@
     color: var(--color-gold);
     font-weight: 600;
 }
-
 
 
 /* Desktop Optimizations */

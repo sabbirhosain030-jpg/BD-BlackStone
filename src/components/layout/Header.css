@@ -85,17 +85,41 @@
     gap: 1rem;
 }
 
+/* Desktop Layout (Large Screens 992px+) */
+@media (min-width: 992px) {
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+    }
+}
+
 /* Logo */
 .logo {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .header-logo {
-    grid-column: 2;
-    justify-self: center;
     display: flex;
     align-items: center;
+}
+
+/* Desktop: Logo on left */
+@media (min-width: 992px) {
+    .header-logo {
+        order: 1;
+    }
+}
+
+/* Mobile/Tablet: Logo centered */
+@media (max-width: 991px) {
+    .header-logo {
+        grid-column: 2;
+        justify-self: center;
+    }
 }
 
 .logo-text {
@@ -110,8 +134,17 @@
 .nav {
     display: flex;
     gap: 1.5rem;
-    /* Reduced from 2.5rem to prevent wrapping */
     align-items: center;
+}
+
+/* Desktop: Navigation in center */
+@media (min-width: 992px) {
+    .nav {
+        order: 2;
+        flex: 1;
+        justify-content: center;
+        gap: 2.5rem;
+    }
 }
 
 .nav-link {
@@ -226,6 +259,14 @@
     gap: 0.5rem;
     align-items: center;
     z-index: 10;
+}
+
+/* Desktop: Actions on right */
+@media (min-width: 992px) {
+    .header-actions {
+        order: 3;
+        gap: 1rem;
+    }
 }
 
 .action-btn {
