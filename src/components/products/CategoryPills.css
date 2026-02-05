@@ -14,7 +14,7 @@
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    scroll-snap-type: x proximity;
+    /* scroll-snap-type: x proximity; Removed */
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 0 1rem 0.5rem 1rem;
@@ -42,7 +42,7 @@
     transition: all 0.2s ease;
     white-space: nowrap;
     text-align: center;
-    scroll-snap-align: start;
+    /* scroll-snap-align: start; Removed */
 }
 
 .category-pill:hover {
@@ -98,9 +98,7 @@
         font-size: 0.875rem;
     }
 
-    .category-pill:first-child {
-        scroll-snap-align: start;
-    }
+    /* scroll-snap-align: start; Removed per user request */
 }
 
 /* Extra small screens */

@@ -291,7 +291,7 @@
         justify-items: center;
         /* Center items in their cells */
 
-        /* SCROLL FIX: Ensure natural document flow */
+        /* SCROLL FIX: Ensure natural document flow & vertical scrolling */
         position: relative;
         /* Not fixed or sticky */
         overflow: visible;
@@ -299,6 +299,8 @@
         width: 100%;
         /* Don't constrain width */
         max-width: 100%;
+        touch-action: pan-y;
+        /* Explicitly allow vertical scrolling */
     }
 
     .category-circle-item {
