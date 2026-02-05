@@ -1,6 +1,6 @@
 import React from 'react';
 import { createProduct, getAdminCategories } from '../../actions';
-import ProductForm from '../ProductForm';
+import InventoryForm from '../InventoryForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,8 +13,8 @@ export default async function AddProductPage() {
                 <h1 className="admin-title">Add New Product</h1>
             </div>
 
-            <div className="stone-card" style={{ maxWidth: '800px' }}>
-                <ProductForm
+            <div className="stone-card" style={{ maxWidth: '900px', padding: 0 }}>
+                <InventoryForm
                     categories={categories}
                     action={createProduct}
                     submitText="Create Product"

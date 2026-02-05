@@ -1,6 +1,6 @@
 import React from 'react';
 import { updateProduct, getProduct, getAdminCategories } from '../../actions';
-import ProductForm from '../ProductForm';
+import InventoryForm from '../InventoryForm';
 import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
@@ -23,8 +23,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 <h1 className="admin-title">Edit Product</h1>
             </div>
 
-            <div className="stone-card" style={{ maxWidth: '800px' }}>
-                <ProductForm
+            <div className="stone-card" style={{ maxWidth: '900px', padding: 0 }}>
+                <InventoryForm
                     categories={categories}
                     initialData={product}
                     action={updateProductWithId}
