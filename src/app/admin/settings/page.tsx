@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import './settings.css';
 
 interface User {
     id: string;
@@ -65,7 +66,9 @@ export default function AdminSettingsPage() {
                     <h1>Admin Settings</h1>
                 </div>
                 <div className="admin-card">
-                    <p>Loading...</p>
+                    <div className="card-body">
+                        <p>Loading...</p>
+                    </div>
                 </div>
             </div>
         );
@@ -166,101 +169,6 @@ export default function AdminSettingsPage() {
                     </div>
                 </div>
             </div>
-
-            <style jsx>{`
-                .admin-info-grid {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                    gap: 1.5rem;
-                }
-
-                .info-item {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-
-                .info-label {
-                    font-size: 0.875rem;
-                    color: #888;
-                    font-weight: 500;
-                }
-
-                .info-value {
-                    font-size: 1rem;
-                    color: #fff;
-                    font-weight: 600;
-                }
-
-                .badge {
-                    display: inline-block;
-                    padding: 0.25rem 0.75rem;
-                    border-radius: 6px;
-                    font-size: 0.75rem;
-                    font-weight: 600;
-                    text-transform: uppercase;
-                }
-
-                .badge-admin {
-                    background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
-                    color: #1a1a1a;
-                }
-
-                .badge-user {
-                    background: #333;
-                    color: #888;
-                }
-
-                .user-name {
-                    font-weight: 600;
-                    color: #fff;
-                }
-
-                .role-select {
-                    padding: 0.5rem 0.75rem;
-                    background: #1a1a1a;
-                    border: 1px solid #333;
-                    color: #fff;
-                    border-radius: 6px;
-                    font-size: 0.875rem;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .role-select:hover {
-                    border-color: #d4af37;
-                }
-
-                .role-select:focus {
-                    outline: none;
-                    border-color: #d4af37;
-                    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-                }
-
-                .text-muted {
-                    color: #666;
-                    font-size: 0.875rem;
-                }
-
-                .alert {
-                    padding: 1rem 1.25rem;
-                    border-radius: 8px;
-                    margin-bottom: 1.5rem;
-                    font-weight: 500;
-                }
-
-                .alert-success {
-                    background: rgba(34, 197, 94, 0.1);
-                    border: 1px solid rgba(34, 197, 94, 0.3);
-                    color: #22c55e;
-                }
-
-                .alert-error {
-                    background: rgba(239, 68, 68, 0.1);
-                    border: 1px solid rgba(239, 68, 68, 0.3);
-                    color: #ef4444;
-                }
-            `}</style>
         </div>
     );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import './CategoryModal.css';
@@ -18,16 +18,19 @@ interface CategoryModalProps {
     categories: Category[];
 }
 
-export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, categories }) => {
+const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose, categories }) => {
     const [selectedGender, setSelectedGender] = React.useState<'men' | 'women'>('men');
 
-    // Separate categories by gender
-    const menCategories = categories.filter(c =>
-        c.name.toLowerCase().includes('men') && !c.name.toLowerCase().includes('women')
-    );
-    const womenCategories = categories.filter(c =>
-        c.name.toLowerCase().includes('women') || c.name.toLowerCase().includes('girl')
-    );
+    // Memoize category filtering to prevent recalculation
+    const { menCategories, womenCategories } = useMemo(() => {
+        const men = categories.filter(c =>
+            (c.slug === 'men' || c.slug === 'boys') && c.brand === 'BLACK STONE'
+        );
+        const women = categories.filter(c =>
+            (c.slug === 'women' || c.slug === 'girls') && c.brand === 'GAZZELLE'
+        );
+        return { menCategories: men, womenCategories: women };
+    }, [categories]);
 
     const displayCategories = selectedGender === 'men' ? menCategories : womenCategories;
 
@@ -39,6 +42,17 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, c
         onClose();
     };
 
+    // Simplified animations for better performance on low-end devices
+    const backdropVariants = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1 }
+    };
+
+    const modalVariants = {
+        hidden: { y: '100%' },
+        visible: { y: 0 }
+    };
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -46,20 +60,22 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, c
                     {/* Backdrop */}
                     <motion.div
                         className="category-modal-backdrop"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
+                        variants={backdropVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        transition={{ duration: 0.15 }}
                         onClick={onClose}
                     />
 
                     {/* Modal */}
                     <motion.div
                         className="category-modal"
-                        initial={{ y: '100%' }}
-                        animate={{ y: 0 }}
-                        exit={{ y: '100%' }}
-                        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                        variants={modalVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        transition={{ type: 'tween', duration: 0.2, ease: 'easeOut' }}
                     >
                         {/* Header */}
                         <div className="category-modal-header">
@@ -82,13 +98,13 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, c
                                 className={`gender-toggle-btn ${selectedGender === 'men' ? 'active' : ''}`}
                                 onClick={() => setSelectedGender('men')}
                             >
-                                Men
+                                Men & Boys
                             </button>
                             <button
                                 className={`gender-toggle-btn ${selectedGender === 'women' ? 'active' : ''}`}
                                 onClick={() => setSelectedGender('women')}
                             >
-                                Women
+                                Women & Girls
                             </button>
                         </div>
 
@@ -122,3 +138,6 @@ export const CategoryModal: React.FC<CategoryModalProps> = ({ isOpen, onClose, c
         </AnimatePresence>
     );
 };
+
+// Memoize to prevent unnecessary re-renders
+export const CategoryModal = memo(CategoryModalComponent);

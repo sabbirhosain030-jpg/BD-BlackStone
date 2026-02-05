@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
@@ -15,7 +15,7 @@ interface Category {
     brand?: string | null;
 }
 
-export const MobileNav: React.FC = () => {
+const MobileNavComponent: React.FC = () => {
     const pathname = usePathname();
     const { cartCount } = useCart();
     const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
@@ -35,13 +35,17 @@ export const MobileNav: React.FC = () => {
 
     const isActive = (path: string) => pathname === path;
 
-    const handleCategoryClick = (e: React.MouseEvent) => {
+    const handleCategoryClick = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
         if (typeof navigator !== 'undefined' && navigator.vibrate) {
             navigator.vibrate(30);
         }
         setIsCategoryModalOpen(true);
-    };
+    }, []);
+
+    const handleCloseModal = useCallback(() => {
+        setIsCategoryModalOpen(false);
+    }, []);
 
     return (
         <>
@@ -105,9 +109,12 @@ export const MobileNav: React.FC = () => {
             {/* Category Modal */}
             <CategoryModal
                 isOpen={isCategoryModalOpen}
-                onClose={() => setIsCategoryModalOpen(false)}
+                onClose={handleCloseModal}
                 categories={categories}
             />
         </>
     );
 };
+
+// Memoize to prevent unnecessary re-renders
+export const MobileNav = memo(MobileNavComponent);

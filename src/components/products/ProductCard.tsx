@@ -103,6 +103,8 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                         className="product-image"
                         style={{ objectPosition: imagePosition }}
+                        priority={index < 4}  // First 4 images load eagerly for LCP
+                        loading={index < 4 ? undefined : 'lazy'}  // Lazy load the rest
                     />
                 </Link>
 

@@ -35,6 +35,7 @@ export const Header: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [searchOpen, setSearchOpen] = useState(false);
+    const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
     const [categories, setCategories] = useState<Category[]>([]);
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -128,10 +129,17 @@ export const Header: React.FC = () => {
                             </Link>
 
                             {/* Shop By Category Dropdown - Main Categories Only */}
-                            <div className="nav-dropdown">
+                            <div className={`nav-dropdown ${shopDropdownOpen ? 'active' : ''}`}>
                                 <Link
                                     href="/products"
                                     className={`nav-link ${pathname === '/products' && !category && !tag ? 'nav-link-active' : ''}`}
+                                    onClick={(e) => {
+                                        // On mobile, toggle dropdown instead of navigating
+                                        if (window.innerWidth <= 768) {
+                                            e.preventDefault();
+                                            setShopDropdownOpen(!shopDropdownOpen);
+                                        }
+                                    }}
                                 >
                                     Shop <span style={{ fontSize: '0.7em' }}>▼</span>
                                 </Link>
@@ -142,7 +150,15 @@ export const Header: React.FC = () => {
                                                 BLACK STONE
                                             </div>
                                             {blackStoneCategories.map(cat => (
-                                                <Link key={cat.id} href={`/products?category=${cat.slug}`} className="dropdown-item">
+                                                <Link
+                                                    key={cat.id}
+                                                    href={`/products?category=${cat.slug}`}
+                                                    className="dropdown-item"
+                                                    onClick={() => {
+                                                        setShopDropdownOpen(false);
+                                                        setIsMenuOpen(false);
+                                                    }}
+                                                >
                                                     {cat.name}
                                                 </Link>
                                             ))}
@@ -155,14 +171,29 @@ export const Header: React.FC = () => {
                                                 GAZZELLE
                                             </div>
                                             {gazelleCategories.map(cat => (
-                                                <Link key={cat.id} href={`/products?category=${cat.slug}`} className="dropdown-item">
+                                                <Link
+                                                    key={cat.id}
+                                                    href={`/products?category=${cat.slug}`}
+                                                    className="dropdown-item"
+                                                    onClick={() => {
+                                                        setShopDropdownOpen(false);
+                                                        setIsMenuOpen(false);
+                                                    }}
+                                                >
                                                     {cat.name}
                                                 </Link>
                                             ))}
                                         </>
                                     )}
                                     <div className="dropdown-divider"></div>
-                                    <Link href="/products" className="dropdown-item">
+                                    <Link
+                                        href="/products"
+                                        className="dropdown-item"
+                                        onClick={() => {
+                                            setShopDropdownOpen(false);
+                                            setIsMenuOpen(false);
+                                        }}
+                                    >
                                         View All Products
                                     </Link>
                                 </div>

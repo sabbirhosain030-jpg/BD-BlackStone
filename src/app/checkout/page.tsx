@@ -265,17 +265,27 @@ export default function CheckoutPage() {
                         <div className="summary-sticky">
                             <h2 className="summary-title">Order Summary</h2>
 
-                            {/* Cart Items */}
-                            <div className="summary-items">
+                            {/* Cart Items - Card Grid */}
+                            <div className="summary-products-grid">
                                 {cartItems.map((item) => (
-                                    <div key={`${item.id}-${item.size}`} className="summary-item">
-                                        <div className="item-info">
-                                            <span className="item-name">{item.name}</span>
-                                            <span className="item-qty">
-                                                {item.size} × {item.quantity}
-                                            </span>
+                                    <div key={`${item.id}-${item.size}`} className="checkout-product-card">
+                                        <div className="checkout-product-image">
+                                            <img
+                                                src={item.image}
+                                                alt={item.name}
+                                                loading="lazy"
+                                            />
                                         </div>
-                                        <span className="item-price">৳ {(item.price * item.quantity).toLocaleString()}</span>
+                                        <div className="checkout-product-info">
+                                            <h4 className="checkout-product-name">{item.name}</h4>
+                                            <div className="checkout-product-details">
+                                                <span className="size-badge">{item.size}</span>
+                                                <span className="quantity">×{item.quantity}</span>
+                                            </div>
+                                            <div className="checkout-product-price">
+                                                ৳{(item.price * item.quantity).toLocaleString()}
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -341,9 +351,9 @@ export default function CheckoutPage() {
                                 variant="secondary"
                                 size="lg"
                                 fullWidth
-                                disabled={isSubmitting}
+                                loading={isSubmitting}
                             >
-                                {isSubmitting ? 'Placing Order...' : 'Place Order (COD)'}
+                                Place Order (COD)
                             </Button>
 
                             {/* Trust Badges */}

@@ -1,0 +1,282 @@
+/* ============================================
+   MOBILE OPTIMIZATIONS - Consolidated
+   Touch-friendly, performant mobile styles
+   ============================================ */
+
+/* ====== Core Mobile Setup ====== */
+html {
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 767px) {
+    html {
+        font-size: 14px;
+    }
+
+    body {
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        -webkit-tap-highlight-color: transparent;
+        width: 100vw;
+    }
+}
+
+/* ====== Horizontal Scroll Prevention ====== */
+.container,
+.container-fluid {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ====== Touch Target Optimization (44x44px minimum) ====== */
+@media (max-width: 768px) {
+
+    button,
+    a.btn,
+    .btn,
+    .stone-btn,
+    input[type="submit"],
+    input[type="button"] {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 12px 24px;
+    }
+
+    .btn-primary,
+    .admin-btn-primary {
+        min-height: 56px;
+        padding: 1rem 2rem;
+    }
+
+    /* Touch-friendly form inputs */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="number"],
+    textarea,
+    select {
+        min-height: 44px;
+        font-size: 16px;
+        /* Prevents iOS zoom */
+    }
+
+    /* Touch-friendly navigation */
+    .mobile-nav-item {
+        min-height: 56px;
+        padding: 1rem 1.5rem;
+        font-size: 1.125rem;
+    }
+
+    .hamburger-menu {
+        min-width: 56px;
+        min-height: 56px;
+        padding: 1rem;
+    }
+}
+
+/* ====== Mobile Typography ====== */
+@media (max-width: 767px) {
+
+    h1,
+    .h1 {
+        font-size: clamp(1.75rem, 4vw, 2.25rem) !important;
+    }
+
+    h2,
+    .h2 {
+        font-size: clamp(1.5rem, 3.5vw, 1.875rem) !important;
+    }
+
+    h3,
+    .h3 {
+        font-size: clamp(1.25rem, 3vw, 1.625rem) !important;
+    }
+
+    p,
+    .text-base {
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+
+    small,
+    .text-small {
+        font-size: 0.75rem;
+    }
+}
+
+/* ====== Mobile Spacing ====== */
+@media (max-width: 767px) {
+
+    .page-container,
+    .admin-content {
+        padding: 1rem !important;
+    }
+
+    section+section {
+        margin-top: 2rem;
+    }
+
+    .card,
+    .stone-card {
+        padding: 1rem;
+    }
+}
+
+/* ====== Product Grid Optimization ====== */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem;
+        padding: 0 0.5rem;
+    }
+
+    .product-card {
+        padding: 0.75rem;
+        border-radius: 6px;
+    }
+
+    .admin-grid-layout {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ====== Mobile Navigation ====== */
+@media (max-width: 767px) {
+    .mobile-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: var(--color-white);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-menu {
+        position: fixed;
+        z-index: 9999;
+        inset: 0;
+        background: var(--color-charcoal);
+    }
+
+    .mobile-overlay {
+        position: fixed;
+        z-index: 9998;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+}
+
+/* ====== Mobile Modals ====== */
+@media (max-width: 767px) {
+
+    .modal,
+    .mobile-modal {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 100vh;
+        margin: 0;
+        border-radius: 0;
+    }
+}
+
+/* ====== Performance Optimizations ====== */
+
+/* Hardware acceleration */
+.hover-lift,
+.product-card,
+.btn,
+.category-circle-item {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Better image rendering */
+@media (max-width: 768px) {
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        content-visibility: auto;
+    }
+}
+
+/* Remove tap highlights */
+@media (max-width: 767px) {
+    * {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+    }
+}
+
+/* ====== Touch Device Optimizations ====== */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Remove hover effects on touch devices */
+    .product-card:hover,
+    .btn:hover,
+    .cta-button:hover,
+    .category-card:hover,
+    .nav-link:hover,
+    .hover-lift:hover {
+        transform: none !important;
+    }
+
+    .hover-zoom-img:hover img {
+        transform: none !important;
+    }
+
+    /* Use tap states instead */
+    .product-card:active {
+        opacity: 0.9;
+        transition: opacity 0.1s ease;
+    }
+
+    .btn:active,
+    .cta-button:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+
+    /* Better tap highlighting */
+    * {
+        -webkit-tap-highlight-color: rgba(212, 175, 55, 0.2);
+        tap-highlight-color: rgba(212, 175, 55, 0.2);
+    }
+}
+
+/* ====== Reduced Motion Support ====== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Simplify mobile animations */
+    @media (max-width: 768px) {
+
+        .animate-fade-in,
+        .animate-slide-up,
+        .animate-scale-in {
+            animation: none;
+        }
+
+        .hover-lift:hover {
+            transform: none;
+        }
+    }
+}
