@@ -64,7 +64,7 @@ const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose,
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        transition={{ duration: 0.15 }}
+                        transition={{ duration: 0.12 }}  /* Faster backdrop for responsiveness */
                         onClick={onClose}
                     />
 
@@ -75,7 +75,7 @@ const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose,
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        transition={{ type: 'tween', duration: 0.2, ease: 'easeOut' }}
+                        transition={{ type: 'tween', duration: 0.15, ease: 'easeOut' }}  /* Reduced from 0.2s for snappier feel */
                     >
                         {/* Header */}
                         <div className="category-modal-header">

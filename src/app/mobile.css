@@ -141,10 +141,7 @@ video {
         padding: 0 0.5rem;
     }
 
-    .product-card {
-        padding: 0.75rem;
-        border-radius: 6px;
-    }
+    /* Product card mobile styles handled in ProductCard.css - removed override to prevent conflicts */
 
     .admin-grid-layout {
         grid-template-columns: 1fr !important;

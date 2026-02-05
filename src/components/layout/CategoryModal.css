@@ -1,12 +1,24 @@
 /* Category Modal - Mobile Optimized */
 .category-modal-backdrop {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 999;
+    z-index: 9998;
+    /* Performance optimization - hardware acceleration */
+    transform: translateZ(0);
     /* Performance optimization */
     will-change: opacity;
+}
+
+/* Lighter backdrop blur on mobile for performance */
+@media (min-width: 769px) {
+    .category-modal-backdrop {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
 }
 
 .category-modal {
@@ -23,6 +35,8 @@
     padding-bottom: env(safe-area-inset-bottom);
     /* Performance optimizations */
     will-change: transform;
+    transform: translateZ(0);
+    /* Hardware acceleration */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
 }
