@@ -279,6 +279,7 @@
     }
 
     /* Mobile Category Grid - 2 Columns */
+    /* CRITICAL: Must allow natural vertical page scrolling */
     .categories-circular,
     .categories-grid {
         display: grid;
@@ -289,12 +290,25 @@
         padding: 0 1rem;
         justify-items: center;
         /* Center items in their cells */
+
+        /* SCROLL FIX: Ensure natural document flow */
+        position: relative;
+        /* Not fixed or sticky */
+        overflow: visible;
+        /* Allow natural overflow */
+        width: 100%;
+        /* Don't constrain width */
+        max-width: 100%;
     }
 
     .category-circle-item {
         width: 100%;
         /* Flexible width */
         gap: 0.75rem;
+
+        /* SCROLL FIX: Prevent any positioning issues */
+        position: relative;
+        /* Natural flow */
     }
 
     .category-circle-image-wrapper {
