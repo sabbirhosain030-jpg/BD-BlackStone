@@ -126,45 +126,6 @@ function SuccessContent() {
                 </div>
             )}
 
-            {/* Download Receipt Button */}
-            {orderId && (
-                <div style={{ marginBottom: '2rem' }}>
-                    <a
-                        href={`/api/receipt/${orderId}`}
-                        download
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            background: 'linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%)',
-                            color: 'var(--color-charcoal)',
-                            padding: '1rem 2rem',
-                            borderRadius: '8px',
-                            textDecoration: 'none',
-                            fontWeight: '600',
-                            fontSize: '1.1rem',
-                            transition: 'all 0.2s',
-                            boxShadow: '0 4px 12px rgba(212, 175, 55, 0.3)',
-                            minHeight: '44px'
-                        }}
-                        onMouseOver={(e) => {
-                            e.currentTarget.style.transform = 'translateY(-2px)';
-                            e.currentTarget.style.boxShadow = '0 6px 16px rgba(212, 175, 55, 0.4)';
-                        }}
-                        onMouseOut={(e) => {
-                            e.currentTarget.style.transform = 'translateY(0)';
-                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(212, 175, 55, 0.3)';
-                        }}
-                    >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="7 10 12 15 17 10"></polyline>
-                            <line x1="12" y1="15" x2="12" y2="3"></line>
-                        </svg>
-                        Download Receipt (PDF)
-                    </a>
-                </div>
-            )}
 
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                 <Link href="/products">
