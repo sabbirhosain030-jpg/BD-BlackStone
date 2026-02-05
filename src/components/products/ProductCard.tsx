@@ -3,7 +3,6 @@
 import React, { useState, memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import './ProductCard.css';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
@@ -83,15 +82,9 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
     };
 
     return (
-        <motion.div
+        <div
             className="product-card"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-                duration: 0.3,
-                delay: index * 0.05,
-                ease: [0.4, 0, 0.2, 1]
-            }}
+        // generic fade-in handled by CSS if needed, or removed for perf
         >
             {/* Image Section */}
             <div className="product-image-wrapper">
@@ -195,7 +188,7 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
                     )}
                 </button>
             </div>
-        </motion.div>
+        </div>
     );
 };
 
