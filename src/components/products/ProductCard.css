@@ -93,24 +93,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #FFFFFF;
-    /* Solid white for maximum visibility */
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: transparent;
+    /* No background - just the icon */
+    border: none;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.2s ease;
     pointer-events: auto;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    /* Strong shadow for visibility on light backgrounds */
     z-index: 3;
     /* Ensure it's above other elements */
 }
 
 .wishlist-btn:hover {
-    background: #ffffff;
-    border-color: #d4af37;
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.15);
 }
 
 .wishlist-btn svg {
