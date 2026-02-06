@@ -322,26 +322,32 @@
         border-radius: 8px;
     }
 
+    /* OPTIMIZATION: Larger image for better product visibility */
     .product-image-wrapper {
-        aspect-ratio: 1 / 1;
-        /* Square for compactness (Issue 1) */
+        aspect-ratio: 4 / 5;
+        /* Taller for more image visibility (was 1/1) */
     }
 
     .product-info {
-        padding: 8px 10px;
-        /* Reduced padding */
-        gap: 4px;
+        padding: 6px 8px;
+        /* Further reduced for compactness */
+        gap: 3px;
     }
 
     .product-name {
         font-size: 0.8125rem;
         /* 13px */
         line-height: 1.2;
+        line-clamp: 2;
+        /* Standard property for compatibility */
         -webkit-line-clamp: 2;
         /* Limit to 2 lines */
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
         height: 2.4em;
         /* Fixed height for alignment */
-        margin-bottom: 2px;
+        margin-bottom: 0;
     }
 
     .product-category {
@@ -359,46 +365,69 @@
         font-size: 0.75rem;
     }
 
+    /* OPTIMIZATION: Horizontal button layout, text-only, compact */
     .product-actions {
-        padding: 0 10px 10px 10px;
-        gap: 6px;
-        /* Tighter gap */
+        padding: 0 8px 8px 8px;
+        /* Reduced padding */
+        display: flex;
+        flex-direction: row;
+        /* Horizontal layout */
+        gap: 4px;
+        /* Minimal gap between buttons */
     }
 
     .btn-order-now,
     .btn-add-cart {
-        height: 36px;
-        /* Compact buttons (Issue 1) */
-        font-size: 0.75rem;
+        flex: 1;
+        /* Equal width buttons */
+        height: 32px;
+        /* Compact height (was 36px) */
+        font-size: 0.6875rem;
+        /* 11px - smaller for side-by-side */
         border-radius: 4px;
+        padding: 0 6px;
+        /* Tight padding */
+        gap: 0;
+        /* Remove icon gap */
+    }
+
+    /* Hide icons on mobile - text only */
+    .btn-order-now .btn-icon,
+    .btn-add-cart .btn-icon {
+        display: none;
     }
 
     .btn-order-now {
         background: #d4af37;
-        /* Ensure Gold */
+        /* Premium Gold */
         color: #1a1a1a;
     }
 
-    /* Wishlist Visibility Fix (Issue 2) */
+    /* OPTIMIZATION: Enhanced wishlist visibility with drop shadow */
     .wishlist-btn {
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        /* Slightly larger for easier tap */
+        height: 34px;
         top: 8px;
         right: 8px;
-        background: #ffffff !important;
-        /* Force solid white */
+        background: rgba(255, 255, 255, 0.98) !important;
+        /* Nearly opaque */
         opacity: 1 !important;
         z-index: 20;
-        /* Ensure visibility */
-        border: 1px solid rgba(0, 0, 0, 0.1);
+        border: 1.5px solid rgba(0, 0, 0, 0.15);
+        /* Stronger border */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        /* Drop shadow for visibility */
     }
 
     .wishlist-btn svg {
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        /* Slightly larger */
+        height: 18px;
         stroke: #1a1a1a;
-        /* Dark charcoal */
-        stroke-width: 2px;
+        /* Pure black for maximum contrast */
+        stroke-width: 2.5px;
+        /* Thicker stroke */
     }
 
     .product-badges {

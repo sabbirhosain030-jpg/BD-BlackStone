@@ -158,34 +158,14 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
                     className="btn-order-now"
                     onClick={handleOrderNow}
                 >
-                    <svg className="btn-icon" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-                        <polyline points="13 2 13 9 20 9" />
-                    </svg>
-                    Order Now
+                    ORDER NOW
                 </button>
 
                 <button
                     className={`btn-add-cart ${isAdded ? 'added' : ''}`}
                     onClick={handleAddToCart}
                 >
-                    {isAdded ? (
-                        <>
-                            <svg className="btn-icon" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            Added
-                        </>
-                    ) : (
-                        <>
-                            <svg className="btn-icon" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                                <line x1="3" y1="6" x2="21" y2="6" />
-                                <path d="M16 10a4 4 0 0 1-8 0" />
-                            </svg>
-                            Add to Cart
-                        </>
-                    )}
+                    {isAdded ? '✓ ADDED' : 'ADD TO CART'}
                 </button>
             </div>
         </div>

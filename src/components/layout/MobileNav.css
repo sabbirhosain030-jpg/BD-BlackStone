@@ -46,8 +46,10 @@
 }
 
 .mobile-nav-item span {
-    font-weight: 500;
-    letter-spacing: 0.2px;
+    font-weight: 700;
+    /* Bolder for better visibility (was 500) */
+    letter-spacing: 0.3px;
+    /* Increased for legibility */
 }
 
 .mobile-nav-item.active {
@@ -57,6 +59,8 @@
 .mobile-nav-item svg {
     width: 22px;
     height: 22px;
+    stroke-width: 2.5;
+    /* Thicker for boldness (was 2) */
     transition: transform var(--transition-button);
 }
 
@@ -113,6 +117,30 @@
         0 -4px 10px rgba(0, 0, 0, 0.2);
     z-index: 10;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Premium cart pulse animation */
+.mobile-cart-btn.cart-pulse {
+    animation: cartPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes cartPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 4px #000, 0 -4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    50% {
+        transform: scale(1.15);
+        box-shadow: 0 0 0 4px #000,
+            0 0 20px rgba(212, 175, 55, 0.6),
+            0 -4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 4px #000, 0 -4px 10px rgba(0, 0, 0, 0.2);
+    }
 }
 
 .active .mobile-cart-btn {

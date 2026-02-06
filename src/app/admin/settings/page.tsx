@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { updateAdminCredentials } from './actions';
 import './settings.css';
 
 interface User {
@@ -112,6 +113,141 @@ export default function AdminSettingsPage() {
                             <span className="badge badge-admin">{(session?.user as any)?.role || 'USER'}</span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {/* Admin Credential Change Section */}
+            <div className="admin-card">
+                <div className="card-header">
+                    <h2>Change Admin Credentials</h2>
+                    <p>Update your email address or password</p>
+                </div>
+                <div className="card-body">
+                    <form action={async (formData) => {
+                        const result = await updateAdminCredentials(formData);
+                        if (result.success) {
+                            setMessage(result.message || 'Credentials updated successfully');
+                            if (result.emailChanged) {
+                                setMessage('✅ Email updated! Please log in again with new credentials.');
+                                setTimeout(() => {
+                                    window.location.href = '/admin/login';
+                                }, 2500);
+                            } else {
+                                setTimeout(() => setMessage(''), 3000);
+                            }
+                        } else {
+                            setError(result.error || 'Failed to update credentials');
+                            setTimeout(() => setError(''), 5000);
+                        }
+                    }} className="credentials-form">
+
+                        <div className="form-section">
+                            <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: '#333' }}>Email Address</h3>
+                            <div className="form-group">
+                                <label htmlFor="newEmail" style={{ fontSize: '0.875rem', marginBottom: '0.25rem', display: 'block' }}>New Email (optional)</label>
+                                <input
+                                    type="email"
+                                    id="newEmail"
+                                    name="newEmail"
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.625rem',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '4px',
+                                        fontSize: '0.875rem'
+                                    }}
+                                    placeholder={session?.user?.email || 'admin@blackstone.com'}
+                                />
+                                <small style={{ fontSize: '0.75rem', color: '#666', display: 'block', marginTop: '0.25rem' }}>Leave blank to keep current email</small>
+                            </div>
+                        </div>
+
+                        <div className="form-section" style={{ marginTop: '1.5rem' }}>
+                            <h3 style={{ fontSize: '1rem', marginBottom: '0.75rem', color: '#333' }}>Password</h3>
+                            <div className="form-group">
+                                <label htmlFor="currentPassword" style={{ fontSize: '0.875rem', marginBottom: '0.25rem', display: 'block' }}>Current Password <span style={{ color: '#d32f2f' }}>*</span></label>
+                                <input
+                                    type="password"
+                                    id="currentPassword"
+                                    name="currentPassword"
+                                    required
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.625rem',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '4px',
+                                        fontSize: '0.875rem'
+                                    }}
+                                    placeholder="Enter current password"
+                                />
+                            </div>
+
+                            <div className="form-group" style={{ marginTop: '1rem' }}>
+                                <label htmlFor="newPassword" style={{ fontSize: '0.875rem', marginBottom: '0.25rem', display: 'block' }}>New Password (optional)</label>
+                                <input
+                                    type="password"
+                                    id="newPassword"
+                                    name="newPassword"
+                                    minLength={8}
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.625rem',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '4px',
+                                        fontSize: '0.875rem'
+                                    }}
+                                    placeholder="Minimum 8 characters"
+                                />
+                                <small style={{ fontSize: '0.75rem', color: '#666', display: 'block', marginTop: '0.25rem' }}>Leave blank to keep current password</small>
+                            </div>
+
+                            <div className="form-group" style={{ marginTop: '1rem' }}>
+                                <label htmlFor="confirmPassword" style={{ fontSize: '0.875rem', marginBottom: '0.25rem', display: 'block' }}>Confirm New Password</label>
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    style={{
+                                        width: '100%',
+                                        padding: '0.625rem',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '4px',
+                                        fontSize: '0.875rem'
+                                    }}
+                                    placeholder="Re-enter new password"
+                                />
+                            </div>
+                        </div>
+
+                        <div style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid #eee' }}>
+                            <button
+                                type="submit"
+                                style={{
+                                    padding: '0.75rem 1.5rem',
+                                    backgroundColor: '#000',
+                                    color: '#fff',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    transition: 'background-color 0.2s'
+                                }}
+                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333'}
+                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#000'}
+                            >
+                                Update Credentials
+                            </button>
+                            <p style={{
+                                fontSize: '0.75rem',
+                                color: '#d32f2f',
+                                marginTop: '0.75rem',
+                                fontStyle: 'italic'
+                            }}>
+                                ⚠️ You must enter your current password to make any changes
+                            </p>
+                        </div>
+                    </form>
                 </div>
             </div>
 
