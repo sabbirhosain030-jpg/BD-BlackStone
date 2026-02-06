@@ -9,13 +9,17 @@ export async function GET(
     try {
         const { orderId } = await params;
 
-        // Fetch order details
+        // Fetch order details with optimized query
         const order = await prisma.order.findUnique({
             where: { id: orderId },
             include: {
                 items: {
                     include: {
-                        product: true
+                        product: {
+                            select: {
+                                name: true // Only fetch needed fields
+                            }
+                        }
                     }
                 }
             }
@@ -25,15 +29,25 @@ export async function GET(
             return NextResponse.json({ error: 'Order not found' }, { status: 404 });
         }
 
+        // Pre-compute values for better performance
+        const formattedDate = new Date(order.createdAt).toLocaleDateString('en-GB');
+        const totalFormatted = order.total.toLocaleString();
+
         // Create PDF
         const doc = new jsPDF();
 
-        // Header
+        // Set default font early to avoid repeated switches
+        doc.setFont('helvetica', 'normal');
+
+        // Header - Brand Name
         doc.setFontSize(24);
+        doc.setFont('helvetica', 'bold');
         doc.setTextColor(26, 26, 26); // Charcoal
         doc.text('BLACKSTONE BD', 105, 20, { align: 'center' });
 
+        // Subtitle
         doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
         doc.setTextColor(128, 128, 128);
         doc.text('Premium Clothing & Accessories', 105, 28, { align: 'center' });
 
@@ -44,23 +58,26 @@ export async function GET(
 
         // Receipt Title
         doc.setFontSize(16);
+        doc.setFont('helvetica', 'bold');
         doc.setTextColor(26, 26, 26);
         doc.text('ORDER RECEIPT', 105, 45, { align: 'center' });
 
-        // Order Details
+        // Order Details Section
         doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
         doc.setTextColor(80, 80, 80);
         let yPos = 60;
 
         doc.text(`Order Number: ${order.orderNumber}`, 20, yPos);
         yPos += 7;
-        doc.text(`Date: ${new Date(order.createdAt).toLocaleDateString('en-GB')}`, 20, yPos);
+        doc.text(`Date: ${formattedDate}`, 20, yPos);
         yPos += 7;
         doc.text(`Status: ${order.status.toUpperCase()}`, 20, yPos);
         yPos += 15;
 
         // Customer Information
         doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
         doc.setTextColor(26, 26, 26);
         doc.text('CUSTOMER INFORMATION', 20, yPos);
         doc.setLineWidth(0.3);
@@ -68,17 +85,20 @@ export async function GET(
         doc.line(20, yPos + 2, 80, yPos + 2);
         yPos += 10;
 
+        // Customer details - batch font settings
         doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
         doc.setTextColor(80, 80, 80);
+
         doc.text(`Name: ${order.customerName}`, 20, yPos);
         yPos += 7;
         doc.text(`Email: ${order.customerEmail}`, 20, yPos);
         yPos += 7;
         doc.text(`Phone: ${order.customerPhone}`, 20, yPos);
         yPos += 7;
-
-        // Shipping Address
         doc.text(`Address: ${order.shippingAddress}`, 20, yPos);
+
+        // Optional fields
         if ((order as any).shippingCity) {
             yPos += 7;
             doc.text(`City: ${(order as any).shippingCity}`, 20, yPos);
@@ -89,17 +109,18 @@ export async function GET(
         }
         yPos += 15;
 
-        // Order Items
+        // Order Items Section
         doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
         doc.setTextColor(26, 26, 26);
         doc.text('ORDER ITEMS', 20, yPos);
         doc.line(20, yPos + 2, 60, yPos + 2);
         yPos += 10;
 
-        // Table Header
+        // Table Header with gold background
         doc.setFontSize(9);
         doc.setTextColor(255, 255, 255);
-        doc.setFillColor(212, 175, 55); // Gold background
+        doc.setFillColor(212, 175, 55);
         doc.rect(20, yPos - 5, 170, 8, 'F');
         doc.text('ITEM', 22, yPos);
         doc.text('QTY', 140, yPos);
@@ -107,30 +128,40 @@ export async function GET(
         doc.text('TOTAL', 180, yPos);
         yPos += 10;
 
-        // Items
+        // Items - optimized rendering
         doc.setTextColor(80, 80, 80);
         doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
 
         if (order.items && order.items.length > 0) {
-            order.items.forEach((item: any) => {
+            // Pre-compute all item data for faster rendering
+            const itemsData = order.items.map((item: any) => {
                 const itemName = item.product?.name || 'Unknown Product';
                 const quantity = item.quantity;
                 const price = item.price;
                 const total = quantity * price;
+                const lines = doc.splitTextToSize(itemName, 110);
 
-                // Wrap long product names
-                const maxWidth = 110;
-                const lines = doc.splitTextToSize(itemName, maxWidth);
+                return {
+                    lines,
+                    quantity: quantity.toString(),
+                    price: `৳${price.toLocaleString()}`,
+                    total: `৳${total.toLocaleString()}`,
+                    lineHeight: lines.length * 5
+                };
+            });
 
-                lines.forEach((line: string, index: number) => {
+            // Render all items in one batch
+            itemsData.forEach((item) => {
+                item.lines.forEach((line: string, index: number) => {
                     doc.text(line, 22, yPos + (index * 5));
                 });
 
-                doc.text(quantity.toString(), 140, yPos);
-                doc.text(`৳${price.toLocaleString()}`, 160, yPos);
-                doc.text(`৳${total.toLocaleString()}`, 180, yPos);
+                doc.text(item.quantity, 140, yPos);
+                doc.text(item.price, 160, yPos);
+                doc.text(item.total, 180, yPos);
 
-                yPos += (lines.length * 5) + 3;
+                yPos += item.lineHeight + 3;
             });
         }
 
@@ -139,12 +170,12 @@ export async function GET(
         doc.line(20, yPos, 190, yPos);
         yPos += 10;
 
-        // Totals
+        // Totals Section - batch operations
         doc.setFontSize(10);
         doc.setTextColor(80, 80, 80);
 
         doc.text('Subtotal:', 140, yPos);
-        doc.text(`৳${order.total.toLocaleString()}`, 180, yPos, { align: 'right' });
+        doc.text(`৳${totalFormatted}`, 180, yPos, { align: 'right' });
         yPos += 7;
 
         if ((order as any).shippingCost && (order as any).shippingCost > 0) {
@@ -157,6 +188,7 @@ export async function GET(
             doc.setTextColor(212, 44, 44); // Red for discount
             doc.text('Discount:', 140, yPos);
             doc.text(`-৳${order.discount.toLocaleString()}`, 180, yPos, { align: 'right' });
+            doc.setTextColor(80, 80, 80); // Reset color
             yPos += 7;
         }
 
@@ -168,30 +200,30 @@ export async function GET(
 
         // Grand Total
         doc.setFontSize(12);
-        doc.setTextColor(26, 26, 26);
         doc.setFont('helvetica', 'bold');
+        doc.setTextColor(26, 26, 26);
         doc.text('GRAND TOTAL:', 140, yPos);
         doc.setTextColor(212, 175, 55); // Gold
-        doc.text(`৳${order.total.toLocaleString()}`, 180, yPos, { align: 'right' });
+        doc.text(`৳${totalFormatted}`, 180, yPos, { align: 'right' });
 
         // Footer
-        yPos = 270; // Bottom of page
+        const pageHeight = doc.internal.pageSize.height;
         doc.setFontSize(8);
-        doc.setTextColor(128, 128, 128);
         doc.setFont('helvetica', 'normal');
-        doc.text('Thank you for shopping with BlackStone BD!', 105, yPos, { align: 'center' });
-        yPos += 5;
-        doc.text('For support, contact us at support@bdblackstone.com', 105, yPos, { align: 'center' });
+        doc.setTextColor(128, 128, 128);
+        doc.text('Thank you for shopping with BlackStone BD!', 105, pageHeight - 20, { align: 'center' });
+        doc.text('For support, contact us at support@bdblackstone.com', 105, pageHeight - 15, { align: 'center' });
 
-        // Generate PDF buffer
+        // Generate PDF buffer efficiently
         const pdfBuffer = doc.output('arraybuffer');
 
-        // Return PDF as downloadable file
+        // Return PDF with proper headers
         return new NextResponse(pdfBuffer, {
             headers: {
                 'Content-Type': 'application/pdf',
                 'Content-Disposition': `attachment; filename="BlackStone-Receipt-${order.orderNumber}.pdf"`,
-                'Cache-Control': 'no-cache'
+                'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
+                'Content-Length': pdfBuffer.byteLength.toString()
             }
         });
 
@@ -201,5 +233,7 @@ export async function GET(
             { error: 'Failed to generate receipt' },
             { status: 500 }
         );
+    } finally {
+        await prisma.$disconnect();
     }
 }

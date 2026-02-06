@@ -93,7 +93,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.95);
+    background: #FFFFFF;
+    /* Solid white for maximum visibility */
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     cursor: pointer;
@@ -115,8 +116,8 @@
     /* Increased from 18px for better visibility */
     height: 22px;
     /* Increased from 18px for better visibility */
-    stroke: #000000;
-    /* Changed to pure black for maximum contrast */
+    stroke: #FF0000;
+    /* Red heart for visibility and contrast */
     fill: none;
     stroke-width: 2.5;
     /* Increased from 2 for better visibility */
