@@ -401,7 +401,7 @@
         color: #1a1a1a;
     }
 
-    /* OPTIMIZATION: Enhanced wishlist button with glow effect for maximum visibility */
+    /* OPTIMIZATION: Transparent wishlist button - icon only, no background */
     .wishlist-btn {
         position: absolute;
         display: flex;
@@ -414,39 +414,37 @@
         height: 40px;
         top: 8px;
         right: 8px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 50%, transparent 80%) !important;
-        /* Subtle white glow for visibility */
+        background: transparent !important;
+        /* No background - just the icon */
         opacity: 1 !important;
         z-index: 20;
         border: none;
         border-radius: 50%;
-        /* Enhanced multi-layer shadow for visibility on all backgrounds */
-        box-shadow:
-            0 2px 8px rgba(0, 0, 0, 0.3),
-            0 0 0 1px rgba(255, 255, 255, 0.5),
-            0 4px 12px rgba(0, 0, 0, 0.15);
+        /* Dual drop-shadows for visibility on both light and dark backgrounds */
+        filter:
+            drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) drop-shadow(0 1px 2px rgba(255, 255, 255, 0.9));
     }
 
     .wishlist-btn svg {
         width: 22px;
         /* Larger icon */
         height: 22px;
-        stroke: #ffffff;
-        /* White stroke for contrast against glow */
+        stroke: #FF0000;
+        /* Bright red for maximum visibility */
         fill: none;
-        stroke-width: 2.5px;
-        /* Strong definition */
-        /* Multiple drop shadows for depth */
+        stroke-width: 2.8px;
+        /* Thicker stroke for better definition */
+        /* Additional shadow on the icon itself */
         filter:
-            drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.8));
+            drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.8));
     }
 
-    /* Active/filled state - red heart */
+    /* Active/filled state - filled red heart */
     .wishlist-btn.active svg {
         fill: #FF0000;
-        stroke: #ffffff;
+        stroke: #FF0000;
         filter:
-            drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 2px rgba(255, 0, 0, 0.4));
+            drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 2px rgba(255, 255, 255, 0.9));
     }
 
     .product-badges {

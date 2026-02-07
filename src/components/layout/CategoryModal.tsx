@@ -135,6 +135,7 @@ const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose,
                                     href={`/products?category=${accessoriesCategory.slug}`}
                                     className="category-grid-item"
                                     onClick={handleCategoryClick}
+                                    prefetch={true}
                                     style={{ margin: '0 1rem' }}
                                 >
                                     <div className="category-item-content">
@@ -169,6 +170,7 @@ const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose,
                                         href={`/products?category=${category.slug}`}
                                         className="category-grid-item"
                                         onClick={handleCategoryClick}
+                                        prefetch={true}
                                     >
                                         <div className="category-item-content">
                                             <span className="category-item-name">{category.name}</span>
