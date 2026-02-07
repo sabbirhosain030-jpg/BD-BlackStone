@@ -62,8 +62,25 @@ export const Header: React.FC = () => {
             .catch(err => console.error('Failed to fetch categories:', err));
     }, []);
 
-    const blackStoneCategories = categories.filter(c => c.brand === 'BLACK STONE');
-    const gazelleCategories = categories.filter(c => c.brand === 'GAZZELLE');
+    // Filter categories properly - only show specific categories for each brand
+    const accessories = categories.find(c =>
+        c.slug === 'accessories' ||
+        c.name.toLowerCase() === 'accessories' ||
+        c.brand === null ||
+        c.brand === 'Accessories'
+    );
+
+    const blackStoneCategories = categories.filter(c =>
+        c.brand === 'BLACK STONE' &&
+        (c.slug === 'men' || c.name.toLowerCase() === 'men' ||
+            c.slug === 'boys' || c.name.toLowerCase() === 'boys')
+    );
+
+    const gazelleCategories = categories.filter(c =>
+        c.brand === 'GAZZELLE' &&
+        (c.slug === 'women' || c.name.toLowerCase() === 'women' ||
+            c.slug === 'girls' || c.name.toLowerCase() === 'girls')
+    );
 
     const isActive = (path: string) => pathname === path;
 
@@ -144,6 +161,24 @@ export const Header: React.FC = () => {
                                     Shop <span style={{ fontSize: '0.7em' }}>▼</span>
                                 </Link>
                                 <div className="nav-dropdown-menu">
+                                    {/* Accessories - standalone at top */}
+                                    {accessories && (
+                                        <>
+                                            <Link
+                                                href={`/products?category=${accessories.slug}`}
+                                                className="dropdown-item"
+                                                onClick={() => {
+                                                    setShopDropdownOpen(false);
+                                                    setIsMenuOpen(false);
+                                                }}
+                                            >
+                                                {accessories.name}
+                                            </Link>
+                                            <div className="dropdown-divider"></div>
+                                        </>
+                                    )}
+
+                                    {/* BLACK STONE - Men & Boys only */}
                                     {blackStoneCategories.length > 0 && (
                                         <>
                                             <div style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--color-gold)', textTransform: 'uppercase' }}>
@@ -164,6 +199,8 @@ export const Header: React.FC = () => {
                                             ))}
                                         </>
                                     )}
+
+                                    {/* GAZZELLE - Women & Girls only */}
                                     {gazelleCategories.length > 0 && (
                                         <>
                                             <div className="dropdown-divider"></div>
