@@ -116,12 +116,8 @@ const ProductCardComponent: React.FC<ProductCardProps> = ({
                         aria-label="Toggle wishlist"
                     >
                         <svg
-                            width="20"
-                            height="20"
                             viewBox="0 0 24 24"
-                            fill={inWishlist ? '#d4af37' : 'none'}
-                            stroke="currentColor"
-                            strokeWidth="2"
+                            fill={inWishlist ? 'currentColor' : 'none'}
                             strokeLinecap="round"
                             strokeLinejoin="round"
                         >
