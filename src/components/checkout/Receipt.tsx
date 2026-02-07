@@ -48,34 +48,137 @@ export default function Receipt({ order, onClose }: ReceiptProps) {
                         <title>Receipt - ${order.orderNumber}</title>
                         <style>
                             @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
-                            body { font-family: 'Inter', sans-serif; margin: 0; padding: 20px; color: #1a1a1a; -webkit-print-color-adjust: exact; }
-                            .receipt-container { 
-                                max-width: 100%; margin: 0 auto; 
-                                border: 2px solid #1a1a1a; padding: 40px; 
-                                position: relative; overflow: hidden;
+                            
+                            * { box-sizing: border-box; margin: 0; padding: 0; }
+                            
+                            body { 
+                                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+                                margin: 0; 
+                                padding: 20px; 
+                                color: #1a1a1a; 
+                                -webkit-print-color-adjust: exact; 
+                                print-color-adjust: exact;
+                                background: white;
                             }
+                            
+                            .receipt-container { 
+                                width: 600px;
+                                max-width: 600px;
+                                margin: 0 auto; 
+                                border: 2px solid #1a1a1a; 
+                                padding: 40px; 
+                                position: relative; 
+                                overflow: hidden;
+                                box-sizing: border-box;
+                                background: white;
+                            }
+                            
                             .watermark {
-                                position: absolute; top: 50%; left: 50%; 
+                                position: absolute; 
+                                top: 50%; 
+                                left: 50%; 
                                 transform: translate(-50%, -50%) rotate(-45deg);
-                                font-size: 80px; font-weight: 900; 
+                                font-size: 80px; 
+                                font-weight: 900; 
                                 color: rgba(0,0,0,0.03); 
-                                white-space: nowrap; z-index: 0; pointer-events: none;
+                                white-space: nowrap; 
+                                z-index: 0; 
+                                pointer-events: none;
                                 font-family: 'Playfair Display', serif;
                             }
-                            .header { text-align: center; margin-bottom: 40px; position: relative; z-index: 1; }
+                            
+                            .header { 
+                                text-align: center; 
+                                margin-bottom: 40px; 
+                                position: relative; 
+                                z-index: 1; 
+                            }
+                            
                             .brand-title { 
-                                font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; margin-bottom: 10px; text-transform: uppercase;
+                                font-family: 'Playfair Display', serif; 
+                                font-size: 36px; 
+                                font-weight: 700; 
+                                margin-bottom: 10px; 
+                                text-transform: uppercase;
                                 color: #1a1a1a;
                                 text-shadow: 2px 2px 0px #c9a55a;
                             }
-                            .order-meta { display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; font-size: 14px; position: relative; z-index: 1; }
-                            .table { width: 100%; border-collapse: collapse; margin-bottom: 30px; position: relative; z-index: 1; }
-                            .table th { text-align: left; border-bottom: 2px solid #1a1a1a; padding: 10px 0; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
-                            .table td { border-bottom: 1px solid #eee; padding: 15px 0; font-size: 14px; }
-                            .totals { margin-left: auto; width: 250px; font-size: 14px; position: relative; z-index: 1; }
-                            .totals-row { display: flex; justify-content: space-between; padding: 8px 0; }
-                            .grand-total { border-top: 2px solid #1a1a1a; font-weight: 700; font-size: 18px; margin-top: 10px; padding-top: 15px; }
-                            .footer { margin-top: 50px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 20px; position: relative; z-index: 1; }
+                            
+                            .order-meta { 
+                                display: flex; 
+                                justify-content: space-between; 
+                                margin-bottom: 30px; 
+                                border-bottom: 2px solid #eee; 
+                                padding-bottom: 20px; 
+                                font-size: 14px; 
+                                position: relative; 
+                                z-index: 1; 
+                            }
+                            
+                            .table { 
+                                width: 100%; 
+                                border-collapse: collapse; 
+                                margin-bottom: 30px; 
+                                position: relative; 
+                                z-index: 1; 
+                            }
+                            
+                            .table th { 
+                                text-align: left; 
+                                border-bottom: 2px solid #1a1a1a; 
+                                padding: 10px 0; 
+                                text-transform: uppercase; 
+                                font-size: 12px; 
+                                letter-spacing: 1px; 
+                            }
+                            
+                            .table td { 
+                                border-bottom: 1px solid #eee; 
+                                padding: 15px 0; 
+                                font-size: 14px; 
+                            }
+                            
+                            .totals { 
+                                margin-left: auto; 
+                                width: 250px; 
+                                font-size: 14px; 
+                                position: relative; 
+                                z-index: 1; 
+                            }
+                            
+                            .totals-row { 
+                                display: flex; 
+                                justify-content: space-between; 
+                                padding: 8px 0; 
+                            }
+                            
+                            .grand-total { 
+                                border-top: 2px solid #1a1a1a; 
+                                font-weight: 700; 
+                                font-size: 18px; 
+                                margin-top: 10px; 
+                                padding-top: 15px; 
+                            }
+                            
+                            .footer { 
+                                margin-top: 50px; 
+                                text-align: center; 
+                                font-size: 12px; 
+                                color: #666; 
+                                border-top: 1px solid #eee; 
+                                padding-top: 20px; 
+                                position: relative; 
+                                z-index: 1; 
+                            }
+                            
+                            @media print {
+                                body { padding: 0; }
+                                .receipt-container { 
+                                    border: 2px solid #1a1a1a; 
+                                    width: 600px;
+                                    max-width: 600px;
+                                }
+                            }
                         </style>
                     </head>
                     <body>

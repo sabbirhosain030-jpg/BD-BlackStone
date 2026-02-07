@@ -21,15 +21,35 @@ interface CategoryModalProps {
 const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose, categories }) => {
     const [selectedGender, setSelectedGender] = React.useState<'men' | 'women'>('men');
 
-    // Memoize category filtering to prevent recalculation
-    const { menCategories, womenCategories } = useMemo(() => {
+    // Memoize category filtering to sync with admin panel
+    const { accessoriesCategory, menCategories, womenCategories } = useMemo(() => {
+        // Accessories - standalone category (no brand or brand is "Accessories")
+        const accessories = categories.find(c =>
+            c.slug === 'accessories' ||
+            c.name.toLowerCase().includes('accessories') ||
+            c.brand === 'Accessories' ||
+            c.brand === null
+        ) || null;
+
+        // BlackStone categories - only Men and Boys
         const men = categories.filter(c =>
-            (c.slug === 'men' || c.slug === 'boys') && c.brand === 'BLACK STONE'
+            c.brand === 'BLACK STONE' &&
+            (c.slug === 'men' || c.name.toLowerCase() === 'men' ||
+                c.slug === 'boys' || c.name.toLowerCase() === 'boys')
         );
+
+        // Gazzelle categories - only Women and Girls
         const women = categories.filter(c =>
-            (c.slug === 'women' || c.slug === 'girls') && c.brand === 'GAZZELLE'
+            c.brand === 'GAZZELLE' &&
+            (c.slug === 'women' || c.name.toLowerCase() === 'women' ||
+                c.slug === 'girls' || c.name.toLowerCase() === 'girls')
         );
-        return { menCategories: men, womenCategories: women };
+
+        return {
+            accessoriesCategory: accessories,
+            menCategories: men,
+            womenCategories: women
+        };
     }, [categories]);
 
     const displayCategories = selectedGender === 'men' ? menCategories : womenCategories;
@@ -96,6 +116,33 @@ const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose,
                                 </svg>
                             </button>
                         </div>
+
+                        {/* Accessories Category - Standalone */}
+                        {accessoriesCategory && (
+                            <div style={{ marginBottom: '1rem' }}>
+                                <h3 style={{
+                                    fontSize: '0.875rem',
+                                    fontWeight: 600,
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                    color: '#666',
+                                    marginBottom: '0.75rem',
+                                    paddingLeft: '1rem'
+                                }}>
+                                    Shop All
+                                </h3>
+                                <Link
+                                    href={`/products?category=${accessoriesCategory.slug}`}
+                                    className="category-grid-item"
+                                    onClick={handleCategoryClick}
+                                    style={{ margin: '0 1rem' }}
+                                >
+                                    <div className="category-item-content">
+                                        <span className="category-item-name">{accessoriesCategory.name}</span>
+                                    </div>
+                                </Link>
+                            </div>
+                        )}
 
                         {/* Gender Toggle */}
                         <div className="category-gender-toggle">

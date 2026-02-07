@@ -95,6 +95,7 @@ export async function getCategories() {
                 id: true,
                 name: true,
                 slug: true,
+                brand: true,
                 description: true,
                 subCategories: {
                     select: {
