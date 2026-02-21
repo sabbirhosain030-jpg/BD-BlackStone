@@ -1,16 +1,109 @@
-/* Responsive Admin Panel Styles */
+/* ============================================================
+   RESPONSIVE ADMIN PANEL — Mobile First Overrides
+   Loaded AFTER admin.css so these rules win on conflict.
+   ============================================================ */
 
-/* Mobile Header (visible only on mobile/tablet) */
+/* ── 1. Neutralise the bad tablet breakpoint in admin.css ──
+   admin.css turns the sidebar into a horizontal scrolling row
+   at ≤ 1024px. We override that here so the slide-in drawer
+   pattern (below) takes over instead.
+────────────────────────────────────────────────────────────── */
+@media (max-width: 1023px) {
+
+    /* Keep sidebar as a vertical panel (not a horizontal bar) */
+    .admin-container {
+        display: block;
+        /* stacks mobile-header + main */
+        min-height: 100vh;
+    }
+
+    .admin-sidebar {
+        /* Slide-in drawer — hidden off-screen by default */
+        position: fixed;
+        top: 0;
+        left: -290px;
+        width: 270px;
+        height: 100vh;
+        overflow-y: auto;
+        flex-direction: column !important;
+        /* override row */
+        justify-content: flex-start !important;
+        align-items: stretch !important;
+        padding: var(--spacing-md, 1rem) !important;
+        border-right: 1px solid var(--color-stone-border) !important;
+        border-bottom: none !important;
+        z-index: 1002;
+        transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .admin-sidebar.open {
+        left: 0;
+    }
+
+    /* Restore vertical nav */
+    .admin-nav {
+        flex-direction: column !important;
+        overflow-x: visible !important;
+        gap: 4px !important;
+    }
+
+    .admin-nav-item {
+        flex-shrink: unset !important;
+        padding: 0.875rem 1rem !important;
+        font-size: 0.9375rem !important;
+        justify-content: flex-start !important;
+        min-height: 48px;
+    }
+
+    /* Show nav text (admin.css hides it at ≤768px) */
+    .admin-nav-item span {
+        display: inline !important;
+    }
+
+    /* Restore sidebar header */
+    .admin-sidebar-header {
+        margin-bottom: 1.5rem !important;
+        padding-bottom: 1rem !important;
+        border-bottom: 1px solid var(--color-stone-border) !important;
+        position: relative;
+    }
+
+    /* Close ✕ button inside drawer */
+    .sidebar-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--color-stone-border);
+        color: var(--color-white);
+        cursor: pointer;
+        transition: background 0.15s;
+    }
+
+    .sidebar-close:hover {
+        background: rgba(212, 175, 55, 0.15);
+    }
+}
+
+/* ── 2. Mobile Header (hamburger bar) ── */
 .admin-mobile-header {
     display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
-    background: linear-gradient(135deg, var(--color-stone-surface) 0%, var(--color-stone-dark) 100%);
+    padding: 0.875rem 1rem;
+    background: #1a1a1a;
     border-bottom: 1px solid var(--color-stone-border);
     position: sticky;
     top: 0;
     z-index: 1001;
+    height: 56px;
 }
 
 @media (max-width: 1023px) {
@@ -22,7 +115,6 @@
 .mobile-menu-toggle {
     min-width: 44px;
     min-height: 44px;
-    padding: 0.625rem;
     background: none;
     border: none;
     color: var(--color-white);
@@ -31,74 +123,32 @@
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    transition: background 0.2s;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.mobile-menu-toggle:hover {
-    background: rgba(212, 175, 55, 0.1);
+.mobile-menu-toggle:hover,
+.mobile-menu-toggle:active {
+    background: rgba(212, 175, 55, 0.12);
 }
 
 .mobile-brand {
     font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--color-white);
     text-decoration: none;
+    letter-spacing: 0.04em;
 }
 
-/* Responsive Sidebar */
-@media (max-width: 1023px) {
-    .admin-sidebar {
-        position: fixed;
-        top: 0;
-        left: -280px;
-        /* Hidden by default */
-        height: 100vh;
-        width: 280px;
-        z-index: 1002;
-        transition: left 0.3s ease-in-out;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .admin-sidebar.open {
-        left: 0;
-    }
-
-    /* Close button */
-    .sidebar-close {
-        display: block;
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        min-width: 40px;
-        min-height: 40px;
-        background: rgba(0, 0, 0, 0.05);
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        padding: 0.5rem;
-        transition: background 0.2s;
-    }
-
-    .sidebar-close:hover {
-        background: rgba(0, 0, 0, 0.1);
-    }
-}
-
-@media (min-width: 1024px) {
-    .sidebar-close {
-        display: none;
-    }
-}
-
-/* Overlay for mobile */
+/* ── 3. Overlay ── */
 .admin-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 1001;
-    animation: fadeIn 0.2s ease-in-out;
+    animation: adminFadeIn 0.2s ease;
 }
 
 @media (max-width: 1023px) {
@@ -107,7 +157,7 @@
     }
 }
 
-@keyframes fadeIn {
+@keyframes adminFadeIn {
     from {
         opacity: 0;
     }
@@ -117,91 +167,147 @@
     }
 }
 
-/* Admin Container Responsive */
-@media (max-width: 1023px) {
-    .admin-container {
-        display: block;
+/* Hide close button on desktop */
+@media (min-width: 1024px) {
+    .sidebar-close {
+        display: none !important;
     }
 
+    .admin-mobile-header {
+        display: none !important;
+    }
+}
+
+/* ── 4. Main content area ── */
+@media (max-width: 1023px) {
     .admin-main {
+        width: 100% !important;
+        padding: 1rem !important;
+        min-height: calc(100vh - 56px);
+    }
+}
+
+/* ── 5. Admin header (page title row) ── */
+.admin-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .admin-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+@media (max-width: 767px) {
+    .admin-header {
+        padding: 1rem !important;
+        font-size: inherit !important;
+    }
+
+    .admin-header h1,
+    .admin-title {
+        font-size: 1.3rem !important;
+    }
+
+    .admin-header>* {
         width: 100%;
+    }
+}
+
+/* ── 6. Stats / dashboard grid ── */
+@media (max-width: 767px) {
+
+    .dashboard-grid,
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem;
+    }
+
+    .stone-card {
+        min-width: unset !important;
         padding: 1rem;
-        margin-top: 0;
+    }
+
+    .stone-card-value {
+        font-size: 1.5rem !important;
     }
 }
 
-/* Admin Navigation Active State */
-.admin-nav-item.active {
-    background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-light) 100%);
-    color: var(--color-charcoal);
-}
-
-.admin-nav-item.active .admin-nav-icon {
-    color: var(--color-charcoal);
-}
-
-/* Touch-friendly nav items on mobile */
-@media (max-width: 1023px) {
-    .admin-nav-item {
-        min-height: 48px;
-        padding: 0.875rem 1.25rem;
-        font-size: 1rem;
-    }
-
-    .admin-nav-icon {
-        width: 22px;
-        height: 22px;
-    }
-}
-
-/* Admin Tables Responsive */
+/* ── 7. Tables — horizontal scroll wrapper ── */
 .admin-table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin: 0 -1rem;
-    padding: 0 1rem;
+    border-radius: 12px;
 }
 
 @media (max-width: 767px) {
-
-    /* Stack table responsively */
-    .admin-table {
-        min-width: 100%;
+    .admin-table-container {
+        margin: 0 -1rem;
+        padding: 0 1rem;
+        border-radius: 0;
     }
 
-    .admin-table thead {
-        display: none;
-        /* Hide on mobile */
-    }
-
-    .admin-table tbody tr {
+    /* Switch to card layout on small phones */
+    .admin-table,
+    .recent-orders-table {
         display: block;
-        margin-bottom: 1rem;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        padding: 1rem;
-        background: white;
+        min-width: unset !important;
     }
 
-    .admin-table tbody td {
+    .admin-table thead,
+    .recent-orders-table thead {
+        display: none;
+    }
+
+    .admin-table tbody,
+    .admin-table tr,
+    .recent-orders-table tbody,
+    .recent-orders-table tr {
+        display: block;
+    }
+
+    .admin-table tr,
+    .recent-orders-table tr {
+        margin-bottom: 0.75rem;
+        padding: 0.875rem;
+        background: #1e1e1e;
+        border-radius: 10px;
+        border: 1px solid var(--color-stone-border);
+    }
+
+    .admin-table td,
+    .recent-orders-table td {
         display: flex;
         justify-content: space-between;
-        padding: 0.5rem 0;
+        align-items: center;
+        padding: 0.375rem 0;
         border: none;
+        font-size: 0.875rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
     }
 
-    .admin-table tbody td::before {
+    .admin-table td::before,
+    .recent-orders-table td::before {
         content: attr(data-label);
-        font-weight: 600;
-        color: var(--color-text-secondary);
+        font-weight: 700;
+        color: var(--color-stone-text);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        flex-shrink: 0;
     }
 }
 
-/* Admin Forms Responsive */
+/* ── 8. Forms ── */
 @media (max-width: 767px) {
     .form-grid {
-        grid-template-columns: 1fr;
-        /* Stack on mobile */
+        grid-template-columns: 1fr !important;
     }
 
     .form-section {
@@ -213,48 +319,20 @@
     .form-select {
         min-height: 44px;
         font-size: 16px;
-        /* Prevents zoom on iOS */
+        /* Prevents iOS auto-zoom */
     }
 }
 
-/* Admin Dashboard Cards */
+/* ── 9. Buttons ── */
 @media (max-width: 767px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-        /* Single column on mobile */
-        gap: 1rem;
+
+    .admin-btn-primary,
+    .admin-btn-secondary {
+        min-height: 48px;
+        font-size: 1rem;
+        padding: 0.875rem 1.25rem;
     }
 
-    .stat-card {
-        padding: 1.25rem;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 columns on tablet */
-    }
-}
-
-/* Admin Header Responsive */
-.admin-header {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
-}
-
-@media (min-width: 768px) {
-    .admin-header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-}
-
-/* Admin Buttons */
-@media (max-width: 767px) {
     .admin-actions {
         display: flex;
         flex-direction: column;
@@ -262,101 +340,49 @@
         width: 100%;
     }
 
-    .admin-actions .btn {
+    .admin-actions .btn,
+    .admin-actions .admin-btn-primary {
         width: 100%;
         justify-content: center;
     }
 }
 
-/* Sticky Actions on Mobile */
+/* ── 10. Sticky bottom action bar on forms ── */
 @media (max-width: 767px) {
     .form-sticky-actions {
         position: sticky;
         bottom: 0;
         left: 0;
         right: 0;
-        padding: 1rem;
-        background: white;
-        border-top: 1px solid #eee;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        padding: 0.875rem 1rem;
+        background: #1a1a1a;
+        border-top: 1px solid var(--color-stone-border);
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
         display: flex;
         gap: 0.75rem;
+        z-index: 50;
     }
 
-    .form-sticky-actions .btn {
+    .form-sticky-actions .btn,
+    .form-sticky-actions .admin-btn-primary {
         flex: 1;
         min-height: 48px;
     }
 }
 
-/* Image uploads on mobile */
+/* ── 11. Image upload grid ── */
 @media (max-width: 767px) {
     .image-upload-grid {
         grid-template-columns: 1fr;
-        /* Single column */
-    }
-
-    .image-preview {
-        aspect-ratio: 16 / 9;
-        /* Better for mobile */
     }
 }
 
-/* Product grid in admin */
-@media (max-width: 767px) {
-    .admin-product-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-    .admin-product-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1024px) {
-    .admin-product-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* Modal responsive */
-@media (max-width: 767px) {
-    .admin-modal {
-        width: 100%;
-        max-width: 100%;
-        min-height: 100vh;
-        margin: 0;
-        border-radius: 0;
-    }
-
-    .modal-header {
-        position: sticky;
-        top: 0;
-        background: white;
-        z-index: 10;
-        border-bottom: 1px solid #eee;
-    }
-}
-
-/* Charts responsive */
-@media (max-width: 767px) {
-    .admin-chart-container {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .admin-chart {
-        min-width: 600px;
-    }
-}
-
-/* Pagination responsive */
+/* ── 12. Pagination ── */
 @media (max-width: 767px) {
     .pagination {
         flex-wrap: wrap;
         gap: 0.5rem;
+        justify-content: center;
     }
 
     .pagination-button {
@@ -368,14 +394,12 @@
         width: 100%;
         text-align: center;
         order: -1;
-        margin-bottom: 0.5rem;
     }
 }
 
-/* Filters responsive */
+/* ── 13. Filters ── */
 @media (max-width: 767px) {
     .admin-filters {
-        display: flex;
         flex-direction: column;
         gap: 0.75rem;
     }
@@ -383,5 +407,50 @@
     .filter-select,
     .filter-input {
         width: 100%;
+    }
+}
+
+/* ── 14. Modal full-screen on phones ── */
+@media (max-width: 767px) {
+    .admin-modal {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 100dvh;
+        margin: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    .modal-header {
+        position: sticky;
+        top: 0;
+        background: #1a1a1a;
+        z-index: 10;
+        border-bottom: 1px solid var(--color-stone-border);
+        padding: 1rem;
+    }
+}
+
+/* ── 15. Admin grid (product cards) ── */
+@media (max-width: 767px) {
+
+    .admin-product-grid,
+    .admin-grid-layout {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .admin-product-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* ── 16. Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+
+    .admin-sidebar,
+    .admin-overlay {
+        transition: none;
+        animation: none;
     }
 }

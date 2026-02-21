@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { useCart } from '@/context/CartContext';
+import * as fpixel from '@/lib/fpixel';
 
 // Reuse the type or define a clean interface for what the view needs
 interface ProductViewProps {
@@ -29,7 +30,17 @@ export default function ProductView({ product }: ProductViewProps) {
     const [selectedColor, setSelectedColor] = useState('');
     const [quantity, setQuantity] = useState(1);
     const { addToCart } = useCart();
-    const router = useRouter(); // Initialize router
+    const router = useRouter();
+
+    // 🔵 FB Pixel: ViewContent — fires once when the product page loads
+    useEffect(() => {
+        fpixel.viewContent({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            category: product.category,
+        });
+    }, [product.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const discount = product.previousPrice ? Math.round(((product.previousPrice - product.price) / product.previousPrice) * 100) : 0;
 
@@ -58,8 +69,17 @@ export default function ProductView({ product }: ProductViewProps) {
             price: product.price,
             image: product.images[0] || '/placeholder.png',
             size: selectedSize,
-            color: selectedColor, // Add color to cart item
+            color: selectedColor,
             quantity: quantity
+        });
+
+        // 🔵 FB Pixel: AddToCart
+        fpixel.addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity,
+            category: product.category,
         });
 
         alert('Added to cart!');
@@ -199,10 +219,18 @@ export default function ProductView({ product }: ProductViewProps) {
                                 color: selectedColor,
                                 quantity: quantity
                             });
-                            // Use Next.js router for instant client-side transition instead of full reload
-                            const params = new URLSearchParams();
-                            // Optional: Pass pre-filled data if we wanted to skip cart, but for now we use cart context.
-                            // Just navigating is distinctively faster.
+                            // 🔵 FB Pixel: AddToCart + InitiateCheckout (Buy Now goes straight to checkout)
+                            fpixel.addToCart({
+                                id: product.id,
+                                name: product.name,
+                                price: product.price,
+                                quantity,
+                                category: product.category,
+                            });
+                            fpixel.initiateCheckout({
+                                value: product.price * quantity,
+                                numItems: quantity,
+                            });
                             router.push('/checkout');
                         }}
                     >

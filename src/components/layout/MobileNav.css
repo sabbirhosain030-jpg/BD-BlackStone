@@ -1,87 +1,114 @@
-/* Mobile Navigation Styles */
+/* ============================================================
+   Mobile Bottom Navigation — BD BlackStone
+   Hidden on desktop, shown on mobile (≤768px)
+   ============================================================ */
+
 .mobile-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background: var(--color-black);
-    border-top: 1px solid rgba(212, 175, 55, 0.15);
+    background: #0a0a0a;
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
     z-index: 9999;
-    padding-bottom: env(safe-area-inset-bottom);
+    /* Safe area for iPhone home bar */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     display: none;
-    /* Hidden on desktop by default */
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.4);
+    /* Prevent layout shift on content below */
+    will-change: transform;
 }
 
+/* ── Container ── */
 .mobile-nav-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
     height: 60px;
     position: relative;
     width: 100%;
-    margin: 0;
-    padding: 0 0.5rem;
+    padding: 0 0.25rem;
     box-sizing: border-box;
 }
 
+/* ── Nav Items (Link / Button) ── */
 .mobile-nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--color-gray-500);
+    color: #666;
     text-decoration: none;
     font-size: 10px;
-    gap: 4px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    gap: 3px;
     flex: 1;
-    transition: all var(--transition-button);
-    /* Fast 120ms response */
+    /* Fast 100ms tap response */
+    transition: color 0.1s ease, transform 0.1s ease;
     cursor: pointer;
     background: none;
     border: none;
     padding: 0;
+    /* 44px minimum tap target */
     min-height: 44px;
-    /* 44px tap target */
-}
-
-.mobile-nav-item span {
-    font-weight: 700;
-    /* Bolder for better visibility (was 500) */
-    letter-spacing: 0.3px;
-    /* Increased for legibility */
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-nav-item.active {
-    color: var(--color-gold);
+    color: var(--color-gold, #d4af37);
 }
 
 .mobile-nav-item svg {
-    width: 22px;
-    height: 22px;
-    stroke-width: 2.5;
-    /* Thicker for boldness (was 2) */
-    transition: transform var(--transition-button);
+    transition: transform 0.1s ease;
+    flex-shrink: 0;
 }
 
 .mobile-nav-item.active svg {
     transform: translateY(-1px);
-    stroke: var(--color-gold);
+    stroke: var(--color-gold, #d4af37);
 }
 
 .mobile-nav-item:active {
-    transform: scale(0.95);
+    transform: scale(0.92);
 }
 
-/* Center Popped-up Cart */
+/* ── Icon wrapper for badge positioning ── */
+.mobile-nav-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Small badge (Wishlist count) ── */
+.mobile-nav-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 8px;
+    font-weight: 700;
+    min-width: 15px;
+    height: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 1.5px solid #0a0a0a;
+    padding: 0 2px;
+}
+
+/* ── Center Elevated Cart ── */
 .mobile-nav-center {
     position: relative;
     width: 20%;
-    /* 1 of 5 items */
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    /* Align label with others */
     height: 100%;
 }
 
@@ -94,104 +121,123 @@
     width: 100%;
     height: 100%;
     padding-bottom: 4px;
-    /* Align text baseline */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-cart-btn {
     position: absolute;
-    bottom: 24px;
-    /* Lifts it up significantly */
-    width: 50px;
-    height: 50px;
+    bottom: 20px;
+    width: 52px;
+    height: 52px;
     background: #000;
-    /* Black Center */
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #fff;
-    /* Neon/Gold Ring */
-    border: 2px solid var(--color-gold);
-    box-shadow: 0 0 0 4px #000,
-        /* The "Cutout" effect (matches nav bg) */
-        0 -4px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--color-gold, #d4af37);
+    /* Double ring cutout effect */
+    box-shadow:
+        0 0 0 3px #0a0a0a,
+        0 -4px 14px rgba(0, 0, 0, 0.35);
     z-index: 10;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.15s ease;
 }
 
-/* Premium cart pulse animation */
+.mobile-cart-btn:active,
+.mobile-cart-wrapper:active .mobile-cart-btn {
+    transform: scale(0.92);
+}
+
+.mobile-cart-wrapper.active .mobile-cart-btn {
+    border-color: #fff;
+    box-shadow:
+        0 0 0 3px #0a0a0a,
+        0 0 12px rgba(212, 175, 55, 0.5);
+}
+
+/* Cart pulse when item added */
 .mobile-cart-btn.cart-pulse {
-    animation: cartPulse 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: cartPulse 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes cartPulse {
     0% {
         transform: scale(1);
-        box-shadow: 0 0 0 4px #000, 0 -4px 10px rgba(0, 0, 0, 0.2);
     }
 
     50% {
-        transform: scale(1.15);
-        box-shadow: 0 0 0 4px #000,
-            0 0 20px rgba(212, 175, 55, 0.6),
-            0 -4px 10px rgba(0, 0, 0, 0.2);
+        transform: scale(1.18);
+        box-shadow: 0 0 0 3px #0a0a0a, 0 0 20px rgba(212, 175, 55, 0.65);
     }
 
     100% {
         transform: scale(1);
-        box-shadow: 0 0 0 4px #000, 0 -4px 10px rgba(0, 0, 0, 0.2);
     }
 }
 
-.active .mobile-cart-btn {
-    border-color: #fff;
-    /* White ring when active? or keep gold */
-    box-shadow: 0 0 0 4px #000, 0 0 10px var(--color-gold);
-    /* Flow */
-}
-
+/* Cart label below the elevated button */
 .cart-label {
     font-size: 10px;
-    color: #888;
-    margin-top: 28px;
-    /* Push text down to align with others */
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #666;
+    /* Push text down to align baseline with other labels */
+    margin-top: 30px;
+    transition: color 0.1s ease;
 }
 
 .mobile-cart-wrapper.active .cart-label {
-    color: var(--color-gold);
+    color: var(--color-gold, #d4af37);
 }
 
-.mobile-cart-btn svg {
-    width: 22px;
-    height: 22px;
-}
-
+/* Cart badge — item count */
 .mobile-cart-badge {
     position: absolute;
-    top: -4px;
-    right: -4px;
+    top: -5px;
+    right: -5px;
     background: #ef4444;
-    color: white;
+    color: #fff;
     font-size: 9px;
-    font-weight: bold;
-    min-width: 16px;
-    height: 16px;
-    border-radius: 8px;
+    font-weight: 700;
+    min-width: 17px;
+    height: 17px;
+    border-radius: 9px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid #000;
+    padding: 0 2px;
+    line-height: 1;
 }
 
-/* Only show on mobile */
+/* ── Only show on mobile ── */
 @media (max-width: 768px) {
     .mobile-nav {
         display: block;
     }
 
-    /* Add padding to body so content isn't hidden */
+    /* Push page content above the nav bar */
     body {
-        padding-bottom: 70px !important;
+        padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+}
+
+/* ── Extra small Android devices (360px) ── */
+@media (max-width: 380px) {
+    .mobile-nav-item {
+        font-size: 9px;
+        gap: 2px;
+    }
+
+    .mobile-cart-btn {
+        width: 46px;
+        height: 46px;
+        bottom: 18px;
+    }
+
+    .cart-label {
+        margin-top: 28px;
     }
 }

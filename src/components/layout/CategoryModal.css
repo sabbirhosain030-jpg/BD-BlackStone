@@ -1,19 +1,19 @@
-/* Category Modal - Mobile Optimized */
+/* Category Modal — Mobile Optimised */
+
+/* ── Backdrop ── */
 .category-modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 9998;
-    /* Performance optimization - hardware acceleration */
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 10000;
+    /* above mobile nav (9999) */
     transform: translateZ(0);
-    /* Performance optimization */
     will-change: opacity;
 }
 
-/* Lighter backdrop blur on mobile for performance */
 @media (min-width: 769px) {
     .category-modal-backdrop {
         backdrop-filter: blur(4px);
@@ -21,198 +21,178 @@
     }
 }
 
+/* ── Sheet ── */
 .category-modal {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--color-white);
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    max-height: 85vh;
+    background: var(--color-white, #fff);
+    border-radius: 20px 20px 0 0;
+    max-height: 80vh;
     overflow-y: auto;
-    z-index: 1000;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-    padding-bottom: env(safe-area-inset-bottom);
-    /* Performance optimizations */
+    z-index: 10001;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.18);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 80px);
+    /* clear bottom nav */
     will-change: transform;
     transform: translateZ(0);
-    /* Hardware acceleration */
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
 }
 
+/* ── Header ── */
 .category-modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--color-border);
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--color-border, #eee);
     position: sticky;
     top: 0;
-    background: var(--color-white);
+    background: var(--color-white, #fff);
     z-index: 10;
 }
 
 .category-modal-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #111);
     margin: 0;
 }
 
 .category-modal-close {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-full);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
     background: transparent;
+    border: none;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all var(--transition-fast);
-    color: var(--color-text-secondary);
-    /* Improve tap target */
-    min-width: 44px;
-    min-height: 44px;
+    color: var(--color-text-secondary, #555);
+    transition: background 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .category-modal-close:hover {
-    background: var(--color-gray-100);
-    color: var(--color-text-primary);
+    background: var(--color-gray-100, #f5f5f5);
 }
 
 .category-modal-close:active {
-    transform: scale(0.95);
+    transform: scale(0.93);
 }
 
-/* Gender Toggle */
-.category-gender-toggle {
-    padding: 1rem 1.5rem;
+/* ── Shop All gold button ── */
+.category-shop-all-wrap {
+    padding: 1.25rem 1.5rem 0.75rem;
+}
+
+.category-shop-all-btn {
     display: flex;
-    gap: 12px;
-}
-
-.gender-toggle-btn {
-    flex: 1;
-    min-height: var(--btn-height-md);
-    padding: 0 1.5rem;
-    border: 2px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: transparent;
-    color: var(--color-text-secondary);
-    font-weight: 600;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.9rem 1.25rem;
+    background: var(--color-gold, #d4af37);
+    color: #fff;
     font-size: 0.9375rem;
-    cursor: pointer;
-    transition: all 0.15s ease-out;
-    /* Improve tap target */
-    min-height: 44px;
-    /* Performance */
-    will-change: transform;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.15s ease, transform 0.1s ease;
+    box-shadow: 0 3px 10px rgba(212, 175, 55, 0.32);
+    -webkit-tap-highlight-color: transparent;
 }
 
-.gender-toggle-btn.active {
-    border-color: var(--color-gold);
-    background: var(--color-gold);
-    color: var(--color-white);
-    box-shadow: var(--shadow-gold);
+.category-shop-all-btn:hover {
+    background: #c4a230;
 }
 
-.gender-toggle-btn:not(.active):hover {
-    border-color: var(--color-gray-300);
-    background: var(--color-gray-100);
-}
-
-.gender-toggle-btn:active {
+.category-shop-all-btn:active {
     transform: scale(0.98);
 }
 
-/* Category Grid */
-.category-grid {
-    padding: 0 1.5rem 2rem;
+/* ── Section label ── */
+.category-section-label {
+    padding: 1.25rem 1.5rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+}
+
+/* ── 2 × 2 Category Grid ── */
+.category-2x2-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    /* Smooth scrolling */
-    scroll-behavior: smooth;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 0 1.5rem 1.5rem;
 }
 
-@media (min-width: 375px) {
-    .category-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    }
-}
-
-.category-grid-item {
-    min-height: 80px;
-    padding: 1rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    background: var(--color-white);
+.category-2x2-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
+    gap: 10px;
+    padding: 1.5rem 1rem;
+    border: 2px solid var(--color-border, #eee);
+    border-radius: 14px;
+    background: var(--color-white, #fff);
+    color: var(--color-text-primary, #111);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    transition: border-color 0.12s ease, background 0.12s ease, transform 0.1s ease, box-shadow 0.12s ease;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    min-height: 100px;
     cursor: pointer;
-    transition: all 0.15s ease-out;
-    box-shadow: var(--shadow-sm);
-    /* Improve tap target */
-    min-width: 44px;
-    min-height: 80px;
-    /* Performance */
+    -webkit-tap-highlight-color: transparent;
     will-change: transform;
 }
 
-.category-grid-item:hover {
-    border-color: var(--color-gold);
-    background: var(--color-gold-pale);
+.category-2x2-item:hover {
+    border-color: var(--color-gold, #d4af37);
+    background: #fffbf0;
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.18);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
 }
 
-.category-grid-item:active {
-    transform: scale(0.97);
+.category-2x2-item:active {
+    transform: scale(0.96);
+    border-color: var(--color-gold, #d4af37);
+    background: #fff8e6;
 }
 
-.category-item-content {
+.category-2x2-icon {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-gold, #d4af37);
 }
 
-.category-item-name {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    line-height: 1.3;
+.category-2x2-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #111);
 }
 
-.category-item-brand {
-    font-size: 0.75rem;
-    color: var(--color-gold);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.category-empty {
-    grid-column: 1 / -1;
-    padding: 2rem;
-    text-align: center;
-    color: var(--color-text-light);
-}
-
-/* Reduce motion for users who prefer it */
+/* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
 
     .category-modal-backdrop,
     .category-modal,
-    .gender-toggle-btn,
-    .category-grid-item {
+    .category-2x2-item {
         transition: none;
         animation: none;
     }
 
-    .category-grid-item:hover {
+    .category-2x2-item:hover {
         transform: none;
     }
 }

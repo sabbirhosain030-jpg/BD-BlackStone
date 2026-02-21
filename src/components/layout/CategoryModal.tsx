@@ -1,76 +1,73 @@
 'use client';
 
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import './CategoryModal.css';
 
-interface Category {
-    id: string;
-    name: string;
-    slug: string;
-    brand?: string | null;
-}
-
 interface CategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
-    categories: Category[];
+    categories?: unknown[]; // kept for API compatibility, not used
 }
 
-const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose, categories }) => {
-    const [selectedGender, setSelectedGender] = React.useState<'men' | 'women'>('men');
+// Fixed 2x2 category grid — direct links, prefetched for instant response
+const SHOP_CATEGORIES = [
+    {
+        id: 'men',
+        label: 'Men',
+        href: '/products?category=men',
+        icon: (
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="7" r="4" />
+                <path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2" />
+            </svg>
+        ),
+    },
+    {
+        id: 'boys',
+        label: 'Boys',
+        href: '/products?category=boys',
+        icon: (
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="8" r="3" />
+                <path d="M6 21v-1a6 6 0 0 1 12 0v1" />
+                <path d="M12 11v5" strokeLinecap="round" />
+                <path d="M15 17l-3 3-3-3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        ),
+    },
+    {
+        id: 'women',
+        label: 'Women',
+        href: '/products?category=women',
+        icon: (
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="7" r="4" />
+                <path d="M12 11v9" strokeLinecap="round" />
+                <path d="M9 17h6" strokeLinecap="round" />
+            </svg>
+        ),
+    },
+    {
+        id: 'girls',
+        label: 'Girls',
+        href: '/products?category=girls',
+        icon: (
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="7" r="3" />
+                <path d="M12 10v7" strokeLinecap="round" />
+                <path d="M9 14h6" strokeLinecap="round" />
+                <path d="M10 17l2 3 2-3" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+        ),
+    },
+];
 
-    // Memoize category filtering to sync with admin panel
-    const { accessoriesCategory, menCategories, womenCategories } = useMemo(() => {
-        // Accessories - standalone category (no brand or brand is "Accessories")
-        const accessories = categories.find(c =>
-            c.slug === 'accessories' ||
-            c.name.toLowerCase().includes('accessories') ||
-            c.brand === 'Accessories' ||
-            c.brand === null
-        ) || null;
-
-        // BlackStone categories - only Men and Boys
-        const men = categories.filter(c =>
-            c.brand === 'BLACK STONE' &&
-            (c.slug === 'men' || c.name.toLowerCase() === 'men' ||
-                c.slug === 'boys' || c.name.toLowerCase() === 'boys')
-        );
-
-        // Gazzelle categories - only Women and Girls
-        const women = categories.filter(c =>
-            c.brand === 'GAZZELLE' &&
-            (c.slug === 'women' || c.name.toLowerCase() === 'women' ||
-                c.slug === 'girls' || c.name.toLowerCase() === 'girls')
-        );
-
-        return {
-            accessoriesCategory: accessories,
-            menCategories: men,
-            womenCategories: women
-        };
-    }, [categories]);
-
-    const displayCategories = selectedGender === 'men' ? menCategories : womenCategories;
-
-    const handleCategoryClick = () => {
-        // Instant close with vibration feedback
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            navigator.vibrate(30);
-        }
+const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose }) => {
+    const handleClose = () => {
+        if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(20);
         onClose();
-    };
-
-    // Simplified animations for better performance on low-end devices
-    const backdropVariants = {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 }
-    };
-
-    const modalVariants = {
-        hidden: { y: '100%' },
-        visible: { y: 0 }
     };
 
     return (
@@ -80,111 +77,69 @@ const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose,
                     {/* Backdrop */}
                     <motion.div
                         className="category-modal-backdrop"
-                        variants={backdropVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        transition={{ duration: 0.1 }}  /* Ultra-fast backdrop for instant feel */
-                        onClick={onClose}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.1 }}
+                        onClick={handleClose}
                     />
 
-                    {/* Modal */}
+                    {/* Modal sheet */}
                     <motion.div
                         className="category-modal"
-                        variants={modalVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        transition={{
-                            type: 'spring',
-                            stiffness: 400,
-                            damping: 30,
-                            mass: 0.8
-                        }}  /* Spring animation for snappy feel */
+                        initial={{ y: '100%' }}
+                        animate={{ y: 0 }}
+                        exit={{ y: '100%' }}
+                        transition={{ type: 'spring', stiffness: 420, damping: 32, mass: 0.8 }}
                     >
                         {/* Header */}
                         <div className="category-modal-header">
-                            <h2 className="category-modal-title">Shop By Category</h2>
-                            <button
-                                className="category-modal-close"
-                                onClick={onClose}
-                                aria-label="Close modal"
-                            >
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                            <h2 className="category-modal-title">Shop</h2>
+                            <button className="category-modal-close" onClick={handleClose} aria-label="Close">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
                             </button>
                         </div>
 
-                        {/* Accessories Category - Standalone */}
-                        {accessoriesCategory && (
-                            <div style={{ marginBottom: '1rem' }}>
-                                <h3 style={{
-                                    fontSize: '0.875rem',
-                                    fontWeight: 600,
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.05em',
-                                    color: '#666',
-                                    marginBottom: '0.75rem',
-                                    paddingLeft: '1rem'
-                                }}>
-                                    Shop All
-                                </h3>
-                                <Link
-                                    href={`/products?category=${accessoriesCategory.slug}`}
-                                    className="category-grid-item"
-                                    onClick={handleCategoryClick}
-                                    prefetch={true}
-                                    style={{ margin: '0 1rem' }}
-                                >
-                                    <div className="category-item-content">
-                                        <span className="category-item-name">{accessoriesCategory.name}</span>
-                                    </div>
-                                </Link>
-                            </div>
-                        )}
-
-                        {/* Gender Toggle */}
-                        <div className="category-gender-toggle">
-                            <button
-                                className={`gender-toggle-btn ${selectedGender === 'men' ? 'active' : ''}`}
-                                onClick={() => setSelectedGender('men')}
+                        {/* Shop All — gold banner */}
+                        <div className="category-shop-all-wrap">
+                            <Link
+                                href="/products"
+                                className="category-shop-all-btn"
+                                onClick={handleClose}
+                                prefetch={true}
                             >
-                                Men & Boys
-                            </button>
-                            <button
-                                className={`gender-toggle-btn ${selectedGender === 'women' ? 'active' : ''}`}
-                                onClick={() => setSelectedGender('women')}
-                            >
-                                Women & Girls
-                            </button>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                    <line x1="3" y1="6" x2="21" y2="6" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" />
+                                </svg>
+                                <span>Shop All Products</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
+                                    <path d="M9 18l6-6-6-6" />
+                                </svg>
+                            </Link>
                         </div>
 
-                        {/* Category Grid */}
-                        <div className="category-grid">
-                            {displayCategories.length > 0 ? (
-                                displayCategories.map((category) => (
-                                    <Link
-                                        key={category.id}
-                                        href={`/products?category=${category.slug}`}
-                                        className="category-grid-item"
-                                        onClick={handleCategoryClick}
-                                        prefetch={true}
-                                    >
-                                        <div className="category-item-content">
-                                            <span className="category-item-name">{category.name}</span>
-                                            {category.brand && (
-                                                <span className="category-item-brand">{category.brand}</span>
-                                            )}
-                                        </div>
-                                    </Link>
-                                ))
-                            ) : (
-                                <div className="category-empty">
-                                    <p>No categories available</p>
-                                </div>
-                            )}
+                        {/* Section label */}
+                        <div className="category-section-label">Shop By Category</div>
+
+                        {/* 2 × 2 Category Grid */}
+                        <div className="category-2x2-grid">
+                            {SHOP_CATEGORIES.map((cat) => (
+                                <Link
+                                    key={cat.id}
+                                    href={cat.href}
+                                    className="category-2x2-item"
+                                    onClick={handleClose}
+                                    prefetch={true}
+                                >
+                                    <div className="category-2x2-icon">{cat.icon}</div>
+                                    <span className="category-2x2-label">{cat.label}</span>
+                                </Link>
+                            ))}
                         </div>
                     </motion.div>
                 </>
@@ -193,5 +148,4 @@ const CategoryModalComponent: React.FC<CategoryModalProps> = ({ isOpen, onClose,
     );
 };
 
-// Memoize to prevent unnecessary re-renders
 export const CategoryModal = memo(CategoryModalComponent);

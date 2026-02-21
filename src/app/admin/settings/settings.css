@@ -276,3 +276,242 @@
         transition: none;
     }
 }
+
+/* ============================================================
+   SETTINGS FORM — redesigned styles
+   ============================================================ */
+
+/* Alert banners */
+.settings-alert {
+    padding: 0.875rem 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    animation: slideDown 0.25s ease;
+}
+
+.settings-alert-success {
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #4ade80;
+}
+
+.settings-alert-error {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+
+/* Info rows (current admin card) */
+.settings-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.settings-info-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.625rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.settings-info-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+    min-width: 60px;
+}
+
+.settings-info-value {
+    font-size: 0.9375rem;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* Badges */
+.settings-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.settings-badge-admin {
+    background: linear-gradient(135deg, var(--color-gold, #d4af37) 0%, #f0ce5a 100%);
+    color: #1a1a1a;
+}
+
+.settings-badge-user {
+    background: rgba(255, 255, 255, 0.08);
+    color: #aaa;
+}
+
+/* Form sections */
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.settings-section {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.settings-section-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-gold, #d4af37);
+    margin-bottom: 0.25rem;
+}
+
+/* Field */
+.settings-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.settings-label {
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: #ccc;
+    letter-spacing: 0.01em;
+}
+
+.settings-required {
+    color: #f87171;
+}
+
+/* Input + eye wrapper */
+.settings-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.settings-input {
+    width: 100%;
+    padding: 0.7rem 2.75rem 0.7rem 0.875rem;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.9375rem;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: var(--font-body);
+    min-height: 44px;
+    /* 44px tap target */
+    font-size: 16px;
+    /* Prevent iOS zoom */
+}
+
+/* Override for email (no eye button needs right-padding correction) */
+input[name="newEmail"].settings-input {
+    padding-right: 0.875rem;
+}
+
+.settings-input:focus {
+    border-color: var(--color-gold, #d4af37);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+}
+
+.settings-input::placeholder {
+    color: #555;
+    font-size: 0.875rem;
+}
+
+/* Eye toggle button */
+.settings-eye {
+    position: absolute;
+    right: 0.625rem;
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: color 0.15s;
+    line-height: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.settings-eye:hover {
+    color: var(--color-gold, #d4af37);
+}
+
+/* Hint text */
+.settings-hint {
+    font-size: 0.78rem;
+    color: #666;
+    margin-top: 0.125rem;
+}
+
+/* Footer */
+.settings-form-footer {
+    padding-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.settings-warning {
+    font-size: 0.78rem;
+    color: #f87171;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Role select */
+.settings-role-select {
+    padding: 0.5rem 0.875rem;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    min-height: 40px;
+    min-width: 110px;
+    transition: border-color 0.15s;
+}
+
+.settings-role-select:hover,
+.settings-role-select:focus {
+    border-color: var(--color-gold, #d4af37);
+    outline: none;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    .settings-form-footer {
+        align-items: stretch;
+    }
+
+    .settings-form-footer .admin-btn-primary {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .settings-section {
+        gap: 0.875rem;
+    }
+}

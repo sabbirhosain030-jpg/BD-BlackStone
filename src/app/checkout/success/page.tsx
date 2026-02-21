@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 import { getOrderWithWhatsAppLink } from './actions';
+import * as fpixel from '@/lib/fpixel';
 
 // A separate fallback component for Suspense
 function SuccessFallback() {
@@ -30,6 +31,15 @@ function SuccessContent() {
                 if (result.success) {
                     setWhatsappLink(result.whatsappLink || null);
                     setOrderData(result.order);
+
+                    // 🔵 FB Pixel: Purchase — fires once order is confirmed
+                    if (result.order) {
+                        fpixel.purchase({
+                            orderId: orderId,
+                            value: result.order.total ?? 0,
+                            numItems: result.order.items?.length ?? 1,
+                        });
+                    }
                 }
                 setLoading(false);
             });
@@ -37,6 +47,7 @@ function SuccessContent() {
             setLoading(false);
         }
     }, [orderId]);
+
 
     // Simple Confetti Animation CSS
     useEffect(() => {
