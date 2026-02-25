@@ -3,13 +3,12 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String     @id @default(uuid())
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   email     String     @unique
   password  String
   name      String
@@ -17,11 +16,11 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   orders    Order[]
-  wishlists Wishlist[] // Restored wishlist relation
+  wishlists Wishlist[]
 }
 
 model Category {
-  id            String        @id @default(uuid())
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
   name          String        @unique
   slug          String        @unique
   brand         String?       @default("BLACK STONE")
@@ -33,18 +32,18 @@ model Category {
 }
 
 model SubCategory {
-  id         String    @id @default(uuid())
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   slug       String    @unique
-  categoryId String
+  categoryId String    @db.ObjectId
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   products   Product[]
-  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category   Category  @relation(fields: [categoryId], references: [id])
 }
 
 model Product {
-  id            String       @id @default(uuid())
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   description   String
   price         Float
@@ -55,26 +54,20 @@ model Product {
   stock         Int          @default(0)
   isNew         Boolean      @default(false)
   isFeatured    Boolean      @default(false)
-  categoryId    String
-  subCategoryId String?
+  categoryId    String       @db.ObjectId
+  subCategoryId String?      @db.ObjectId
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   imagePublicId String?
-  imagePosition String?    @default("center")
+  imagePosition String?      @default("center")
   orderItems    OrderItem[]
-  category      Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category      Category     @relation(fields: [categoryId], references: [id])
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
-  wishlists     Wishlist[] // Restored wishlist relation
-
-  @@index([isFeatured, createdAt])
-  @@index([isNew, createdAt])
-  @@index([categoryId, createdAt])
-  @@index([categoryId, price])
-  @@index([stock])
+  wishlists     Wishlist[]
 }
 
 model Order {
-  id              String      @id @default(uuid())
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
   orderNumber     String      @unique
   customerName    String
   customerEmail   String
@@ -90,33 +83,29 @@ model Order {
   status          String      @default("PENDING")
   paymentMethod   String      @default("COD")
   notes           String?
-  couponId        String?
+  couponId        String?     @db.ObjectId
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   coupon          Coupon?     @relation(fields: [couponId], references: [id])
   items           OrderItem[]
   User            User?       @relation(fields: [userId], references: [id])
-  userId          String?
-
-  @@index([customerEmail])
-  @@index([status, createdAt])
-  @@index([createdAt])
+  userId          String?     @db.ObjectId
 }
 
 model OrderItem {
-  id        String  @id @default(uuid())
-  orderId   String
-  productId String
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String  @db.ObjectId
+  productId String  @db.ObjectId
   quantity  Int
   size      String?
   color     String?
   price     Float
   order     Order   @relation(fields: [orderId], references: [id])
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model Coupon {
-  id           String    @id @default(uuid())
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   code         String    @unique
   discountType String
   amount       Float
@@ -130,7 +119,7 @@ model Coupon {
 }
 
 model MarketingBanner {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   title     String?
   image     String?
   text      String?
@@ -142,7 +131,7 @@ model MarketingBanner {
 }
 
 model EmailSubscriber {
-  id           String   @id @default(uuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   email        String   @unique
   couponCode   String?
   isSubscribed Boolean  @default(true)
@@ -151,29 +140,24 @@ model EmailSubscriber {
 }
 
 model PopupSettings {
-  id               String    @id @default(uuid())
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
   isEnabled        Boolean   @default(true)
   title            String    @default("GET 12% OFF YOUR FIRST ORDER")
   subtitle         String    @default("And be the first to hear about our new product drops!")
   discountPercent  Int       @default(12)
   couponPrefix     String    @default("WELCOME")
   buttonText       String    @default("GET 12% OFF")
-  
-  // Coupon Management
-  publicCouponCode  String?  // Public coupon visible to all users
-  hiddenCouponCode  String?  // Hidden coupon for relatives/specific groups
-  
-  // Countdown Timer
-  offerEndTime     DateTime? // Countdown timer end time
+  publicCouponCode String?
+  hiddenCouponCode String?
+  offerEndTime     DateTime?
   showCountdown    Boolean   @default(false)
   countdownText    String?   @default("Offer ends in:")
-  
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 }
 
 model FooterLink {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   label     String
   url       String
   section   String   @default("Quick Links")
@@ -184,7 +168,7 @@ model FooterLink {
 }
 
 model WhatsAppSettings {
-  id             String   @id @default(uuid())
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
   businessPhone  String   @default("8801XXXXXXXXX")
   isEnabled      Boolean  @default(true)
   welcomeMessage String   @default("Hello! Thank you for shopping with BD BlackStone.")
@@ -193,7 +177,7 @@ model WhatsAppSettings {
 }
 
 model SiteSettings {
-  id              String   @id @default(uuid())
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
   siteName        String   @default("Black Stone")
   siteTagline     String?
   contactEmail    String
@@ -215,7 +199,7 @@ model SiteSettings {
 }
 
 model HomepageBanner {
-  id           String    @id @default(uuid())
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
   title        String
   imageUrl     String
   overlayText  String?
@@ -228,12 +212,10 @@ model HomepageBanner {
   priority     Int       @default(0)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
-
-  @@index([isActive, priority])
 }
 
 model PromotionBanner {
-  id          String    @id @default(uuid())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String?
   imageUrl    String
@@ -246,20 +228,15 @@ model PromotionBanner {
   viewCount   Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-
-  @@index([isActive, position])
 }
 
-// --- Wishlist (Restored per user request) ---
 model Wishlist {
-  id        String   @id @default(uuid())
-  userId    String
-  productId String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
   createdAt DateTime @default(now())
 
   @@unique([userId, productId])
-  @@index([userId])
-  @@index([productId])
 }

@@ -12,8 +12,10 @@ import OfferPoster from "@/components/layout/OfferPoster";
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const featuredDbProducts = await getFeaturedProducts();
-  const dbCategories = await getCategories();
+  const [featuredDbProducts, dbCategories] = await Promise.all([
+    getFeaturedProducts(),
+    getCategories(),
+  ]);
 
   // Filter out duplicate/redundant categories (e.g. if "Men" exists, hide "Men's Fashion")
   // We prioritize the shorter, cleaner names usually manually created

@@ -6,7 +6,6 @@ export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     // CRITICAL: Allow NextAuth API routes (signin, callback, session, etc.)
-    // These endpoints are needed for authentication to work
     if (pathname.startsWith('/api/auth')) {
         return NextResponse.next();
     }
@@ -21,7 +20,7 @@ export async function middleware(request: NextRequest) {
         // Check if user is authenticated
         const token = await getToken({
             req: request,
-            secret: process.env.NEXTAUTH_SECRET || 'supersecretkey123',
+            secret: process.env.NEXTAUTH_SECRET,
         });
 
         // If not authenticated, redirect to admin login
@@ -33,7 +32,6 @@ export async function middleware(request: NextRequest) {
 
         // Check if user has admin role
         if (token.role !== 'ADMIN') {
-            // Redirect non-admin users to home page
             return NextResponse.redirect(new URL('/', request.url));
         }
     }
@@ -45,10 +43,9 @@ export async function middleware(request: NextRequest) {
 
         const token = await getToken({
             req: request,
-            secret: process.env.NEXTAUTH_SECRET || 'supersecretkey123',
+            secret: process.env.NEXTAUTH_SECRET,
         });
 
-        // If not authenticated, return 401
         if (!token) {
             return NextResponse.json(
                 { error: 'Unauthorized - Authentication required' },
@@ -56,7 +53,6 @@ export async function middleware(request: NextRequest) {
             );
         }
 
-        // Check if user has admin role for admin API routes
         if (pathname.startsWith('/api/admin') && token.role !== 'ADMIN') {
             return NextResponse.json(
                 { error: 'Forbidden - Admin access required' },

@@ -127,49 +127,51 @@ export async function getAllProducts(
     maxPrice?: number,
     subCategorySlug?: string
 ) {
+    // Cache key includes all filter params
+    const cacheKey = `products:${categorySlug}:${sort}:${minPrice}:${maxPrice}:${subCategorySlug}`;
+    const cached = cache.get(cacheKey);
+    if (cached && Array.isArray(cached)) return cached;
+
     try {
         const where: Prisma.ProductWhereInput = {};
 
         if (categorySlug) {
-            where.category = {
-                slug: categorySlug
-            };
+            where.category = { slug: categorySlug };
         }
-
         if (subCategorySlug) {
-            where.subCategory = {
-                slug: subCategorySlug
-            }; // Assuming subCategory relation exists and has slug. If not, might need ID or name.
-            // Let's verify schema. SubCategory usually has no slug in simple schemas, let's check.
-            // Actually, let's check schema first to be safe, but usually it does.
-            // If schema doesn't have slug for subcategory, we might filter by ID found from slug lookup?
-            // Or just assume name match if slug missing.
-            // Re-checking prisma schema usually good idea, but I'll assume standard pattern or fix if fails.
-            // Safest is to check schema.
+            where.subCategory = { slug: subCategorySlug };
         }
-
         if (minPrice !== undefined || maxPrice !== undefined) {
             where.price = {};
             if (minPrice !== undefined) where.price.gte = minPrice;
             if (maxPrice !== undefined) where.price.lte = maxPrice;
         }
 
-        let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: 'desc' }; // Default newest
+        let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: 'desc' };
+        if (sort === 'price-low') orderBy = { price: 'asc' };
+        else if (sort === 'price-high') orderBy = { price: 'desc' };
 
-        if (sort === 'price-low') {
-            orderBy = { price: 'asc' };
-        } else if (sort === 'price-high') {
-            orderBy = { price: 'desc' };
-        }
-        // 'popular' usually requires order count logic, skipping for now or default to newest
-
-        return await prisma.product.findMany({
+        const products = await prisma.product.findMany({
             where,
             orderBy,
-            include: {
-                category: true
+            select: {
+                id: true,
+                name: true,
+                price: true,
+                previousPrice: true,
+                images: true,
+                isNew: true,
+                isFeatured: true,
+                stock: true,
+                category: {
+                    select: { name: true, slug: true }
+                }
             }
         });
+
+        // Cache for 2 minutes
+        cache.set(cacheKey, products, 2);
+        return products;
     } catch (error) {
         console.error('Failed to fetch products:', error);
         return [];

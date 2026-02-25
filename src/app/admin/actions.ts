@@ -78,12 +78,15 @@ export async function getRecentOrders() {
 export async function getAdminProducts() {
     try {
         return await prisma.product.findMany({
-            orderBy: {
-                createdAt: 'desc',
-            },
-            include: {
-                category: true,
-                subCategory: true
+            orderBy: { createdAt: 'desc' },
+            select: {
+                id: true,
+                name: true,
+                price: true,
+                stock: true,
+                images: true,
+                category: { select: { name: true } },
+                subCategory: { select: { name: true } },
             }
         });
     } catch (error) {

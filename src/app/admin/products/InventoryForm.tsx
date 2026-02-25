@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import MultiImageUpload from '@/components/ui/MultiImageUpload';
+import ColorPicker from '@/components/ui/ColorPicker';
 import './inventory-form.css';
 
 interface Category {
@@ -169,23 +170,17 @@ export default function InventoryForm({ categories, initialData, action, submitT
                 setColors([]);
             }
         } catch (error: any) {
+            // Next.js redirect() throws a special NEXT_REDIRECT error — let it propagate
+            // so the framework can handle navigation (don't show it as a form error)
+            if (error?.digest?.startsWith('NEXT_REDIRECT') || error?.message === 'NEXT_REDIRECT') {
+                throw error;
+            }
             setErrors({ submit: error.message || 'Failed to save product. Please try again.' });
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    // Add color
-    const addColor = (color: string) => {
-        if (color && !colors.includes(color)) {
-            setColors([...colors, color]);
-        }
-    };
-
-    // Remove color
-    const removeColor = (index: number) => {
-        setColors(colors.filter((_, i) => i !== index));
-    };
 
     return (
         <form onSubmit={handleSubmit} className="inventory-form">
@@ -359,32 +354,7 @@ export default function InventoryForm({ categories, initialData, action, submitT
 
                 <div className="form-group">
                     <label className="form-label">Available Colors</label>
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-                        {colors.map((color, index) => (
-                            <div key={index} className="color-tag">
-                                <span style={{ backgroundColor: color, width: '16px', height: '16px', borderRadius: '50%', display: 'inline-block', marginRight: '0.5rem' }} />
-                                {color}
-                                <button type="button" onClick={() => removeColor(index)} className="color-remove">×</button>
-                            </div>
-                        ))}
-                    </div>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <input
-                            type="color"
-                            id="colorPicker"
-                            style={{ width: '60px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => {
-                                const picker = document.getElementById('colorPicker') as HTMLInputElement;
-                                addColor(picker.value);
-                            }}
-                            className="color-add-btn"
-                        >
-                            Add Color
-                        </button>
-                    </div>
+                    <ColorPicker colors={colors} onChange={setColors} />
                 </div>
             </div>
 
