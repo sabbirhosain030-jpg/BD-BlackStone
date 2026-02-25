@@ -28,14 +28,14 @@ export default function AdminCouponsPage() {
         expiresAt: ''
     });
 
-    useEffect(() => {
-        loadCoupons();
-    }, []);
-
     const loadCoupons = async () => {
         const data = await getAllCoupons();
         setCoupons(data);
     };
+
+    useEffect(() => {
+        loadCoupons();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

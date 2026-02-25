@@ -41,6 +41,26 @@ export default function ChatBot() {
         scrollToBottom();
     }, [messages]);
 
+    const addBotMessage = (content: string, products?: ChatProduct[], quickActions?: string[]) => {
+        setMessages(prev => [...prev, {
+            id: Date.now().toString(),
+            type: 'bot',
+            content,
+            products,
+            quickActions,
+            timestamp: new Date()
+        }]);
+    };
+
+    const addUserMessage = (content: string) => {
+        setMessages(prev => [...prev, {
+            id: Date.now().toString(),
+            type: 'user',
+            content,
+            timestamp: new Date()
+        }]);
+    };
+
     useEffect(() => {
         if (isOpen && messages.length === 0) {
             // Welcome message with AI branding
@@ -61,26 +81,6 @@ export default function ChatBot() {
             }, 500);
         }
     }, [isOpen]);
-
-    const addBotMessage = (content: string, products?: ChatProduct[], quickActions?: string[]) => {
-        setMessages(prev => [...prev, {
-            id: Date.now().toString(),
-            type: 'bot',
-            content,
-            products,
-            quickActions,
-            timestamp: new Date()
-        }]);
-    };
-
-    const addUserMessage = (content: string) => {
-        setMessages(prev => [...prev, {
-            id: Date.now().toString(),
-            type: 'user',
-            content,
-            timestamp: new Date()
-        }]);
-    };
 
     const handleSend = async () => {
         if (!input.trim()) return;
