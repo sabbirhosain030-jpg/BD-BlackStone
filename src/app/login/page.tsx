@@ -76,10 +76,10 @@ function LoginContent() {
                     {error && <div className="auth-error">{error}</div>}
 
                     <Input
-                        label="Email Address"
-                        type="email"
+                        label="Email Address or Phone Number"
+                        type="text"
                         name="email"
-                        placeholder="you@example.com"
+                        placeholder="you@example.com or 01712345678"
                         required
                         autoFocus
                     />

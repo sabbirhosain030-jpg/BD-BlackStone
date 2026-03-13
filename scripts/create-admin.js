@@ -20,6 +20,7 @@ async function fixAdminUser() {
         const admin = await prisma.user.create({
             data: {
                 email: 'admin@blackstone.com',
+                phone: '01712345678',
                 name: 'Admin User',
                 password: hashedPassword,
                 role: 'ADMIN'
@@ -29,6 +30,7 @@ async function fixAdminUser() {
         console.log('✅ Admin user created successfully!');
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         console.log('📧 Email:    admin@blackstone.com');
+        console.log('📱 Phone:    01712345678');
         console.log('🔑 Password: Admin123!');
         console.log('👤 Role:     ADMIN');
         console.log('🆔 ID:       ' + admin.id);

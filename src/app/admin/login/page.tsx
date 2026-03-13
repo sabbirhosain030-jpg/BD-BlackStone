@@ -102,7 +102,7 @@ export default function AdminLoginPage() {
                     <form onSubmit={handleSubmit} className="login-form">
                         <div className="form-field">
                             <label htmlFor="email" className="field-label">
-                                Email Address
+                                Email Address or Phone Number
                             </label>
                             <div className="input-wrapper">
                                 <svg className="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -110,14 +110,14 @@ export default function AdminLoginPage() {
                                 </svg>
                                 <input
                                     id="email"
-                                    type="email"
+                                    type="text"
                                     className="field-input"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
                                     disabled={loading}
                                     autoComplete="email"
-                                    placeholder="admin@blackstone.com"
+                                    placeholder="admin@blackstone.com or 01712345678"
                                 />
                             </div>
                         </div>

@@ -32,6 +32,7 @@ export async function GET() {
         const admin = await prisma.user.create({
             data: {
                 email: 'admin@blackstone.com',
+                phone: '01712345678',
                 password: hashedPassword,
                 name: 'Admin User',
                 role: 'ADMIN',
@@ -45,6 +46,7 @@ export async function GET() {
             message: '✅ Admin authentication reset successfully. All old credentials deleted.',
             credentials: {
                 email: 'admin@blackstone.com',
+                phone: '01712345678',
                 password: strongPassword,
                 note: 'Password is securely hashed with bcrypt (12 rounds)'
             },

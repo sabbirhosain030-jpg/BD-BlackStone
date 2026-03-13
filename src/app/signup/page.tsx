@@ -54,6 +54,12 @@ export default function SignupPage() {
                         required
                     />
                     <Input
+                        label="Phone Number (Optional)"
+                        type="tel"
+                        name="phone"
+                        placeholder="e.g. 01712345678"
+                    />
+                    <Input
                         label="Password"
                         type="password"
                         name="password"
