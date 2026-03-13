@@ -24,23 +24,36 @@ export default function MultiImageUpload({
         const files = e.target.files;
         if (!files || files.length === 0) return;
 
+        // Reset error
         setError('');
         setUploading(true);
 
-        // Upload all files in parallel for maximum speed
-        const results = await Promise.allSettled(
-            Array.from(files).map(async (file) => {
-                const timestamp = Math.round(Date.now() / 1000);
+        const newUrls: string[] = [];
+        const errors: string[] = [];
 
+        // Upload each file
+        // Upload each file
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            try {
+                const timestamp = Math.round((new Date).getTime() / 1000);
+
+                // 1. Get Signature from our API
                 const signResponse = await fetch('/api/sign-cloudinary', {
                     method: 'POST',
                     body: JSON.stringify({
-                        paramsToSign: { folder: 'bd-blackstone-products', timestamp },
-                    }),
+                        paramsToSign: {
+                            folder: 'bd-blackstone-products',
+                            timestamp: timestamp,
+                        }
+                    })
                 });
+
                 if (!signResponse.ok) throw new Error('Failed to get upload signature');
                 const { signature, apiKey, cloudName } = await signResponse.json();
 
+                // 2. Direct Upload to Cloudinary
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('api_key', apiKey);
@@ -48,42 +61,40 @@ export default function MultiImageUpload({
                 formData.append('signature', signature);
                 formData.append('folder', 'bd-blackstone-products');
 
-                const uploadRes = await fetch(
-                    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-                    { method: 'POST', body: formData }
-                );
+                const uploadRes = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
                 if (!uploadRes.ok) {
                     const errData = await uploadRes.json().catch(() => ({}));
                     throw new Error(errData.error?.message || `Upload failed for ${file.name}`);
                 }
 
                 const data = await uploadRes.json();
-                if (!data.secure_url) throw new Error(`No URL returned for ${file.name}`);
-                return data.secure_url as string;
-            })
-        );
+                if (data.secure_url) {
+                    newUrls.push(data.secure_url);
+                }
+            } catch (err: any) {
+                console.error(err);
+                errors.push(`${file.name} (${err.message})`);
+            }
+        }
 
         setUploading(false);
-        e.target.value = '';
 
-        const newUrls: string[] = [];
-        const errors: string[] = [];
-
-        results.forEach((result, i) => {
-            if (result.status === 'fulfilled') {
-                newUrls.push(result.value);
-            } else {
-                errors.push(`${files[i].name}: ${result.reason?.message}`);
-            }
-        });
-
-        if (errors.length > 0) setError(`Upload error: ${errors.join(', ')}`);
+        if (errors.length > 0) {
+            setError(`Error: ${errors.join(', ')}`);
+        }
 
         if (newUrls.length > 0) {
             const updatedImages = [...images, ...newUrls];
             setImages(updatedImages);
             onUpload(updatedImages);
         }
+
+        // Reset input so same files can be selected again if needed
+        e.target.value = '';
     };
 
     const removeImage = (indexToRemove: number) => {

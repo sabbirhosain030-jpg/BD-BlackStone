@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import './login.css';
 
@@ -12,7 +11,6 @@ export default function AdminLoginPage() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,8 +34,9 @@ export default function AdminLoginPage() {
                 setLoading(false);
             } else if (result?.ok) {
                 console.log('✅ Login successful!');
-                // Successful login, redirect to admin dashboard
-                router.push('/admin');
+                // Hard redirect so middleware re-reads the session cookie
+                window.location.href = '/admin';
+                return;
             } else {
                 console.error('❌ Unknown error');
                 setError('An error occurred. Please try again.');

@@ -17,11 +17,8 @@ export default async function HomePage() {
     getCategories(),
   ]);
 
-  // Filter out duplicate/redundant categories (e.g. if "Men" exists, hide "Men's Fashion")
-  // We prioritize the shorter, cleaner names usually manually created
-  const visibleCategories = dbCategories.filter(cat =>
-    !['mens-fashion', 'womens-fashion'].includes(cat.slug)
-  );
+  // Show all categories from DB
+  const visibleCategories = dbCategories;
 
   // Map DB products to ProductCard props
   const featuredProducts = featuredDbProducts.map(p => {
@@ -97,7 +94,7 @@ export default async function HomePage() {
             {visibleCategories.length > 0 ? (
               visibleCategories.map((category) => (
                 <Link
-                  key={category.slug}
+                  key={category.id}
                   href={`/products?category=${category.slug}`}
                   className="category-circle-item hover-lift"
                 >

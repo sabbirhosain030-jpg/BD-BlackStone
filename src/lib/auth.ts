@@ -76,6 +76,6 @@ export const authOptions: NextAuthOptions = {
         strategy: "jwt",
         maxAge: 30 * 24 * 60 * 60, // 30 days - keeps admin logged in
     },
-    secret: process.env.NEXTAUTH_SECRET || "supersecretkey123", // Fallback for dev
+    secret: process.env.NEXTAUTH_SECRET,
     debug: process.env.NODE_ENV === 'development', // Enable debug logs in dev
 };

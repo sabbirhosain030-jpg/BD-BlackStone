@@ -5,6 +5,14 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 export async function GET() {
+    // 🔒 SECURITY: Block this route completely in production
+    if (process.env.NODE_ENV === 'production') {
+        return NextResponse.json(
+            { error: 'This route is disabled in production.' },
+            { status: 403 }
+        );
+    }
+
     try {
         console.log('🔄 Starting admin authentication reset...');
 

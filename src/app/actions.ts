@@ -110,8 +110,8 @@ export async function getCategories() {
             }
         });
 
-        // Cache for 30 minutes - categories change infrequently
-        cache.set(CACHE_KEYS.CATEGORIES, categories, 30);
+        // Cache for 5 minutes
+        cache.set(CACHE_KEYS.CATEGORIES, categories, 5);
         return categories;
     } catch (error) {
         console.error('Failed to fetch categories:', error);
